@@ -4,10 +4,10 @@ import User from "@/models/userModel";
 import connectDB from "@/config/mongodb";
 
 // insert user
-export async function insertUser(User) {
+export async function insertUser(userData) {
     try {
         await connectDB();
-        const newUser = new User(user);
+        const newUser = new User(userData);
         const savedUser = newUser.save();
 
         return savedUser;
