@@ -3,6 +3,20 @@
 import User from "@/models/userModel";
 import connectDB from "@/config/mongodb";
 
+// insert user
+export async function insertUser(User) {
+    try {
+        await connectDB();
+        const newUser = new User(user);
+        const savedUser = newUser.save();
+
+        return savedUser;
+    } catch (error) {
+        return { error: error.message };
+    }
+}
+
+// retrieve all users
 export async function getUsers() {
     try {
         await connectDB();
