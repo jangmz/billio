@@ -6,23 +6,25 @@ import connectDB from "@/config/mongodb";
 // insert user
 export async function insertUser(userData) {
     try {
-        await connectDB();
+        await connectDB();        
         const newUser = new User(userData);
         const savedUser = newUser.save();
 
+        console.log("User saved");
         return savedUser;
     } catch (error) {
         return { error: error.message };
     }
 }
 
-// retrieve all users
-export async function getUsers() {
+// retrieve user by email
+export async function getUser(email) {
     try {
         await connectDB();
-        const data = await User.find();
+        const user = await User.findOne({ email });
 
-        return { data };
+        console.log("User found already exists");
+        return user;
     } catch (error) {
         return { error: error.message };
     }
