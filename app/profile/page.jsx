@@ -1,8 +1,10 @@
 import { auth } from "@/config/auth";
+import { checkSession } from "@/config/checkSession";
 import Image from "next/image";
-import { logout } from "@/_actions/authActions";
+import { redirect } from "next/navigation";
 
 export default async function ProfilePage() {
+    await checkSession();
     const session = await auth();
 
   return (
