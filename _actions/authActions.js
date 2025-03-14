@@ -1,13 +1,12 @@
 "use server";
 
-import { signIn } from "@/config/auth";
+import { signIn, signOut } from "@/config/auth";
 
-export async function handleSignIn(formData) {
+export async function loginCredentials(formData) {
     try {
         const result = await signIn("credentials", {
-            redirect: false,
-            email: formData.get("email"),
-            password: formData.get("password"),
+            redirectTo: "/",
+            formData
         });
 
         if (result.error) {
@@ -18,4 +17,12 @@ export async function handleSignIn(formData) {
     } catch (error) {
         return { error: "Invalid email or password" };
     }
+}
+
+export async function loginGitHub() {
+    await signIn("github", { redirectTo: "/" });
+}
+
+export async function logout() {
+    await signOut({ redirectTo: "/" });
 }
