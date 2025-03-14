@@ -1,1 +1,0 @@
-export { auth as middlewareAuth } from "@/config/auth";

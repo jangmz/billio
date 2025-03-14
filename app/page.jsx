@@ -1,6 +1,4 @@
 import { auth } from "@/config/auth";
-import { logout } from "@/_actions/authActions";
-import Image from "next/image";
 import Link from "next/link";
 import SignOutButton from "@/components/SignOutButton";
 
