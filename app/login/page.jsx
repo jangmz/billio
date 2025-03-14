@@ -2,6 +2,8 @@
 
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+import LogInForm from "@/components/LogInForm";
+import { loginCredentials, loginGitHub } from "@/_actions/authActions";
 
 export default function LoginPage() {
     const searchParams = useSearchParams();
@@ -9,6 +11,7 @@ export default function LoginPage() {
 
     return (
         <div>
+            <h1>Login</h1>
             {
                 error === "User not found, please register first" && (
                     <div>
@@ -19,7 +22,11 @@ export default function LoginPage() {
                     </div>
                 )
             }
-            { /* rest of the code */ }
+            {/*<LogInForm signInAction={loginCredentials} />*/}
+            <hr />
+            <button onClick={loginGitHub}>
+                Sign In with GitHub
+            </button>
         </div>
     );
 }

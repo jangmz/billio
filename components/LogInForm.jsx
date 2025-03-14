@@ -19,17 +19,23 @@ export default function LogInForm({ signInAction}) {
     }
 
     return (
-        <form action={ handleSubmit }>
+        <form onSubmit={ handleSubmit }>
             { 
                 error &&
                 <p className="text-red-500">
                     { error }
                 </p>
             }
-            <label htmlFor="email">Email</label>
-            <input type="email" name="email" id="email" required />
-            <label htmlFor="password">Password</label>
-            <input type="password" name="password" id="password" required />
+            <label>
+                Email
+                <input type="email" name="email" id="email" required />
+            </label><br/>
+            
+            <label>
+                Password
+                <input type="password" name="password" id="password" required />
+            </label><br/>
+            
             <button type="submit">Sign In</button>
         </form>
     )
