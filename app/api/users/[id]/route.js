@@ -4,6 +4,8 @@ import { getUserById, updateUserById, deleteUserById } from "@/_actions/userActi
 // GET /api/users/[id] -> retrieve user data
 export async function GET(req, { params }) {
     try {
+        // check session -> session.user.id must be the same as params.id
+
         const userId = await params.id;
         console.log("User ID: ", userId);
 
@@ -26,6 +28,8 @@ export async function GET(req, { params }) {
 // PUT /api/users/[id] -> update user data
 export async function PUT(req, { params }) {
     try {
+        // check session -> session.user.id must be the same as params.id
+
         const userId = await params.id;
         const userData = await req.json(); // name, email
 
@@ -51,6 +55,8 @@ export async function PUT(req, { params }) {
 // DELETE /api/users/[id] -> delete user data
 export async function DELETE(req, { params }) {
     try {
+        // check session -> session.user.id must be the same as params.id
+        
         const userId = await params.id;
 
         console.log("User to delete", userId);
