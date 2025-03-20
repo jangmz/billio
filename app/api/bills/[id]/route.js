@@ -19,8 +19,17 @@ import { deleteBill, getBillByIdAndUser, updateBill } from "@/_actions/billActio
 // GET /api/bills/[id] -> retrieve single bill data
 export async function GET(req, { params }) {
     try {
+        // check session
+        const session = await auth();
+        
+        if (!session) {
+            const error = new Error("Not authorized");
+            error.status = 401;
+            throw error;
+        }
+
         const billId = await params.id;
-        const userId = "67d4290bbe6ed5a063405432"; // retrieve from request
+        const userId = session.user?.id;
         const bill = await getBillByIdAndUser(billId, userId);
 
         if (bill?.error || !bill) throw new Error(bill?.error || "Failed to retrieve bill data");
@@ -32,7 +41,7 @@ export async function GET(req, { params }) {
     } catch (error) {
         return NextResponse.json(
             { error: error.message || "Internal server error" },
-            { status: 500 }
+            { status: error.status || 500 }
         );
     }
 }
@@ -40,9 +49,18 @@ export async function GET(req, { params }) {
 // PUT /api/bills/[id] -> update single bill data
 export async function PUT(req, { params }) {
     try {
+        // check session
+        const session = await auth();
+        
+        if (!session) {
+            const error = new Error("Not authorized");
+            error.status = 401;
+            throw error;
+        }
+
         const billData = await req.json();
         billData.id = await params.id;
-        billData.userId = "67d4290bbe6ed5a063405432"; // retrieve from request
+        billData.userId = session.user?.id;
         const updatedBill = await updateBill(billData);
 
         if (updatedBill?.error || !updatedBill) throw new Error(updateBill?.error || "Failed to updated bill");
@@ -54,7 +72,7 @@ export async function PUT(req, { params }) {
     } catch (error) {
         return NextResponse.json(
             { error: error.message || "Internal server error" },
-            { status: 500 }
+            { status: error.status || 500 }
         );
     }
 }
@@ -62,8 +80,17 @@ export async function PUT(req, { params }) {
 // DELETE /api/bills/[id] -> delete single bill
 export async function DELETE(req, { params }) {
     try {
+        // check session
+        const session = await auth();
+        
+        if (!session) {
+            const error = new Error("Not authorized");
+            error.status = 401;
+            throw error;
+        }
+
         const billId = await params.id;
-        const userId = "67d4290bbe6ed5a063405432"; // retrieve from request
+        const userId = session.user?.id;
         const deletedBill = await deleteBill(billId, userId);
 
         if (deletedBill?.error || !deletedBill) throw new Error(deletedBill?.error || "Failed to delete a bill");
@@ -75,7 +102,7 @@ export async function DELETE(req, { params }) {
     } catch (error) {
         return NextResponse.json(
             { error: error.message || "Internal server error" },
-            { status: 500 }
+            { status: error.status || 500 }
         );
     }
 }

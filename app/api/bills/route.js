@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getUserBills, insertBill } from "@/_actions/billActions";
+import { auth } from "@/config/auth";
 
 /*
 ===== BILL MODEL =====
@@ -19,9 +20,17 @@ import { getUserBills, insertBill } from "@/_actions/billActions";
 // POST /api/bills -> create new bill
 export async function POST(req) {
     try {
-        const billData = await req.json(); // make sure category and residence is in the form
-        billData.userId = "67d4290bbe6ed5a063405432"; // retrieve id from request
+        // check session
+        const session = await auth();
+        
+        if (!session) {
+            const error = new Error("Not authorized");
+            error.status = 401;
+            throw error;
+        }
 
+        const billData = await req.json(); // categoryId, residenceId needed in request
+        billData.userId = session.user?.id;
         const bill = await insertBill(billData);
 
         if (bill?.error || !bill) throw new Error(bill?.error || "Failed to create new bill");
@@ -33,7 +42,7 @@ export async function POST(req) {
     } catch (error) {
         return NextResponse.json(
             { error: error.message || "Internal server error" },
-            { status: 500 }
+            { status: error.status || 500 }
         );
     }
 }
@@ -41,10 +50,19 @@ export async function POST(req) {
 // GET /api/bills -> returns all bills by user ID
 export async function GET(req) {
     try {
-        const userId = "67d4290bbe6ed5a063405432"; // retrieve id from request
+        // check session
+        const session = await auth();
+        
+        if (!session) {
+            const error = new Error("Not authorized");
+            error.status = 401;
+            throw error;
+        }
+
+        const userId = session.user?.id;
         const bills = await getUserBills(userId);
 
-        if (bills?.error || !bills) throw new Error(bills.error || "Failed to get data");
+        if (bills?.error || !bills) throw new Error(bills?.error || "Failed to get data");
 
         return NextResponse.json(
             { message: "Bills retrieved", data: bills },
@@ -53,7 +71,7 @@ export async function GET(req) {
     } catch (error) {
         return NextResponse.json(
             { error: error.message || "Internal server error" },
-            { status: 500 }
+            { status: error.status || 500 }
         );
     }
 }
