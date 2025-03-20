@@ -41,7 +41,7 @@ export async function getUserBills(userId) {
   }
 }
 
-// get all bills by userId and residenceId
+/*// get all bills by userId and residenceId
 export async function getBillsByUserAndResidence(userId, residenceId) {
   try {
     await connectDB();
@@ -50,9 +50,9 @@ export async function getBillsByUserAndResidence(userId, residenceId) {
   } catch (error) {
     return { error: error.message };
   }
-}
+}*/
 
-// get all bills by userId and categoryId
+/*// get all bills by userId and categoryId
 export async function getBillsByUserAndCategory(userId, categoryId) {
   try {
     await connectDB();
@@ -61,7 +61,7 @@ export async function getBillsByUserAndCategory(userId, categoryId) {
   } catch (error) {
     return { error: error.message };
   }
-}
+}*/
 
 // get bill data by id and userid
 export async function getBillByIdAndUser(billId, userId) {
