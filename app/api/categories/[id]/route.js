@@ -1,10 +1,20 @@
 import { NextResponse } from "next/server";
 import { getCategory, updateCategory, deleteCategory } from "@/_actions/categoryActions";
+import { auth } from "@/config/auth";
 
 // GET /api/categories/[id] -> retrieve category data by userId
 export async function GET(req, { params }) {
     try {
-        const userId = "67d2ab0cb46d21c7763f9ab3"; // retrieve userId from session
+        // check session
+        const session = await auth();
+        
+        if (!session) {
+            const error = new Error("Not authorized");
+            error.status = 401;
+            throw error;
+        }
+
+        const userId = session.user?.id;
         const categoryId = await params.id;
         const category = await getCategory(categoryId, userId);
 
@@ -17,7 +27,7 @@ export async function GET(req, { params }) {
     } catch (error) {
         return NextResponse.json(
             { error: error.message || "Internal server error" },
-            { status:500 }
+            { status: error.status || 500 }
         );
     }
 }
@@ -25,7 +35,16 @@ export async function GET(req, { params }) {
 // PUT /api/categories/[id] -> update category data
 export async function PUT(req, { params }) {
     try {
-        const userId = "67d2ab0cb46d21c7763f9ab3"; // retrieve userId from session
+        // check session
+        const session = await auth();
+        
+        if (!session) {
+            const error = new Error("Not authorized");
+            error.status = 401;
+            throw error;
+        }
+
+        const userId = session.user?.id;
         const categoryId = await params.id;
         const { name } = await req.json();
         const updatedCategory = await updateCategory(categoryId, userId, name);
@@ -39,7 +58,7 @@ export async function PUT(req, { params }) {
     } catch (error) {
         return NextResponse.json(
             { error: error.message || "Internal server error" },
-            { status:500 }
+            { status: error.status || 500 }
         );
     }    
 }
@@ -47,7 +66,16 @@ export async function PUT(req, { params }) {
 // DELETE /api/categories/[id] -> delete category
 export async function DELETE(req, { params }) {
     try {
-        const userId = "67d2ab0cb46d21c7763f9ab3"; // retrieve userId from session
+        // check session
+        const session = await auth();
+        
+        if (!session) {
+            const error = new Error("Not authorized");
+            error.status = 401;
+            throw error;
+        }
+
+        const userId = session.user?.id;
         const categoryId = await params.id;
         const deletedCategory = await deleteCategory(categoryId, userId);
 
@@ -60,7 +88,7 @@ export async function DELETE(req, { params }) {
     } catch (error) {
         return NextResponse.json(
             { error: error.message || "Internal server error" },
-            { status:500 }
+            { status: error.status || 500 }
         );
     }
 }

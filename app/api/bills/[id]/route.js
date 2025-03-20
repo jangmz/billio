@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { deleteBill, getBillByIdAndUser, updateBill } from "@/_actions/billActions";
+import { auth } from "@/config/auth";
 
 /*
 ===== BILL MODEL =====
