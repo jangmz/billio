@@ -2,6 +2,7 @@
 
 import Residence from "@/models/residenceModel";
 import connectDB from "@/config/mongodb";
+import mongoose from "mongoose";
 
 // insert new residence
 export async function insertResidence(residence) {
@@ -64,6 +65,102 @@ export async function deleteResidenceById(residenceId, userId) {
             { new: true }
         );
         return deletedResidence;
+    } catch (error) {
+        return { error: error.message };
+    }
+}
+
+// aggregation pipeline -> for creating report
+export async function getReport(userId, matchStage) {
+    try {
+        await connectDB();
+        const report = await Residence.aggregate([
+            // 1. filter residences for the user
+            { $match: { userId: new mongoose.Types.ObjectId(userId) } },
+
+            // 2. Lookup categories for each residence
+            {
+                $lookup: {
+                    from: "categories",
+                    localField: "userId",
+                    foreignField: "userId",
+                    as: "categories",
+                },
+            },
+
+            // 3. unwind categories array
+            { $unwind: "$categories" },
+
+            // 4. Lookup bills for each category
+            {
+                $lookup: {
+                    from: "bills",
+                    let: { categoryId: "$categories._id", residenceId: "$_id" },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: {
+                                    $and: [
+                                        { $eq: ["$categoryId", "$$categoryId"] },
+                                        { $eq: ["$residenceId", "$$residenceId"] },
+                                    ],
+                                },
+                                ...matchStage
+                            },
+                        },
+                        {
+                            $project: {
+                                amount: 1,
+                                month: { $month: "createdAt" }, // extract month -> later change to dueDate
+                                status: 1,
+                                recurring: 1,
+                            },
+                        },
+                    ],
+                    as: "categories.bills",
+                },
+            },
+
+            // time filtering
+            /*
+            {
+                $set: {
+                    "categories.bills": {
+                        $filter: {
+                            input: "$categories.bills",
+                            as: "bill",
+                            cond: {
+                                $and: [
+                                    { $gte: ["$$bill.createdAt", matchStage.createdAt.$gte] },
+                                    { $lte: ["$$bill.createdAt", matchStage.createdAt.$lte] },
+                                ],
+                            },
+                        },
+                    },
+                },
+            },*/
+
+            // 5. calculate total amount per category
+            {
+                $addFields: {
+                    "categories.totalAmount": { $sum: "$categories.bills.amount" },
+                },
+            },
+
+            // 6. group categories under their residence
+            {
+                $group: {
+                    _id: "$_id",
+                    name: { $first: "$name" },
+                    address: { $first: "$address" },
+                    categories: { $push: "$categories" },
+                },
+            },
+
+            // 7. sort results
+            { $sort: { name: 1 } },
+        ]);
+        return report;
     } catch (error) {
         return { error: error.message };
     }
