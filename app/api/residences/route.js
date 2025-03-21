@@ -37,7 +37,6 @@ export async function POST(req) {
 // GET /api/residences?u -> list of residences for particular user
 export async function GET(req) {
     try {
-        // check session -> session.user.id must match residenceData.userId
         // check session
         const session = await auth();
         
