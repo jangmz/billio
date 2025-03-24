@@ -2,6 +2,8 @@
 
 import React, {useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import Logo from "@/public/logo.png";
 
 export default function Navbar() {
     const [isDark, setIsDark] = useState(() => {
@@ -20,7 +22,15 @@ export default function Navbar() {
   return (
     <div className="navbar bg-base-200 shadow-sm">
         <div className="flex-1">
-            <Link href="/" className="text-2xl">Billio</Link>
+            <Link href="/" className="text-2xl flex items-center gap-1">
+                <Image 
+                    src={Logo} 
+                    alt={"Billio logo"}
+                    width={40}
+                    height={40}
+                />
+                Billio
+            </Link>
         </div>
         <div className="flex-none">
             <ul className="flex items-center menu menu-horizontal px-1">
