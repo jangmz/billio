@@ -1,7 +1,12 @@
 import { logout } from "@/_actions/authActions";
+import Button from "./buttons/Button";
 
 export default function SignOutButton() {
   return (
-    <button onClick={logout}>Sign Out</button>
+    <Button 
+      text={"Sign out"}
+      onClick={logout}
+      btnStyle={"btn-secondary"}
+    />
   )
 }
