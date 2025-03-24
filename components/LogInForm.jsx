@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import Button from "./buttons/Button";
 
 export default function LogInForm({ signInAction}) {
     const router = useRouter();
@@ -19,24 +20,26 @@ export default function LogInForm({ signInAction}) {
     }
 
     return (
-        <form onSubmit={ handleSubmit }>
+        <form onSubmit={ handleSubmit } className="justify-center items-center" >
             { 
                 error &&
                 <p className="text-red-500">
                     { error }
                 </p>
             }
-            <label>
-                Email
-                <input type="email" name="email" id="email" required />
-            </label><br/>
-            
-            <label>
-                Password
-                <input type="password" name="password" id="password" required />
-            </label><br/>
-            
-            <button type="submit">Sign In</button>
+            <fieldset className="fieldset">
+                <legend className="fieldset-legend">Email</legend>
+                <input type="email" name="email" id="email" placeholder="example@mail.com" className="input" />
+            </fieldset>
+            <fieldset className="fieldset">
+                <legend className="fieldset-legend">Password</legend>
+                <input type="password" name="password" id="password" className="input" />
+            </fieldset>            
+            <Button 
+                text={"Log in"}
+                type={"submit"}
+                btnStyle={"btn-primary"}
+            />
         </form>
     )
 }
