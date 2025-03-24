@@ -97,6 +97,38 @@ export async function getReport(userId, matchStage) {
                     from: "bills",
                     let: { categoryId: "$categories._id", residenceId: "$_id" },
                     pipeline: [
+                        // alternative match -> "createdAt" converts to Date if it's a string
+                        {
+                            $match: {
+                                $expr: {
+                                    $and: [
+                                        { $eq: ["$categoryId", "$$categoryId"] },
+                                        { $eq: ["$residenceId", "$$residenceId"] },
+                                        { 
+                                            $gte: [
+                                                { $cond: {
+                                                    if: { $eq: [{ $type: "$createdAt" }, "string"] },
+                                                    then: { $dateFromString: { dateString: "$createdAt" } },
+                                                    else: "$createdAt"
+                                                }},
+                                                matchStage.createdAt.$gte
+                                            ]
+                                        },
+                                        { 
+                                            $lte: [
+                                                { $cond: {
+                                                    if: { $eq: [{ $type: "$createdAt" }, "string"] },
+                                                    then: { $dateFromString: { dateString: "$createdAt" } },
+                                                    else: "$createdAt"
+                                                }},
+                                                matchStage.createdAt.$lte
+                                            ]
+                                        }
+                                    ],
+                                },
+                            },
+                        }
+                        /*
                         {
                             $match: {
                                 $expr: {
@@ -115,30 +147,11 @@ export async function getReport(userId, matchStage) {
                                 status: 1,
                                 recurring: 1,
                             },
-                        },
+                        },*/
                     ],
                     as: "categories.bills",
                 },
             },
-
-            // time filtering
-            /*
-            {
-                $set: {
-                    "categories.bills": {
-                        $filter: {
-                            input: "$categories.bills",
-                            as: "bill",
-                            cond: {
-                                $and: [
-                                    { $gte: ["$$bill.createdAt", matchStage.createdAt.$gte] },
-                                    { $lte: ["$$bill.createdAt", matchStage.createdAt.$lte] },
-                                ],
-                            },
-                        },
-                    },
-                },
-            },*/
 
             // 5. calculate total amount per category
             {
