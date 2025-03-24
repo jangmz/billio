@@ -6,16 +6,16 @@ import { getReport } from "@/_actions/residenceActions";
 export async function GET(req) {
     try {
         // check session
-        /*const session = await auth();
+        const session = await auth();
         
         if (!session) {
             const error = new Error("Not authorized");
             error.status = 401;
             throw error;
-        }*/
+        }
 
         // retrieve timeframe
-        const userId = "67d4290bbe6ed5a063405432";
+        const userId = session.user?.id;
         const { searchParams } = new URL(req.url)
         const timeFrame = searchParams.get("timeframe"); // monthly, quarterly, yearly
 
