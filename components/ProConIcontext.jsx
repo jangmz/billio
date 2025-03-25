@@ -10,7 +10,7 @@ export default function ProConIcontext({ icon, text }) {
         if (icon === "neutral") return "secondary";
     });
   return (
-    <div className={`flex items-center gap-1 text-${textColor}`}>
+    <div className={`flex items-center gap-2 text-${textColor} py-1`}>
         {
             (icon === "pro" || icon === "neutral") && <FaCheck /> || icon === "con" && <FaXmark />
         }
