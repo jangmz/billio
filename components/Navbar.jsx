@@ -6,9 +6,14 @@ import Image from "next/image";
 import Logo from "@/public/logo.png";
 
 export default function Navbar() {
-    const [isDark, setIsDark] = useState(() => {
-        return JSON.parse(localStorage.getItem("isDark")) ?? false;
-    });
+    const [isDark, setIsDark] = useState(false);
+
+    useEffect(() => {
+        const storedTheme = JSON.parse(localStorage.getItem("isDark"));
+        if (storedTheme) {
+            setIsDark(storedTheme);
+        }
+    }, []);
 
     useEffect(() => {
         localStorage.setItem("isDark", JSON.stringify(isDark));
@@ -50,7 +55,7 @@ export default function Navbar() {
         </div>
         {/*<div className="ms-3">
             <label className="swap swap-rotate">
-                <input type="checkbox" checked={isDark} onClick={ themeChange } className="theme-controller" />
+                <input type="checkbox" checked={isDark} onChange={ themeChange } className="theme-controller" />
                 <svg
                     className="swap-off h-10 w-10 fill-current"
                     xmlns="http://www.w3.org/2000/svg"
