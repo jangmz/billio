@@ -1,6 +1,7 @@
 import { auth } from "@/config/auth";
 import Link from "next/link";
 import SignOutButton from "@/components/SignOutButton";
+import HeroSection from "@/components/sections/HeroSection";
 
 export default async function Home() {
   const session = await auth();
@@ -18,10 +19,7 @@ export default async function Home() {
 
   return (
     <div>
-      <p>You are not signed in</p>
-      <Link href="/login">
-        Sign in
-      </Link>
+      <HeroSection />
     </div>
   );
 }
