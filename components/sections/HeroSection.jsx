@@ -12,7 +12,9 @@ export default function HeroSection() {
             <div className="hero-content text-center">
                 <div className="max-w-2xl">
                     <h1 className="text-5xl font-bold">
-                        Effortlessly Manage Your Housing Expenses With Billio
+                        <span className="underline decoration-amber-400 decoration-7">
+                            Effortlessly
+                        </span> Manage Your Housing Expenses With Billio
                     </h1>
                     <div className="py-6">
                         <div>
