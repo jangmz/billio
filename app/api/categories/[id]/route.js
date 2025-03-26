@@ -1,20 +1,15 @@
 import { NextResponse } from "next/server";
 import { getCategory, updateCategory, deleteCategory } from "@/_actions/categoryActions";
-import { auth } from "@/config/auth";
+import { authenticate } from "@/config/authMiddleware";
 
 // GET /api/categories/[id] -> retrieve category data by userId
 export async function GET(req, { params }) {
-    try {
-        // check session
-        const session = await auth();
-        
-        if (!session) {
-            const error = new Error("Not authorized");
-            error.status = 401;
-            throw error;
-        }
+    const user = await authenticate(req);
 
-        const userId = session.user?.id;
+    if (user instanceof NextResponse) return user; // if the returned value is NextResponse, return that authentication error
+    
+    try {
+        const userId = user.id;
         const categoryId = await params.id;
         const category = await getCategory(categoryId, userId);
 
@@ -34,17 +29,12 @@ export async function GET(req, { params }) {
 
 // PUT /api/categories/[id] -> update category data
 export async function PUT(req, { params }) {
+    const user = await authenticate(req);
+    
+    if (user instanceof NextResponse) return user; // if the returned value is NextResponse, return that authentication error
+    
     try {
-        // check session
-        const session = await auth();
-        
-        if (!session) {
-            const error = new Error("Not authorized");
-            error.status = 401;
-            throw error;
-        }
-
-        const userId = session.user?.id;
+        const userId = user.id;
         const categoryId = await params.id;
         const { name } = await req.json();
         const updatedCategory = await updateCategory(categoryId, userId, name);
@@ -65,17 +55,12 @@ export async function PUT(req, { params }) {
 
 // DELETE /api/categories/[id] -> delete category
 export async function DELETE(req, { params }) {
-    try {
-        // check session
-        const session = await auth();
-        
-        if (!session) {
-            const error = new Error("Not authorized");
-            error.status = 401;
-            throw error;
-        }
+    const user = await authenticate(req);
 
-        const userId = session.user?.id;
+    if (user instanceof NextResponse) return user; // if the returned value is NextResponse, return that authentication error
+    
+    try {
+        const userId = user.id;
         const categoryId = await params.id;
         const deletedCategory = await deleteCategory(categoryId, userId);
 

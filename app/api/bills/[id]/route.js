@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { deleteBill, getBillByIdAndUser, updateBill } from "@/_actions/billActions";
-import { auth } from "@/config/auth";
+import { authenticate } from "@/config/authMiddleware";
 
 /*
 ===== BILL MODEL =====
@@ -19,18 +19,13 @@ import { auth } from "@/config/auth";
 
 // GET /api/bills/[id] -> retrieve single bill data
 export async function GET(req, { params }) {
+    const user = await authenticate(req);
+    
+    if (user instanceof NextResponse) return user; // if the returned value is NextResponse, return that authentication error
+    
     try {
-        // check session
-        const session = await auth();
-        
-        if (!session) {
-            const error = new Error("Not authorized");
-            error.status = 401;
-            throw error;
-        }
-
         const billId = await params.id;
-        const userId = session.user?.id;
+        const userId = user.id;
         const bill = await getBillByIdAndUser(billId, userId);
 
         if (bill?.error || !bill) throw new Error(bill?.error || "Failed to retrieve bill data");
@@ -49,19 +44,14 @@ export async function GET(req, { params }) {
 
 // PUT /api/bills/[id] -> update single bill data
 export async function PUT(req, { params }) {
+    const user = await authenticate(req);
+    
+    if (user instanceof NextResponse) return user; // if the returned value is NextResponse, return that authentication error
+    
     try {
-        // check session
-        const session = await auth();
-        
-        if (!session) {
-            const error = new Error("Not authorized");
-            error.status = 401;
-            throw error;
-        }
-
         const billData = await req.json();
         billData.id = await params.id;
-        billData.userId = session.user?.id;
+        billData.userId = user.id;
         const updatedBill = await updateBill(billData);
 
         if (updatedBill?.error || !updatedBill) throw new Error(updateBill?.error || "Failed to updated bill");
@@ -80,18 +70,13 @@ export async function PUT(req, { params }) {
 
 // DELETE /api/bills/[id] -> delete single bill
 export async function DELETE(req, { params }) {
+    const user = await authenticate(req);
+    
+    if (user instanceof NextResponse) return user; // if the returned value is NextResponse, return that authentication error
+    
     try {
-        // check session
-        const session = await auth();
-        
-        if (!session) {
-            const error = new Error("Not authorized");
-            error.status = 401;
-            throw error;
-        }
-
         const billId = await params.id;
-        const userId = session.user?.id;
+        const userId = user.id;
         const deletedBill = await deleteBill(billId, userId);
 
         if (deletedBill?.error || !deletedBill) throw new Error(deletedBill?.error || "Failed to delete a bill");

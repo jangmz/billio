@@ -1,21 +1,16 @@
 import { NextResponse } from "next/server";
-import { auth } from "@/config/auth";
+import { authenticate } from "@/config/authMiddleware";
 import { getReport } from "@/_actions/residenceActions";
 
 // GET /api/reports?timeframe=[mothly/quarterly/yearly] -> return all bills sorted by residence -> sorted bills by category
 export async function GET(req) {
+    const user = await authenticate(req);
+    
+    if (user instanceof NextResponse) return user; // if the returned value is NextResponse, return that authentication error
+    
     try {
-        // check session
-        const session = await auth();
-        
-        if (!session) {
-            const error = new Error("Not authorized");
-            error.status = 401;
-            throw error;
-        }
-
         // retrieve timeframe
-        const userId = session.user?.id;
+        const userId = user.id;
         const { searchParams } = new URL(req.url)
         const timeFrame = searchParams.get("timeframe"); // monthly, quarterly, yearly
 

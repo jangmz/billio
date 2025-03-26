@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getUserBills, insertBill } from "@/_actions/billActions";
-import { auth } from "@/config/auth";
+import { authenticate } from "@/config/authMiddleware";
 
 /*
 ===== BILL MODEL =====
@@ -19,18 +19,13 @@ import { auth } from "@/config/auth";
 
 // POST /api/bills -> create new bill
 export async function POST(req) {
-    try {
-        // check session
-        const session = await auth();
-        
-        if (!session) {
-            const error = new Error("Not authorized");
-            error.status = 401;
-            throw error;
-        }
+    const user = await authenticate(req);
 
+    if (user instanceof NextResponse) return user; // if the returned value is NextResponse, return that authentication error
+    
+    try {
         const billData = await req.json(); // categoryId, residenceId needed in request
-        billData.userId = session.user?.id;
+        billData.userId = user.id;
         const bill = await insertBill(billData);
 
         if (bill?.error || !bill) throw new Error(bill?.error || "Failed to create new bill");
@@ -49,17 +44,12 @@ export async function POST(req) {
 
 // GET /api/bills -> returns all bills by user ID
 export async function GET(req) {
+    const user = await authenticate(req);
+    
+    if (user instanceof NextResponse) return user; // if the returned value is NextResponse, return that authentication error
+    
     try {
-        // check session
-        const session = await auth();
-        
-        if (!session) {
-            const error = new Error("Not authorized");
-            error.status = 401;
-            throw error;
-        }
-
-        const userId = session.user?.id;
+        const userId = user.id;
         const bills = await getUserBills(userId);
 
         if (bills?.error || !bills) throw new Error(bills?.error || "Failed to get data");

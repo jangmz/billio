@@ -1,21 +1,16 @@
 import { NextResponse } from "next/server";
 import { insertResidence, getResidences } from "@/_actions/residenceActions";
-import { auth } from "@/config/auth";
+import { authenticate } from "@/config/authMiddleware";
 
 // POST /api/residences -> create new residence
 export async function POST(req) {
+    const user = await authenticate(req);
+    
+    if (user instanceof NextResponse) return user; // if the returned value is NextResponse, return that authentication error
+    
     try {
-        // check session
-        const session = await auth();
-        
-        if (!session) {
-            const error = new Error("Not authorized");
-            error.status = 401;
-            throw error;
-        }
-
         const residenceData = await req.json(); // name, address
-        residenceData.userId = session.user?.id;
+        residenceData.userId = user.id;
 
         const residence = await insertResidence(residenceData);
 
@@ -36,20 +31,15 @@ export async function POST(req) {
 
 // GET /api/residences?u -> list of residences for particular user
 export async function GET(req) {
+    const user = await authenticate(req);
+    
+    if (user instanceof NextResponse) return user; // if the returned value is NextResponse, return that authentication error
+    
     try {
-        // check session
-        const session = await auth();
-        
-        if (!session) {
-            const error = new Error("Not authorized");
-            error.status = 401;
-            throw error;
-        }
-
         const { searchParams } = new URL(req.url);
         const userId = searchParams.get("u");
         
-        if (userId !== session.user?.id) {
+        if (userId !== user.id) {
             const error = new Error("Not authorized");
             error.status = 401;
             throw error;
@@ -57,7 +47,7 @@ export async function GET(req) {
 
         const residences = await getResidences(userId);
 
-        if (residences.error || !userId) throw new Error("Failed to retrieve data");
+        if (residences.error || !userId) throw new Error(residences?.error || "Failed to retrieve data");
 
         return NextResponse.json(
             { message: "Residences retrieved", residences },

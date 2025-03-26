@@ -1,17 +1,26 @@
 import { NextResponse } from "next/server";
 import { getUserById, updateUserById, deleteUserById } from "@/_actions/userActions";
+import { authenticate } from "@/config/authMiddleware";
 
 // GET /api/users/[id] -> retrieve user data
 export async function GET(req, { params }) {
+    const user = await authenticate(req);
+    
+    if (user instanceof NextResponse) return user; // if the returned value is NextResponse, return that authentication error
+    
     try {
-        // check session -> session.user.id must be the same as params.id
-
         const userId = await params.id;
-        console.log("User ID: ", userId);
+        
+        // check if logged user is the same as for which it wants to retrieve data
+        if (userId !== user.id) {
+            const error = new Error("Not authorized");
+            error.status = 401;
+            throw error;
+        }
 
         const user = await getUserById(userId);
 
-        if (user.error) throw new Error(`No user found with ID ${userId}`);
+        if (user?.error || !user) throw new Error(user?.error || `No user found with ID ${userId}`);
 
         return NextResponse.json(
             { message: "User data retrieved", user },
@@ -20,25 +29,31 @@ export async function GET(req, { params }) {
     } catch (error) {
         return NextResponse.json(
             { error: error.message || "Internal server error" },
-            { status: 500 }
+            { status: error.status || 500 }
         );        
     }
 }
 
 // PUT /api/users/[id] -> update user data
 export async function PUT(req, { params }) {
+    const user = await authenticate(req);
+    
+    if (user instanceof NextResponse) return user; // if the returned value is NextResponse, return that authentication error
+    
     try {
-        // check session -> session.user.id must be the same as params.id
-
         const userId = await params.id;
+
+        // check if logged user is the same as for which it wants to update data
+        if (userId !== user.id) {
+            const error = new Error("Not authorized");
+            error.status = 401;
+            throw error;
+        }
+
         const userData = await req.json(); // name, email
-
-        console.log("User to update: ", userId);
-        console.log("User data: ", userData);
-
         const updatedUser = await updateUserById(userId, userData);
 
-        if (updatedUser.error) throw new Error(`No user found with ID ${userId}`);
+        if (updatedUser?.error || !updatedUser) throw new Error(updatedUser?.error || `Could not update data for user with ID ${userId}`);
 
         return NextResponse.json(
             { message: "User data updated", user: updatedUser },
@@ -47,23 +62,30 @@ export async function PUT(req, { params }) {
     } catch (error) {
         return NextResponse.json(
             { error: error.message || "Internal server error" },
-            { status: 500 }
+            { status: error.status || 500 }
         );
     }
 }
 
 // DELETE /api/users/[id] -> delete user data
 export async function DELETE(req, { params }) {
+    const user = await authenticate(req);
+    
+    if (user instanceof NextResponse) return user; // if the returned value is NextResponse, return that authentication error
+  
     try {
-        // check session -> session.user.id must be the same as params.id
-        
         const userId = await params.id;
 
-        console.log("User to delete", userId);
+        // check if logged user is the same as for which it wants to retrieve data
+        if (userId !== user.id) {
+            const error = new Error("Not authorized");
+            error.status = 401;
+            throw error;
+        }
 
         const deletedUser = await deleteUserById(userId);
 
-        if (deletedUser.error) throw new Error(`No user found with ID ${userId}`);
+        if (deletedUser?.error || !deletedUser) throw new Error(deletedUser?.error || `Could not delete user with ID ${userId}`);
 
         return NextResponse.json(
             { message: "User deleted", deletedUser },
@@ -72,7 +94,7 @@ export async function DELETE(req, { params }) {
     } catch (error) {
         return NextResponse.json(
             { error: error.message || "Internal server error" },
-            { status: 500 }
+            { status: error.status || 500 }
         );
     }
 }
