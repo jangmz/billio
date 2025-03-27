@@ -10,8 +10,8 @@ export default function HeroSection() {
     <section id="hero" className="relative overflow-hidden">
         <div className="hero bg-base-200 min-h-screen">
             <div className="hero-content text-center">
-                <div className="max-w-2xl">
-                    <h1 className="text-5xl font-bold">
+                <div className="max-w-4xl">
+                    <h1 className="text-7xl font-bold">
                         <span className="underline decoration-amber-400 decoration-7">
                             Effortlessly
                         </span> Manage Your Housing Expenses With Billio

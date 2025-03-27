@@ -21,8 +21,8 @@ export default function ProblemsSection() {
     <section id="problems" className="relative overflow-hidden">
         <div className="flex flex-col items-center justify-center bg-base-200 min-h-screen">
             {/* title */}
-            <div className="max-w-4xl flex items-center justify-center">
-                <h1 className="w-2/3 text-5xl font-bold py-8 text-center">
+            <div className="max-w-5xl flex items-center justify-center">
+                <h1 className="w-2/3 text-6xl font-bold py-8 text-center">
                     Housing expense tracking made <span className="underline decoration-amber-400 decoration-7">simple</span>
                 </h1>
             </div>

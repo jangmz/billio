@@ -5,8 +5,8 @@ export default function PropertiesSection() {
     <section id="features" className="relative overflow-hidden">
         <div className="flex flex-col items-center justify-center bg-neutral-200 min-h-screen">
             {/* title + description */}
-            <div className="max-w-4xl flex items-center gap-15">
-                <h1 className="w-2/3 text-5xl font-bold py-8">
+            <div className="max-w-5xl flex items-center gap-15">
+                <h1 className="w-2/3 text-6xl font-bold py-8">
                     Track your housing expenses<span> </span>
                     <span className="underline decoration-amber-400 decoration-7">
                         with ease
