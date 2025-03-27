@@ -3,6 +3,11 @@
 import { FaCheck, FaXmark } from "react-icons/fa6";
 import { FaDotCircle } from "react-icons/fa";
 
+/*
+    This component accepts title, color (green, red, gray) and array of strings (properties) to be displayed.
+    Default color is yellow.
+*/
+
 export default function ColoredCard({ title, color, propertiesArr }) {
 
     function getColorClasses(color) {
