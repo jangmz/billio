@@ -3,6 +3,8 @@ import Link from "next/link";
 import SignOutButton from "@/components/SignOutButton";
 import HeroSection from "@/components/sections/HeroSection";
 import PropertiesSection from "@/components/sections/PropertiesSection";
+import ProblemsSection from "@/components/sections/ProblemsSection";
+import PricingSection from "@/components/sections/PricingSection";
 
 export default async function Home() {
   const session = await auth();
@@ -22,6 +24,8 @@ export default async function Home() {
     <div>
       <HeroSection />
       <PropertiesSection />
+      <ProblemsSection />
+      <PricingSection />
     </div>
   );
 }
