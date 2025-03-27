@@ -19,7 +19,7 @@ const pros = [
 export default function ProblemsSection() {
   return (
     <section id="problems" className="relative overflow-hidden">
-        <div className="flex flex-col items-center justify-center bg-base-100 min-h-screen">
+        <div className="flex flex-col items-center justify-center bg-base-200 min-h-screen">
             {/* title */}
             <div className="max-w-4xl flex items-center justify-center">
                 <h1 className="w-2/3 text-5xl font-bold py-8 text-center">

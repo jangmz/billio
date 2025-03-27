@@ -3,7 +3,7 @@ import CardLanding from "../CardLanding"
 export default function PropertiesSection() {
   return (
     <section id="features" className="relative overflow-hidden">
-        <div className="flex flex-col items-center justify-center bg-base-200 min-h-screen">
+        <div className="flex flex-col items-center justify-center bg-neutral-200 min-h-screen">
             {/* title + description */}
             <div className="max-w-4xl flex items-center gap-15">
                 <h1 className="w-2/3 text-5xl font-bold py-8">
