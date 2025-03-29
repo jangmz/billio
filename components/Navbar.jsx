@@ -39,9 +39,9 @@ export default function Navbar() {
                 <li>
                     <Link href={"#faq"}>FAQ</Link>
                 </li>
-                <li>
+                {/*<li>
                     <Link href={"#reviews"}>Reviews</Link>
-                </li>
+                </li>*/}
                 <li>
                     <Link href={"/login"} className="btn btn-primary">Log in</Link>
                 </li>
