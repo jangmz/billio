@@ -28,13 +28,7 @@ export default function Navbar() {
     <div className="navbar bg-base-200 shadow-sm">
         <div className="flex-1">
             <Link href="/" className="text-2xl flex items-center gap-1">
-                <Image 
-                    src={Logo} 
-                    alt={"Billio logo"}
-                    width={40}
-                    height={40}
-                />
-                Billio
+                <span className="text-yellow-600 font-extrabold text-4xl">Billio</span>
             </Link>
         </div>
         <div className="flex-none">
