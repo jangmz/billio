@@ -20,7 +20,7 @@ export default function LogInForm({ signInAction}) {
     }
 
     return (
-        <form onSubmit={ handleSubmit } className="justify-center items-center" >
+        <form onSubmit={ handleSubmit } className="flex flex-col items-center gap-2" >
             { 
                 error &&
                 <p className="text-red-500">
@@ -29,11 +29,11 @@ export default function LogInForm({ signInAction}) {
             }
             <fieldset className="fieldset">
                 <legend className="fieldset-legend">Email</legend>
-                <input type="email" name="email" id="email" placeholder="example@mail.com" className="input" />
+                <input type="email" name="email" id="email" placeholder="example@mail.com" className="input w-100" />
             </fieldset>
             <fieldset className="fieldset">
                 <legend className="fieldset-legend">Password</legend>
-                <input type="password" name="password" id="password" className="input" />
+                <input type="password" name="password" id="password" className="input w-100" />
             </fieldset>            
             <Button 
                 text={"Log in"}

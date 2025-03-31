@@ -2,9 +2,9 @@
 
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { loginCredentials } from "@/_actions/authActions";
 import LogInForm from "@/components/LogInForm";
-import { loginCredentials, loginGitHub } from "@/_actions/authActions";
-import Button from "@/components/buttons/Button";
+import LogInProviders from "@/components/LogInProviders";
 
 export default function LoginPage() {
     const searchParams = useSearchParams();
@@ -14,7 +14,7 @@ export default function LoginPage() {
 
     return (
         <div className=" flex flex-col items-center border-b-neutral-500 rounded-box">
-            <h1 className="text-4xl mt-6">Log in</h1>
+            <h1 className="text-4xl m-6">Log in</h1>
             {
                 error === "User not found, please register first" && (
                     <div>
@@ -25,17 +25,10 @@ export default function LoginPage() {
                     </div>
                 )
             }
-            <LogInForm signInAction={loginCredentials} />
-            
-            <div className="flex flex-col gap-3">
-                <Button 
-                    text="Log in with GitHub"
-                    btnStyle={"btn-primary"}
-                    onClick={loginGitHub}
-                />
-                <Button 
-                    text={"Log in with Google"}
-                />
+            <div className="border-1 rounded-2xl border-base-300 shadow-2xl p-7">
+                <LogInForm signInAction={loginCredentials} />
+                <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-base-300"/>
+                <LogInProviders />
             </div>
         </div>
     );
