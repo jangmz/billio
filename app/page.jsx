@@ -1,4 +1,5 @@
 import { auth } from "@/config/auth";
+import { redirect } from "next/navigation";
 import Link from "next/link";
 import SignOutButton from "@/components/SignOutButton";
 import HeroSection from "@/components/sections/HeroSection";
@@ -11,14 +12,15 @@ export default async function Home() {
   const session = await auth();
 
   if(session?.user) {
-    return (
+    redirect("/dashboard")
+    /*return (
       <div>
-        <Link href="/profile">
-          My profile
+        <Link href="/dashboard">
+          Dashboard
         </Link>
         <SignOutButton/>
       </div>
-    );
+    );*/
   }
 
   return (
