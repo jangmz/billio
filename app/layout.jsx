@@ -1,7 +1,9 @@
 import { Poppins } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/menus/Navbar";
 import Footer from "@/components/sections/Footer";
+import { auth } from "@/config/auth";
+import UserNavbar from "@/components/menus/UserNavbar";
 
 const poppins = Poppins({
   weight: ["400", "700"],
@@ -14,12 +16,16 @@ export const metadata = {
   keywords: "expense tracker, utility expense tracker, apartment, house, landlord"
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const session = await auth();
+
   return (
     <html lang="en" className="h-full">
       <body className="flex flex-col min-h-screen">
         <header className="sticky top-0 z-50">
-          <Navbar />
+          {
+            session?.user ? <UserNavbar /> : <Navbar />
+          }
         </header>
         <main className="flex-1">
           {children}
