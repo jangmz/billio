@@ -27,7 +27,7 @@ export default function LoginPage() {
             }
             <div className="border-1 rounded-2xl border-base-300 shadow-2xl p-7">
                 <LogInForm signInAction={loginCredentials} />
-                <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-base-300"/>
+                <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-base-300"/>
                 <LogInProviders />
             </div>
         </div>
