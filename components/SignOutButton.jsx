@@ -6,7 +6,7 @@ export default function SignOutButton() {
     <Button 
       text={"Sign out"}
       onClick={logout}
-      btnStyle={"btn-secondary"}
+      btnStyle={"btn-primary"}
     />
   )
 }
