@@ -1,8 +1,6 @@
 import { Poppins } from "next/font/google";
 import "@/app/globals.css";
-import Footer from "@/components/sections/Footer";
 import { auth } from "@/config/auth";
-import UserNavbar from "@/components/menus/UserNavbar";
 import SideMenu from "@/components/menus/SideMenu";
 
 const poppins = Poppins({
@@ -11,9 +9,7 @@ const poppins = Poppins({
 });
 
 export const metadata = {
-  title: "Billio",
-  description: "The best expense tracking app for your house/apartment.",
-  keywords: "expense tracker, utility expense tracker, apartment, house, landlord"
+  title: "Dashboard | Billio"
 };
 
 export default async function DashboardLayout({ children }) {
