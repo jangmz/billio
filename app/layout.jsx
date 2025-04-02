@@ -3,7 +3,6 @@ import "./globals.css";
 import Navbar from "@/components/menus/Navbar";
 import Footer from "@/components/sections/Footer";
 import { auth } from "@/config/auth";
-import UserNavbar from "@/components/menus/UserNavbar";
 
 const poppins = Poppins({
   weight: ["400", "700"],
@@ -32,7 +31,9 @@ export default async function RootLayout({ children }) {
         <main className="flex-1">
           {children}
         </main>
-        <Footer />
+        {
+          !session?.user && <Footer />
+        }
       </body>
     </html>
   );
