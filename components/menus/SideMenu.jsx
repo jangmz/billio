@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import Logo from "@/public/logo.png";
 import { MdSpaceDashboard, MdCategory } from "react-icons/md";
 import { BsFillHousesFill } from "react-icons/bs";
 import { RiBillFill } from "react-icons/ri";
@@ -28,12 +29,13 @@ export default function SideMenu() {
         <aside
             id="logo-sidebar"
             aria-label="Sidebar"
-            className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
+            className="fixed shadow-lg top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
         >
             <div className="h-full px-3 py-4 overflow-y-auto bg-base-100">
                 {/* logo with app name */}
-                <div className="flex items-center ps-2.5 mb-5">
+                <div className="flex gap-3 justify-center items-center mb-5">
                     {/* logo image */}
+                    <Image src={Logo} width={44}/>
                     <span className="self-center text-yellow-600 font-extrabold text-4xl whitespace-nowrap">
                         Billio
                     </span>
