@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import Logo from "@/public/logo.png";
-import { MdSpaceDashboard, MdCategory } from "react-icons/md";
+import { MdSpaceDashboard, MdCategory, MdContactSupport } from "react-icons/md";
 import { BsFillHousesFill } from "react-icons/bs";
 import { RiBillFill } from "react-icons/ri";
 import { HiDocumentReport } from "react-icons/hi";
@@ -31,51 +31,61 @@ export default function SideMenu() {
             aria-label="Sidebar"
             className="fixed shadow-lg top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
         >
-            <div className="h-full px-3 py-4 overflow-y-auto bg-base-100">
+            <div className="h-full px-3 py-4 overflow-y-auto bg-base-100 flex flex-col justify-between">
                 {/* logo with app name */}
-                <div className="flex gap-3 justify-center items-center mb-5">
-                    {/* logo image */}
-                    <Image src={Logo} width={44}/>
-                    <span className="self-center text-yellow-600 font-extrabold text-4xl whitespace-nowrap">
-                        Billio
-                    </span>
+                <div>
+                    <div className="flex gap-3 justify-center items-center mb-5">
+                        {/* logo image */}
+                        <Image src={Logo} width={44} alt="App logo"/>
+                        <span className="self-center text-yellow-600 font-extrabold text-4xl whitespace-nowrap">
+                            Billio
+                        </span>
+                    </div>
+                    <ul className="space-y-2 font-medium">
+                        <li>
+                            {/* icon + title */}
+                            <Link href="/dashboard" className="flex items-center rounded-lg p-2 hover:bg-yellow-400 group">
+                                <MdSpaceDashboard size={28}/>
+                                <span className="ms-3">Dashboard</span>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link href="#" className="flex items-center rounded-lg p-2 hover:bg-yellow-400 group">
+                                <BsFillHousesFill size={28}/>
+                                <span className="ms-3">Residences</span>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link href="#" className="flex item-center rounded-lg p-2 hover:bg-yellow-400 group">
+                                <MdCategory size={28} />
+                                <span className="ms-3">Categories</span>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link href="#" className="flex item-center rounded-lg p-2 hover:bg-yellow-400 group">
+                                <RiBillFill size={28} />
+                                <span className="ms-3">Bills</span>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link href="#" className="flex item-center rounded-lg p-2 hover:bg-yellow-400 group">
+                                <HiDocumentReport size={28} />
+                                <span className="ms-3">Reports</span>
+                            </Link>
+                        </li>
+                    </ul>
                 </div>
                 <ul className="space-y-2 font-medium">
                     <li>
-                        {/* icon + title */}
-                        <Link href="/dashboard" className="flex items-center rounded-lg p-2 hover:bg-yellow-400 group">
-                            <MdSpaceDashboard size={28}/>
-                            <span className="ms-3">Dashboard</span>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href="#" className="flex items-center rounded-lg p-2 hover:bg-yellow-400 group">
-                            <BsFillHousesFill size={28}/>
-                            <span className="ms-3">Residences</span>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href="#" className="flex item-center rounded-lg p-2 hover:bg-yellow-400 group">
-                            <MdCategory size={28} />
-                            <span className="ms-3">Categories</span>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href="#" className="flex item-center rounded-lg p-2 hover:bg-yellow-400 group">
-                            <RiBillFill size={28} />
-                            <span className="ms-3">Bills</span>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href="#" className="flex item-center rounded-lg p-2 hover:bg-yellow-400 group">
-                            <HiDocumentReport size={28} />
-                            <span className="ms-3">Reports</span>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href="/profile" className="flex item-center rounded-lg p-2 hover:bg-yellow-400 group">
+                        <Link href="/dashboard/profile" className="flex item-center rounded-lg p-2 hover:bg-yellow-400 group">
                             <FaUser size={28} />
                             <span className="ms-3">My profile</span>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link href="#" className="flex item-center rounded-lg p-2 hover:bg-yellow-400 group">
+                            <IoSettingsSharp size={28} />
+                            <span className="ms-3">Settings</span>
                         </Link>
                     </li>
                     <li>
@@ -86,8 +96,8 @@ export default function SideMenu() {
                     </li>
                     <li>
                         <Link href="#" className="flex item-center rounded-lg p-2 hover:bg-yellow-400 group">
-                            <IoSettingsSharp size={28} />
-                            <span className="ms-3">Settings</span>
+                            <MdContactSupport size={28} />
+                            <span className="ms-3">Support & Feedback</span>
                         </Link>
                     </li>
                 </ul>
