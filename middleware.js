@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 
 const protectedRoutes = [
-    "/dashboard"
+    "/dashboard",
+    "/api"
 ];
 
 export default async function middleware(req) {
