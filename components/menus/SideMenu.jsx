@@ -6,8 +6,8 @@ import { BsFillHousesFill } from "react-icons/bs";
 import { RiBillFill } from "react-icons/ri";
 import { HiDocumentReport } from "react-icons/hi";
 import { IoSettingsSharp } from "react-icons/io5";
-import { FaSignOutAlt, FaUser } from "react-icons/fa";
-import { logout } from "@/_actions/authActions";
+import { FaUser } from "react-icons/fa";
+import SignOutMenuButton from "../buttons/SignOutMenuButton";
 
 export default function SideMenu() {
   return (
@@ -89,10 +89,7 @@ export default function SideMenu() {
                         </Link>
                     </li>
                     <li>
-                        <Link href="#" onClick={logout} className="flex item-center rounded-lg p-2 hover:bg-yellow-400 group">
-                            <FaSignOutAlt size={28} />
-                            <span className="ms-3">Sign out</span>
-                        </Link>
+                        <SignOutMenuButton />
                     </li>
                     <li>
                         <Link href="#" className="flex item-center rounded-lg p-2 hover:bg-yellow-400 group">
