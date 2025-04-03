@@ -3,7 +3,12 @@ import { auth } from "@/auth";
 
 const protectedRoutes = [
     "/dashboard",
-    "/api"
+    "/api/bills",
+    "/api/categories",
+    "/api/residences",
+    "/api/users",
+    "/api/reports",
+    "/api/debug-token"
 ];
 
 export default async function middleware(req) {
