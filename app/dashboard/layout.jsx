@@ -1,6 +1,6 @@
 import { Poppins } from "next/font/google";
 import "@/app/globals.css";
-import { auth } from "@/config/auth";
+import { auth } from "@/auth";
 import SideMenu from "@/components/menus/SideMenu";
 
 const poppins = Poppins({
