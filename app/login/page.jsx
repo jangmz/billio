@@ -16,9 +16,15 @@ export default function LoginPage() {
         <div className=" flex flex-col items-center border-b-neutral-500 rounded-box">
             <h1 className="text-4xl m-6">Log in</h1>
             {
+                error &&
+                <div role="alert" className="alert alert-error alert-soft mb-6">
+                    <span>Error! {error}</span>
+                </div>
+            }
+            {
                 error === "User not found, please register first" && (
-                    <div>
-                        <h3>User not found, please register first</h3>
+                    <div role="alert" className="alert alert-error alert-soft mb-6">
+                        <span>Error! User not found.</span>
                         <Link href="/register">
                             Create an account
                         </Link>
