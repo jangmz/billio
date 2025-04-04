@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
+import { cookies } from "next/headers";
 
 const protectedRoutes = [
     "/dashboard",
@@ -7,12 +8,14 @@ const protectedRoutes = [
     "/api/categories",
     "/api/residences",
     "/api/users",
-    "/api/reports",
-    "/api/debug-token"
+    "/api/reports"
 ];
 
 export default async function middleware(req) {
-    const session = await auth();
+    //const cookieStore = cookies();
+    //const sessionToken = cookieStore.get("authjs.session-token")?.value;
+
+    const session = await auth(); //await auth({ token: sessionToken });
     const { pathname } = req.nextUrl; // current pathname
 
     // check if current route is protected
@@ -21,6 +24,7 @@ export default async function middleware(req) {
     );
 
     if (isProtected && !session) {
+        console.log("Redirect to /login due to missing session");
         return NextResponse.redirect(new URL("/login", req.url));
     }
 
