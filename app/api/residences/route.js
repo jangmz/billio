@@ -1,15 +1,15 @@
 import { NextResponse } from "next/server";
 import { insertResidence, getResidences } from "@/_actions/residenceActions";
-import { auth } from "@/auth";
+import { validateSession } from "@/config/validateSession";
 
 // POST /api/residences -> create new residence
 export async function POST(req) {
-    const session = await auth(req);
-    if (!session) return NextResponse.json({ message: "Not authorized"}, { status: 403 });
-
     try {
+        // validate session
+        const session = await validateSession();
+
         const residenceData = await req.json(); // name, address
-        residenceData.userId = session.user?.id;
+        residenceData.userId = session.user.id;
 
         const residence = await insertResidence(residenceData);
 
@@ -30,19 +30,16 @@ export async function POST(req) {
 
 // GET /api/residences?u -> list of residences for particular user
 export async function GET(req) {
+try {
+        // validate session
+        const session = await validateSession();
+        //console.log("API session:", session); // session data OK
 
-    /*  */
-    const session = await auth(req);
-    if (!session) return NextResponse.json({ message: "Not authorized"}, { status: 403 });
-
-    console.log("Log session:",session);
-
-    try {
         const { searchParams } = new URL(req.url);
         const userId = searchParams.get("u");
         
-        if (userId !== session.user?.id) {
-            const error = new Error("Not authorized");
+        if (userId !== session.user.id) {
+            const error = new Error("Unauthorized");
             error.status = 401;
             throw error;
         }
