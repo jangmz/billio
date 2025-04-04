@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getUserBills, insertBill } from "@/_actions/billActions";
-import { authenticate } from "@/config/authMiddleware";
+import { validateSession } from "@/config/validateSession";
 
 /*
 ===== BILL MODEL =====
@@ -19,19 +19,18 @@ import { authenticate } from "@/config/authMiddleware";
 
 // POST /api/bills -> create new bill
 export async function POST(req) {
-    const user = await authenticate(req);
-
-    if (user instanceof NextResponse) return user; // if the returned value is NextResponse, return that authentication error
-    
     try {
+        // validate session
+        const session = await validateSession();
+
         const billData = await req.json(); // categoryId, residenceId needed in request
-        billData.userId = user.id;
+        billData.userId = session.user.id;
         const bill = await insertBill(billData);
 
         if (bill?.error || !bill) throw new Error(bill?.error || "Failed to create new bill");
 
         return NextResponse.json(
-            { message: "Bill created", data: bill },
+            { message: "Bill created", bill },
             { status: 200 }
         );
     } catch (error) {
@@ -44,18 +43,17 @@ export async function POST(req) {
 
 // GET /api/bills -> returns all bills by user ID
 export async function GET(req) {
-    const user = await authenticate(req);
-    
-    if (user instanceof NextResponse) return user; // if the returned value is NextResponse, return that authentication error
-    
     try {
-        const userId = user.id;
+        // validate session
+        const session = await validateSession();
+
+        const userId = session.user.id;
         const bills = await getUserBills(userId);
 
         if (bills?.error || !bills) throw new Error(bills?.error || "Failed to get data");
 
         return NextResponse.json(
-            { message: "Bills retrieved", data: bills },
+            { message: "Bills retrieved", bills },
             { status: 200 }
         );
     } catch (error) {

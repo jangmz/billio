@@ -1,16 +1,15 @@
 import { NextResponse } from "next/server";
 import { insertCategory, getCategories } from "@/_actions/categoryActions";
-import { authenticate } from "@/config/authMiddleware";
+import { validateSession } from "@/config/validateSession";
 
 // POST /api/categories -> insert new category
 export async function POST(req) {
-    const user = await authenticate(req);
-
-    if (user instanceof NextResponse) return user; // if the returned value is NextResponse, return that authentication error
-    
     try {       
+        // validate session
+        const session = await validateSession();
+
         const categoryData = await req.json(); // name
-        categoryData.userId = user.id; 
+        categoryData.userId = session.user.id; 
 
         const category = await insertCategory(categoryData);
 
@@ -30,12 +29,11 @@ export async function POST(req) {
 
 // GET /api/categories -> list all user categories
 export async function GET(req) {
-    const user = await authenticate(req);
-
-    if (user instanceof NextResponse) return user; // if the returned value is NextResponse, return that authentication error
-    
     try {
-        const userId = user.id;
+        // validate session
+        const session = await validateSession();
+
+        const userId = session.user.id;
         const categories = await getCategories(userId);
 
         if (categories?.error || !categories) throw new Error("Failed to retrieve user categories");
