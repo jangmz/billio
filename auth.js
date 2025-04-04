@@ -13,7 +13,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
         error: "/login",
         signOut: "/logout",
     },
-    debug: process.env.NODE_ENV === "development",
+    //debug: process.env.NODE_ENV === "development",
     session: {
         strategy: "jwt"
     },
