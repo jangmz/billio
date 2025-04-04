@@ -1,127 +1,63 @@
-"use server";
-
 import { auth } from "@/auth";
+import { validateSession } from "@/config/validateSession";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+
+const apiUrl = process.env.API_URL;
 
 export default async function Dashboard() {
-    const apiUrl = process.env.API_URL;
-    const session = await auth();
-    console.log(session); // data OK
+    try {
+        // validate session
+        const session = await validateSession();
+        //console.log("Session in dashboard:", session); // session data OK
 
-    /*const response = await fetch(`${apiUrl}/residences?u=${session?.user?.id}`, {
-        method: "GET",
-        credentials: "include"
-    });
-    console.log(await response.json());*/
+        // retrieve cookies
+        const cookieStore = cookies();
+        const sessionToken = (await cookieStore).get("authjs.session-token")?.value;
 
-    return (
-        <div>
-            {/*
-                error &&
-                <div role="alert" className="alert alert-error alert-soft">
-                    <span>{error}</span>
-                </div>
-            */}
-            {/* 1st row */}
-            <div className="grid grid-cols-3 gap-4 mb-4">
-                {/* card */}
-                <div className="flex items-center justify-center h-24 rounded-sm bg-gray-200">
-                    <p className="text-2xl text-gray-400 dark:text-gray-500">
-                    <svg className="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 1v16M1 9h16"/>
-                    </svg>
-                    </p>
-                </div>
-                <div className="flex items-center justify-center h-24 rounded-sm bg-gray-200">
-                    <p className="text-2xl text-gray-400 dark:text-gray-500">
-                    <svg className="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 1v16M1 9h16"/>
-                    </svg>
-                    </p>
-                </div>
-                <div className="flex items-center justify-center h-24 rounded-sm bg-gray-200">
-                    <p className="text-2xl text-gray-400 dark:text-gray-500">
-                    <svg className="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 1v16M1 9h16"/>
-                    </svg>
-                    </p>
-                </div>
+        // retrieve data
+        const response = await fetch(`${apiUrl}/residences?u=${session.user.id}`, {
+            method: "GET",
+            headers: { 
+                "Content-Type": "application/json",
+                Cookie: `authjs.session-token=${sessionToken}` // session cookie is sent explicitly
+            },
+            cache: "no-store"
+        });
+
+        /*const response = await fetch(`${apiUrl}/test`, {
+            method: "GET",
+            headers: { 
+                "Content-Type": "application/json",
+                Cookie: `authjs.session-token=${sessionToken}` // session cookie is sent explicitly
+            },
+            cache: "no-store"
+        });*/
+
+        if (!response.ok) {
+            const errData = await response.json();
+            throw new Error(`Error: ${errData.error} || "Unspecified error"`);
+        }
+    
+        const { residences } = await response.json();
+        console.log("Fetched residences:", residences); // data OK
+
+        return (
+            <div>
+                <h1>Welcome, {session.user.name}</h1>
+                <ul>
+                    {residences.map((residence) => (
+                        <li key={residence._id}>{residence.name}</li>
+                    ))}
+                </ul>
             </div>
-            {/* 2nd row */}
-            <div className="flex items-center justify-center h-48 mb-4 rounded-sm bg-gray-50 dark:bg-gray-800">
-                <p className="text-2xl text-gray-400 dark:text-gray-500">
-                    <svg className="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 1v16M1 9h16"/>
-                    </svg>
-                </p>
+        );
+    } catch (error) {
+        console.error("Error in dashboard:", error);
+        return (
+            <div role="alert" className="alert alert-error">
+                <span>Error loading dashboard: {error.message}</span>
             </div>
-            {/* 3rd row */}
-            <div className="grid grid-cols-2 gap-4 mb-4">
-                <div className="flex items-center justify-center rounded-sm bg-gray-50 h-28 dark:bg-gray-800">
-                    <p className="text-2xl text-gray-400 dark:text-gray-500">
-                    <svg className="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 1v16M1 9h16"/>
-                    </svg>
-                    </p>
-                </div>
-                <div className="flex items-center justify-center rounded-sm bg-gray-50 h-28 dark:bg-gray-800">
-                    <p className="text-2xl text-gray-400 dark:text-gray-500">
-                    <svg className="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 1v16M1 9h16"/>
-                    </svg>
-                    </p>
-                </div>
-                <div className="flex items-center justify-center rounded-sm bg-gray-50 h-28 dark:bg-gray-800">
-                    <p className="text-2xl text-gray-400 dark:text-gray-500">
-                    <svg className="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 1v16M1 9h16"/>
-                    </svg>
-                    </p>
-                </div>
-                <div className="flex items-center justify-center rounded-sm bg-gray-50 h-28 dark:bg-gray-800">
-                    <p className="text-2xl text-gray-400 dark:text-gray-500">
-                    <svg className="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 1v16M1 9h16"/>
-                    </svg>
-                    </p>
-                </div>
-            </div>
-            <div className="flex items-center justify-center h-48 mb-4 rounded-sm bg-gray-50 dark:bg-gray-800">
-                <p className="text-2xl text-gray-400 dark:text-gray-500">
-                    <svg className="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 1v16M1 9h16"/>
-                    </svg>
-                </p>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-                <div className="flex items-center justify-center rounded-sm bg-gray-50 h-28 dark:bg-gray-800">
-                    <p className="text-2xl text-gray-400 dark:text-gray-500">
-                    <svg className="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 1v16M1 9h16"/>
-                    </svg>
-                    </p>
-                </div>
-                <div className="flex items-center justify-center rounded-sm bg-gray-50 h-28 dark:bg-gray-800">
-                    <p className="text-2xl text-gray-400 dark:text-gray-500">
-                    <svg className="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 1v16M1 9h16"/>
-                    </svg>
-                    </p>
-                </div>
-                <div className="flex items-center justify-center rounded-sm bg-gray-50 h-28 dark:bg-gray-800">
-                    <p className="text-2xl text-gray-400 dark:text-gray-500">
-                    <svg className="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 1v16M1 9h16"/>
-                    </svg>
-                    </p>
-                </div>
-                <div className="flex items-center justify-center rounded-sm bg-gray-50 h-28 dark:bg-gray-800">
-                    <p className="text-2xl text-gray-400 dark:text-gray-500">
-                    <svg className="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 1v16M1 9h16"/>
-                    </svg>
-                    </p>
-                </div>
-            </div>
-        </div>
-    );
+        );
+    }
 }
