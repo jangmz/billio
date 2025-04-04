@@ -1,16 +1,19 @@
 import NextAuth from "next-auth";
 import GitHub from "next-auth/providers/github";
+import Google from "next-auth/providers/google";
 import { getUser } from "./_actions/userActions";
- 
+
 export const { auth, handlers, signIn, signOut } = NextAuth({
     providers: [
-        GitHub
+        GitHub,
+        Google
     ],
     pages: {
         signIn: "/login",
         error: "/login",
         signOut: "/logout",
     },
+    debug: process.env.NODE_ENV === "development",
     session: {
         strategy: "jwt"
     },
@@ -34,7 +37,6 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
             if (session?.user) {
                 session.user.id = token.id;
             }
-
             return session;
         },
     },
