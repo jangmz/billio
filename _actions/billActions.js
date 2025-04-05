@@ -50,11 +50,25 @@ export async function getLatestBills(userId) {
       { $match: { userId: new Types.ObjectId(userId) } },
       { $sort: { createdAt: -1 } },
       { $limit: 10 },
+      { $lookup: {
+        from: "residences",
+        localField: "residenceId",
+        foreignField: "_id",
+        as: "residence"
+      }},
+      { $unwind: "$residence" },
+      { $lookup: {
+        from: "categories",
+        localField: "categoryId",
+        foreignField: "_id",
+        as: "category"
+      }},
+      { $unwind: "$category" },
       { $project: {
           _id: 1,
-          createdAt: 1,
-          residenceId: 1,
-          categoryId: 1,
+          dueDate: 1,
+          residence: "$residence.name",
+          category: "$category.name",
           amount: 1,
           status: 1
       }}
