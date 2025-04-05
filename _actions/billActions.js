@@ -3,7 +3,8 @@
 import Bill from "@/models/billModel";
 import Residence from "@/models/residenceModel";
 import Category from "@/models/categoryModel";
-import connectDB from "@/config/mongodb";
+import connectDB from "@/config/connectDB";
+import { Types } from "mongoose";
 
 // insert bill
 export async function insertBill(billData) {
@@ -35,6 +36,29 @@ export async function getUserBills(userId) {
   try {
     await connectDB();
     const data = await Bill.find({ userId });
+    return data;
+  } catch (error) {
+    return { error: error.message };
+  }
+}
+
+// returns 10 recent bills by user id
+export async function getLatestBills(userId) {
+  try {
+    await connectDB();
+    const data = await Bill.aggregate([
+      { $match: { userId: new Types.ObjectId(userId) } },
+      { $sort: { createdAt: -1 } },
+      { $limit: 10 },
+      { $project: {
+          _id: 1,
+          createdAt: 1,
+          residenceId: 1,
+          categoryId: 1,
+          amount: 1,
+          status: 1
+      }}
+    ]);
     return data;
   } catch (error) {
     return { error: error.message };
