@@ -51,7 +51,7 @@ export default async function Dashboard() {
         const { categories } = await response2.json();
 
         // retrieve user bills
-        const response3 = await fetch(`${apiUrl}/bills`, {
+        const recentBills = await fetch(`${apiUrl}/bills/latest`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -60,12 +60,12 @@ export default async function Dashboard() {
             cache: "no-store"
         });
 
-        if (!response3.ok) {
-            const errData = await response3.json();
+        if (!recentBills.ok) {
+            const errData = await recentBills.json();
             throw new Error(`Error: ${errData.error} || "Unspecified error`);
         }
 
-        const { bills } = await response3.json();
+        const { latestBills } = await recentBills.json();
 
         return (
             <div>
@@ -93,26 +93,26 @@ export default async function Dashboard() {
                 </div>
                 {/* 3rd row (last 20 bills displayed in a table format) */}
                 <DashTitle title={"Recent bills"} />
-                <div>
-                    <table>
-                        <thead>
+                <div className="relative overflow-x-auto border-1 border-gray-200 sm:rounded-lg">
+                    <table className="w-full text-sm text-left text-gray-500">
+                        <thead className="text-xs text-gray-700 uppercase bg-base-50">
                             <tr>
-                                <th>Residence ID</th>
-                                <th>Category ID</th>
-                                <th>Amount</th>
-                                <th>Due date</th>
-                                <th>Status</th>
+                                <th scope="col" className="px-6 py-3">Residence</th>
+                                <th scope="col" className="px-6 py-3">Category</th>
+                                <th scope="col" className="px-6 py-3">Amount</th>
+                                <th scope="col" className="px-6 py-3">Due date</th>
+                                <th scope="col" className="px-6 py-3">Status</th>
                             </tr>
                         </thead>
                         <tbody>
                             {
-                                bills.map((bill) => (
-                                    <tr key={bill._id}>
-                                        <td>{bill.residenceId}</td>
-                                        <td>{bill.categoryId}</td>
-                                        <td>{bill.amount}</td>
-                                        <td>{bill.dueDate || "N/A"}</td>
-                                        <td>{bill.status}</td>
+                                latestBills.map((bill) => (
+                                    <tr key={bill._id} className="odd:bg-white even:bg-gray-50 border-b border-gray-200">
+                                        <td scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{bill.residence}</td>
+                                        <td className="px-6 py-4">{bill.category}</td>
+                                        <td className="px-6 py-4">{bill.amount}€</td>
+                                        <td className="px-6 py-4">{bill.dueDate || "N/A"}</td>
+                                        <td className="px-6 py-4">{bill.status}</td>
                                     </tr>
                                 ))
                             }
