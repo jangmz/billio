@@ -122,7 +122,7 @@ export async function totalExpensesHalfYear(userId, residenceId) {
             $push: {
               year: "$_id.year",
               month: "$_id.month",
-              totalExpenses: "$totalExpenses"
+              totalExpenses: { $round: ["$totalExpenses", 2] }
             }
           }
         }
