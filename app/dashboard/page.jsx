@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import DashResidenceCard from "@/components/cards/DashResidenceCard";
 import DashTitle from "@/components/DashTitle";
 import ResidenceSelector from "@/components/ResidenceSelector";
+import BigDashExpenses from "@/components/BigDashExpenses";
 
 const apiUrl = process.env.API_URL;
 
@@ -15,8 +16,8 @@ export default async function Dashboard() {
         const cookieStore = cookies();
         const sessionToken = (await cookieStore).get("authjs.session-token")?.value;
 
-        // retrieve user residences 
-        const response = await fetch(`${apiUrl}/residences?u=${session.user.id}`, {
+        // 1) retrieve user residences 
+        const residencesResponse = await fetch(`${apiUrl}/residences?u=${session.user.id}`, {
             method: "GET",
             headers: { 
                 "Content-Type": "application/json",
@@ -25,16 +26,16 @@ export default async function Dashboard() {
             cache: "no-store"
         });
 
-        if (!response.ok) {
-            const errData = await response.json();
+        if (!residencesResponse.ok) {
+            const errData = await residencesResponse.json();
             throw new Error(`Error: ${errData.error} || "Unspecified error"`);
         }
     
-        const { residences } = await response.json();
+        const { residences } = await residencesResponse.json();
         //console.log("Fetched residences:", residences); // data OK
 
-        // retrieve user categories
-        const response2 = await fetch(`${apiUrl}/categories`, {
+        // 2) retrieve past 6 months total expenses
+        const totalExpensesResponse = await fetch(`${apiUrl}/bills/past-6-months`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -43,15 +44,15 @@ export default async function Dashboard() {
             cache: "no-store"
         });
 
-        if (!response2.ok) {
-            const errData = await response2.json();
+        if (!totalExpensesResponse.ok) {
+            const errData = await totalExpensesResponse.json();
             throw new Error(`Error: ${errData.error} || "Unspecified error"`);
         }
+    
+        const totalExpenses = await totalExpensesResponse.json();
 
-        const { categories } = await response2.json();
-
-        // retrieve user bills
-        const recentBills = await fetch(`${apiUrl}/bills/latest`, {
+        // 3) retrieve user bills - last 10
+        const recentBillsResponse = await fetch(`${apiUrl}/bills/latest`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -60,12 +61,12 @@ export default async function Dashboard() {
             cache: "no-store"
         });
 
-        if (!recentBills.ok) {
-            const errData = await recentBills.json();
+        if (!recentBillsResponse.ok) {
+            const errData = await recentBillsResponse.json();
             throw new Error(`Error: ${errData.error} || "Unspecified error`);
         }
 
-        const { latestBills } = await recentBills.json();
+        const { latestBills } = await recentBillsResponse.json();
 
         return (
             <div>
@@ -80,17 +81,8 @@ export default async function Dashboard() {
                     }
                 </div>
                 {/* 2nd row (total amount per category per residence) */}
-                <DashTitle title={"Category Overview"} />
-                <div className="flex flex-col items-start justify-between p-3 h-120 mb-4 rounded-sm bg-gray-200">
-                    <ResidenceSelector residences={residences} />
-                    <ul className="flex">
-                        {
-                            categories.map((category) => (
-                                <li key={category._id}>{category.name}</li>
-                            ))
-                        }
-                    </ul>
-                </div>
+                <DashTitle title={"Expenses past 6 months"} />
+                <BigDashExpenses residences={residences} expenses={totalExpenses} />
                 {/* 3rd row (last 20 bills displayed in a table format) */}
                 <DashTitle title={"Recent bills"} />
                 <div className="relative overflow-x-auto border-1 border-gray-200 sm:rounded-lg">
