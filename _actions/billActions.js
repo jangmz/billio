@@ -79,16 +79,55 @@ export async function getLatestBills(userId) {
   }
 }
 
-/*// get all bills by userId and residenceId
-export async function getBillsByUserAndResidence(userId, residenceId) {
+// get total expenses /month for the past 6 months by userId and residenceId
+export async function totalExpensesHalfYear(userId, residenceId) {
   try {
     await connectDB();
-    const bills = await Bill.find({ userId, residenceId });
-    return bills
+    const pastHalfYear = await Bill.aggregate([
+      { $match: {
+          userId: new Types.ObjectId(userId),
+          residenceId: new Types.ObjectId(residenceId),
+          createdAt: {
+              $gte: new Date(new Date().setMonth(new Date().getMonth() - 6))
+          }
+      }},
+      {
+          $group: {
+              _id: {
+                  year: { $year: "$createdAt" },
+                  month: { $month: "$createdAt" },
+              residenceId: "$residenceId"
+              },
+              totalExpenses: { $sum: "$amount" }
+          }
+      },
+      {
+          $sort: { "_id.year": 1, "_id.month": 1 }
+      },
+      {
+          $lookup: {
+              from: "residences",
+              localField: "_id.residenceId",
+              foreignField: "_id",
+              as: "residence"
+          }
+      },
+      { $unwind: "$residence" },
+      {
+          $project: {
+              _id: 0,
+              residence: "$residence.name",
+              year: "$_id.year",
+              month: "$_id.month",
+              totalExpenses: 1
+          }
+      }
+    ]);
+    return pastHalfYear;
   } catch (error) {
     return { error: error.message };
   }
-}*/
+}
 
 /*// get all bills by userId and categoryId
 export async function getBillsByUserAndCategory(userId, categoryId) {
