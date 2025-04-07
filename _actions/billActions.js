@@ -84,25 +84,26 @@ export async function totalExpensesHalfYear(userId, residenceId) {
   try {
     await connectDB();
     const pastHalfYear = await Bill.aggregate([
-      { $match: {
+      { 
+        $match: {
           userId: new Types.ObjectId(userId),
-          residenceId: new Types.ObjectId(residenceId),
           createdAt: {
               $gte: new Date(new Date().setMonth(new Date().getMonth() - 6))
           }
-      }},
+        }
+      },
       {
           $group: {
               _id: {
+                  residenceId: "$residenceId",
                   year: { $year: "$createdAt" },
-                  month: { $month: "$createdAt" },
-              residenceId: "$residenceId"
+                  month: { $month: "$createdAt" }
               },
               totalExpenses: { $sum: "$amount" }
           }
       },
       {
-          $sort: { "_id.year": 1, "_id.month": 1 }
+          $sort: { "_id.residenceId": 1, "_id.year": 1, "_id.month": 1 }
       },
       {
           $lookup: {
@@ -114,12 +115,23 @@ export async function totalExpensesHalfYear(userId, residenceId) {
       },
       { $unwind: "$residence" },
       {
-          $project: {
-              _id: 0,
-              residence: "$residence.name",
+        $group: {
+          _id: "$_id.residenceId",
+          residence: { $first: "$residence.name" },
+          expenses: {
+            $push: {
               year: "$_id.year",
               month: "$_id.month",
-              totalExpenses: 1
+              totalExpenses: "$totalExpenses"
+            }
+          }
+        }
+      },
+      {
+          $project: {
+              _id: 0,
+              residence: 1,
+              expenses: 1
           }
       }
     ]);
