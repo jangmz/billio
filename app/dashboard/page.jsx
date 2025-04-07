@@ -32,7 +32,6 @@ export default async function Dashboard() {
         }
     
         const { residences } = await residencesResponse.json();
-        //console.log("Fetched residences:", residences); // data OK
 
         // 2) retrieve past 6 months total expenses
         const totalExpensesResponse = await fetch(`${apiUrl}/bills/past-6-months`, {
@@ -49,7 +48,7 @@ export default async function Dashboard() {
             throw new Error(`Error: ${errData.error} || "Unspecified error"`);
         }
     
-        const totalExpenses = await totalExpensesResponse.json();
+        const { totalExpenses } = await totalExpensesResponse.json();
 
         // 3) retrieve user bills - last 10
         const recentBillsResponse = await fetch(`${apiUrl}/bills/latest`, {
@@ -82,7 +81,7 @@ export default async function Dashboard() {
                 </div>
                 {/* 2nd row (total amount per category per residence) */}
                 <DashTitle title={"Expenses past 6 months"} />
-                <BigDashExpenses residences={residences} expenses={totalExpenses} />
+                <BigDashExpenses residences={residences} totalExpenses={totalExpenses} />
                 {/* 3rd row (last 20 bills displayed in a table format) */}
                 <DashTitle title={"Recent bills"} />
                 <div className="relative overflow-x-auto border-1 border-gray-200 sm:rounded-lg">
