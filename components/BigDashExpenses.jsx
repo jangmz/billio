@@ -1,7 +1,25 @@
 "use client";
 
-import ResidenceSelector from "./ResidenceSelector";
 import { useEffect, useState } from "react";
+import { Bar } from "react-chartjs-2";
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, plugins } from "chart.js";
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+
+const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec"
+];
 
 export default function BigDashExpenses({ residences, totalExpenses }) {
     const [selectedResidence, setSelectedResidence] = useState(residences[0]);
@@ -26,6 +44,23 @@ export default function BigDashExpenses({ residences, totalExpenses }) {
         setSelectedResidence(residences.find(res => res._id === e.target.value));
     }
 
+    const chartData = {
+        labels: displayedExpenses.map((expense) => `${months[expense.month - 1]}`),
+        datasets: [
+            {
+                label: "Total expenses (€)",
+                data: displayedExpenses.map((expense) => expense.totalExpenses),
+                backgroundColor: "rgba(251, 191, 36, 0.6)",
+                borderColor: "rgba(251, 191, 36, 1)",
+                borderWidth: 1
+            }
+        ]
+    };
+
+    const chartOptions = {
+        responsive: true
+    };
+
     return (
         <div className="flex flex-col items-start justify-between p-3 h-120 mb-4 rounded-sm bg-gray-200">
             <select onChange={changeResidence} className="rounded-lg p-2 bg-base-100 hover:bg-yellow-400">
@@ -38,7 +73,10 @@ export default function BigDashExpenses({ residences, totalExpenses }) {
                 }
             </select>
             {
-                displayedExpenses.length !== 0 ?
+                displayedExpenses.length > 0 ?
+                <Bar data={chartData} options={chartOptions} /> :
+                <p>No data yet</p>
+                /*displayedExpenses.length !== 0 ?
                 <ul>
                     {
                         displayedExpenses.map((expense) => (
@@ -49,7 +87,7 @@ export default function BigDashExpenses({ residences, totalExpenses }) {
                     }
                 </ul>
                  : 
-                <p>No data yet.</p>
+                <p>No data yet.</p>*/
             }
         </div>
     );
