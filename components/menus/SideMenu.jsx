@@ -50,7 +50,7 @@ export default function SideMenu() {
                             </Link>
                         </li>
                         <li>
-                            <Link href="#" className="flex items-center rounded-lg p-2 hover:bg-yellow-400 group">
+                            <Link href="/dashboard/residences" className="flex items-center rounded-lg p-2 hover:bg-yellow-400 group">
                                 <BsFillHousesFill size={28}/>
                                 <span className="ms-3">Residences</span>
                             </Link>
