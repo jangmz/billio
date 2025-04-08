@@ -45,7 +45,7 @@ export default async function Dashboard() {
 
         if (!totalExpensesResponse.ok) {
             const errData = await totalExpensesResponse.json();
-            throw new Error(`Error: ${errData.error} || "Unspecified error"`);
+            throw new Error(`Error: ${errData.error}` || "Unspecified error");
         }
     
         const { totalExpenses } = await totalExpensesResponse.json();
