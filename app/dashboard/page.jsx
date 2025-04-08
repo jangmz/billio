@@ -67,15 +67,25 @@ export default async function Dashboard() {
 
         const { latestBills } = await recentBillsResponse.json();
 
+        function extractTotalExpenses(residence) {
+            const lastMonthExpenses = totalExpenses.find((property) => property.residence === residence.name);
+            
+            if (!lastMonthExpenses) {
+                return null;
+            } else {
+                return lastMonthExpenses.expenses[lastMonthExpenses.expenses.length - 2].totalExpenses;
+            }
+        }
+
         return (
             <div>
                 {/* 1st row (residence cards with total expenses for past month) */}
-                <DashTitle title="Residences" />
+                <DashTitle title="Expenses for past month" />
                 <div className="grid grid-cols-3 gap-4 mb-4">
                     {/* TODO: components if there is no data for particular user */}
                     {
                         residences.map((residence) => (
-                            <DashResidenceCard key={residence._id} residence={residence} />
+                            <DashResidenceCard key={residence._id} residence={residence} pastMonth={extractTotalExpenses(residence)} />
                         ))
                     }
                 </div>
