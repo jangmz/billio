@@ -25,7 +25,7 @@ export default async function DashboardLayout({ children }) {
         </header>
         <main>
             <div className="p-4 sm:ml-64">
-                <div className="p-4 border-1 border-gray-200 border-dashed rounded-lg">
+                <div className="p-2">
                     {children}
                 </div>
             </div>
