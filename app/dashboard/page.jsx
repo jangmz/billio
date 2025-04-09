@@ -49,6 +49,7 @@ export default async function Dashboard() {
         }
     
         const { totalExpenses } = await totalExpensesResponse.json();
+        console.log(totalExpenses);
 
         // 3) retrieve user bills - last 10
         const recentBillsResponse = await fetch(`${apiUrl}/bills/latest`, {
@@ -77,16 +78,31 @@ export default async function Dashboard() {
             }
         }
 
+        function combinePastMonthExpenses() {
+            let pastMonthExpenses = 0;
+            
+            totalExpenses.map(property => {
+                pastMonthExpenses += property.expenses[property.expenses.length - 2].totalExpenses;
+            });
+
+            console.log("Total expenses for last month:", pastMonthExpenses);
+            return pastMonthExpenses;
+        }
+
         return (
             <div>
                 {/* 1st row (residence cards with total expenses for past month) */}
-                <DashTitle title="Expenses for past month" />
-                <div className="grid grid-cols-3 gap-4 mb-4">
-                    {/* TODO: components if there is no data for particular user */}
+                <DashTitle title={"Past months expenses"} />
+                <div className="grid grid-cols-1 gap-4 mb-4">
                     {
-                        residences.map((residence) => (
-                            <DashResidenceCard key={residence._id} residence={residence} pastMonth={extractTotalExpenses(residence)} />
-                        ))
+                        <div className="flex flex-col items-center justify-center gap-1 p-3 h-32 mb-4 rounded-sm bg-gray-200">
+                            <span className="text-5xl font-bold">
+                                {combinePastMonthExpenses()} €
+                            </span>
+                            <span className="text-sm text-gray-500">
+                                For all residences
+                            </span>
+                        </div>
                     }
                 </div>
                 {/* 2nd row (total amount per category per residence) */}
