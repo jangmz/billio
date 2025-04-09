@@ -3,8 +3,8 @@
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { loginCredentials } from "@/_actions/authActions";
-import LogInForm from "@/components/LogInForm";
-import LogInProviders from "@/components/LogInProviders";
+import LogInForm from "@/components/forms/LogInForm";
+import LogInProviders from "@/components/forms/LogInProviders";
 
 export default function LoginPage() {
     const searchParams = useSearchParams();
