@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { insertResidence, getResidences } from "@/_actions/residenceActions";
+import { insertResidence, getResidences, getResidenceByName } from "@/_actions/residenceActions";
 import { validateSession } from "@/config/validateSession";
 
 // POST /api/residences -> create new residence
@@ -10,6 +10,12 @@ export async function POST(req) {
 
         const residenceData = await req.json(); // name, address
         residenceData.userId = session.user.id;
+
+        const existingResidence = await getResidenceByName(residenceData.name, residenceData.userId);
+
+        if (existingResidence.error) {
+            throw new Error(`Residence with name ${residenceData.name} already exists for this user`);
+        }
 
         const residence = await insertResidence(residenceData);
 

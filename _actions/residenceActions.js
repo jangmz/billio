@@ -1,7 +1,7 @@
 "use server";
 
 import Residence from "@/models/residenceModel";
-import connectDB from "@/config/mongodb";
+import connectDB from "@/config/connectDB";
 import mongoose from "mongoose";
 
 // insert new residence
@@ -24,6 +24,17 @@ export async function getResidences(userId) {
         const residences = await Residence.find({ userId });
 
         return residences;
+    } catch (error) {
+        return { error: error.message };
+    }
+}
+
+// retrieve residence data by residence name nad userId
+export async function getResidenceByName(name, userId) {
+    try {
+        await connectDB();
+        const residence = await Residence.find({ userId, name });
+        return residence;
     } catch (error) {
         return { error: error.message };
     }
@@ -128,26 +139,6 @@ export async function getReport(userId, matchStage) {
                                 },
                             },
                         }
-                        /*
-                        {
-                            $match: {
-                                $expr: {
-                                    $and: [
-                                        { $eq: ["$categoryId", "$$categoryId"] },
-                                        { $eq: ["$residenceId", "$$residenceId"] },
-                                    ],
-                                },
-                                ...matchStage
-                            },
-                        },
-                        {
-                            $project: {
-                                amount: 1,
-                                month: { $month: "createdAt" }, // extract month -> later change to dueDate
-                                status: 1,
-                                recurring: 1,
-                            },
-                        },*/
                     ],
                     as: "categories.bills",
                 },
