@@ -13,11 +13,15 @@ export async function POST(req) {
 
         const existingResidence = await getResidenceByName(residenceData.name, residenceData.userId);
 
-        if (existingResidence.error) {
-            throw new Error(`Residence with name ${residenceData.name} already exists for this user`);
+        console.log("Existing residence:", existingResidence);
+
+        if (existingResidence.length !== 0) {
+            throw new Error(`Residence with name "${residenceData.name}" already exists for this user`);
         }
 
         const residence = await insertResidence(residenceData);
+
+        console.log("Entered residence:", residence);
 
         if (residence?.error || !residence) throw new Error(residence?.error || "Failed to add residence (user may not exist)");
 
