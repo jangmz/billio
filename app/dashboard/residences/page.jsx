@@ -1,4 +1,6 @@
 import ButtonWithIcon from "@/components/buttons/ButtonWithIcon";
+import DeleteButton from "@/components/buttons/DeleteButton";
+import EditButton from "@/components/buttons/EditButton";
 import DashResidenceCard from "@/components/cards/DashResidenceCard";
 import { validateSession } from "@/config/validateSession";
 import { cookies } from "next/headers";
@@ -61,22 +63,40 @@ export default async function Residences() {
             }
         }
 
+        // deleting residence
+        async function handleDelete(residenceId) {
+
+        }
+
+        // edit page for residence
+        function handleEdit(residenceId) {
+            console.log(`Edit residence: ${residenceId}`);
+        }
+
         return (
             <div className="flex flex-col gap-6">
                 <div className="flex justify-end">
                     <ButtonWithIcon link="/dashboard/residences/new" text="Add Residence" icon={<FaPlus/>} />
                 </div>
+                {/*card*/}
                 <div className="grid grid-cols-1 gap-4 mb-4 md:grid-cols-2">
                     {
                         residences.length !== 0 &&
                         residences.map((residence) => (
-                            <Link key={residence._id} href={`/dashboard/residences/${residence._id}`}>
-                                <DashResidenceCard residence={residence} pastMonth={extractTotalExpenses(residence)} />
-                            </Link>
+                            <div key={residence._id} className="flex flex-col">
+                                <Link href={`/dashboard/residences/${residence._id}`}>
+                                    <DashResidenceCard residence={residence} pastMonth={extractTotalExpenses(residence)} />
+                                </Link>
+                                {/* button to delete residence */}
+                                <div className="flex w-full">
+                                    <EditButton className="flex-1" onClick={() => handleEdit(residence._id)} />
+                                    <DeleteButton className="flex-1" onClick={() => handleDelete(residence._id)} />
+                                </div> 
+                            </div>
                         ))
                     }
                 </div>
-            </div>            
+            </div>    
         );
     } catch (error) {
         console.error("Erro in residences page:", error);
