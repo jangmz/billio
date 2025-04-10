@@ -1,8 +1,9 @@
-import AddButton from "@/components/buttons/AddButton";
+import ButtonWithIcon from "@/components/buttons/ButtonWithIcon";
 import DashResidenceCard from "@/components/cards/DashResidenceCard";
 import { validateSession } from "@/config/validateSession";
 import { cookies } from "next/headers";
 import Link from "next/link";
+import { FaPlus } from "react-icons/fa6";
 
 const apiUrl = process.env.API_URL;
 
@@ -63,7 +64,7 @@ export default async function Residences() {
         return (
             <div className="flex flex-col gap-6">
                 <div className="flex justify-end">
-                    <AddButton link="/dashboard/residence/new" text="Add Residence" />
+                    <ButtonWithIcon link="/dashboard/residences/new" text="Add Residence" icon={<FaPlus/>} />
                 </div>
                 <div className="grid grid-cols-1 gap-4 mb-4 md:grid-cols-2">
                     {
