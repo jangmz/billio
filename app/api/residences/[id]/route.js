@@ -1,15 +1,15 @@
 import { NextResponse } from "next/server";
 import { deleteResidenceById, getResidenceData, updateResidenceData } from "@/_actions/residenceActions";
-import { authenticate } from "@/config/authMiddleware";
+import { validateSession } from "@/config/validateSession";
 
 // GET /api/residences/[residenceId] -> data for residence
 export async function GET(req, { params }) {
-    const user = await authenticate(req);
-
-    if (user instanceof NextResponse) return user; // if the returned value is NextResponse, return that authentication error
-    
     try {
-        const userId = user.id;
+        // validate session
+        const session = await validateSession();
+
+        // set data
+        const userId = session.user.id;
         const residenceId = await params.id;
         const residence = await getResidenceData(residenceId, userId);
 
@@ -29,12 +29,12 @@ export async function GET(req, { params }) {
 
 // PUT /api/residences/[residenceId] -> update residance data
 export async function PUT(req, { params }) {
-    const user = await authenticate(req);
-    
-    if (user instanceof NextResponse) return user; // if the returned value is NextResponse, return that authentication error
-    
     try {
-        const userId = user.id;
+        // validate session
+        const session = await validateSession();
+
+        // set data
+        const userId = session.user.id;
         const residenceId = await params.id;
         const residenceData = await req.json(); // name, address
         const updatedResidence = await updateResidenceData(residenceId, userId, residenceData);
@@ -55,12 +55,12 @@ export async function PUT(req, { params }) {
 
 // DELETE /api/residences/[residenceId] -> delete a residence
 export async function DELETE(req, { params }) {
-    const user = await authenticate(req);
-    
-    if (user instanceof NextResponse) return user; // if the returned value is NextResponse, return that authentication error
-    
     try {
-        const userId = user.id;
+        // validate session
+        const session = await validateSession();
+
+        // set data
+        const userId = session.user.id;
         const residenceId = await params.id;
         const deletedResidence = await deleteResidenceById(residenceId, userId);
 
