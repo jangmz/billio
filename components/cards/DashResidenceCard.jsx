@@ -16,7 +16,3 @@ export default function DashResidenceCard({ residence, pastMonth }) {
     </div>
   );
 }
-
-/*
-
-*/
