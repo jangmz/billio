@@ -10,15 +10,13 @@ export default function DashResidenceCard({ residence, pastMonth }) {
               {residence.address}
           </p>
       </div>
-      <div className="text-2xl font-bold">
-        {
-          pastMonth !== null 
-          ?
-          <p>{pastMonth}€</p> 
-          : 
-          <p>No data yet</p>
-        }
-      </div>
+      <p className="text-2xl font-bold">
+        {pastMonth !== null ? `${pastMonth}€` : "No data yet"}
+      </p>
     </div>
   );
 }
+
+/*
+
+*/
