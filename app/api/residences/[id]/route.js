@@ -10,7 +10,7 @@ export async function GET(req, { params }) {
 
         // set data
         const userId = session.user.id;
-        const residenceId = await params.id;
+        const residenceId = params.id;
         const residence = await getResidenceData(residenceId, userId);
 
         if (residence?.error || !residence) throw new Error(residence?.error || "Failed retrieving data");
@@ -35,7 +35,7 @@ export async function PUT(req, { params }) {
 
         // set data
         const userId = session.user.id;
-        const residenceId = await params.id;
+        const residenceId = params.id;
         const residenceData = await req.json(); // name, address
         const updatedResidence = await updateResidenceData(residenceId, userId, residenceData);
 
@@ -61,7 +61,7 @@ export async function DELETE(req, { params }) {
 
         // set data
         const userId = session.user.id;
-        const residenceId = await params.id;
+        const residenceId = params.id;
         const deletedResidence = await deleteResidenceById(residenceId, userId);
 
         if (deletedResidence?.error || !deletedResidence) throw new Error(deletedResidence?.error || "Failed to delete residence");
