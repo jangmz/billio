@@ -13,6 +13,10 @@ const residenceSchema = new Schema({
         type: String,
         default: null,
     },
+    imageUrl: {
+        type: String,
+        default: null,
+    }
 }, { timestamps: true });
 
 const Residence = models.residence || model("residence", residenceSchema);
