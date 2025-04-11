@@ -1,7 +1,7 @@
 "use server";
 
 import User from "@/models/userModel";
-import connectDB from "@/config/mongodb";
+import connectDB from "@/config/connectDB";
 
 // insert user
 export async function insertUser(userData) {

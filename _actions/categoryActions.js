@@ -1,7 +1,7 @@
 "use server";
 
 import Category from "@/models/categoryModel";
-import connectDB from "@/config/mongodb";
+import connectDB from "@/config/connectDB";
 
 // inserting a new category
 export async function insertCategory(category) {
