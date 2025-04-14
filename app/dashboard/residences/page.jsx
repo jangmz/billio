@@ -1,9 +1,8 @@
 import ButtonWithIcon from "@/components/buttons/ButtonWithIcon";
-import DeleteButton from "@/components/buttons/DeleteButton";
-import EditButton from "@/components/buttons/EditButton";
 import DashResidenceCard from "@/components/cards/DashResidenceCard";
 import { validateSession } from "@/config/validateSession";
 import { cookies } from "next/headers";
+import Image from "next/image";
 import Link from "next/link";
 import { FaPlus } from "react-icons/fa6";
 
@@ -63,16 +62,6 @@ export default async function Residences() {
             }
         }
 
-        // deleting residence
-        async function handleDelete(residenceId) {
-
-        }
-
-        // edit page for residence
-        function handleEdit(residenceId) {
-            console.log(`Edit residence: ${residenceId}`);
-        }
-
         return (
             <div className="flex flex-col gap-6">
                 <div className="flex justify-end">
@@ -87,11 +76,7 @@ export default async function Residences() {
                                 <Link href={`/dashboard/residences/${residence._id}`}>
                                     <DashResidenceCard residence={residence} pastMonth={extractTotalExpenses(residence)} />
                                 </Link>
-                                {/* button to delete residence */}
-                                <div className="flex w-full">
-                                    <EditButton className="flex-1" onClick={() => handleEdit(residence._id)} />
-                                    <DeleteButton className="flex-1" onClick={() => handleDelete(residence._id)} />
-                                </div> 
+                                {/*<Image src={residence.imageUrl} alt={`${residence.name} image`} width={96} height={32} />*/}
                             </div>
                         ))
                     }
@@ -99,7 +84,7 @@ export default async function Residences() {
             </div>    
         );
     } catch (error) {
-        console.error("Erro in residences page:", error);
+        console.error("Error in residences page:", error);
         return (
             <div role="alert" className="alert alert-error">
                 <span>Error: {error.message}</span>

@@ -1,7 +1,7 @@
 import { validateSession } from "@/config/validateSession";
 import { cookies } from "next/headers";
 import ButtonWithIcon from "@/components/buttons/ButtonWithIcon";
-import EditButton from "@/components/buttons/EditResidenceButton";
+import EditResidenceButton from "@/components/buttons/EditResidenceButton";
 import DeleteButton from "@/components/buttons/DeleteResidenceButton";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { formatDate, formatDateWithTime } from "@/config/formatDate";
@@ -39,7 +39,7 @@ export default async function ResidenceOverviewPage({ params }) {
         return (
             <div className="flex flex-col items-center gap-6">
                 <div className="flex self-end gap-5">
-                    <EditButton  
+                    <EditResidenceButton  
                         residenceData={residence}
                         apiUrl={apiUrl}
                         sessionToken={sessionToken}
