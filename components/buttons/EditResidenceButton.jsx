@@ -4,13 +4,17 @@ import { FaEdit } from "react-icons/fa"
 import { useState } from "react";
 import Button from "./Button";
 import FormFieldset from "../forms/FormFieldset";
+import AlertError from "../alerts/AlertError";
+import AlertSuccess from "../alerts/AlertSuccess";
 
 export default function EditButton({ residenceData, apiUrl, sessionToken, className }) {
+    const [error, setError] = useState(null);
+    const [message, setMessage] = useState(null);
     const [formData, setFormData] = useState({
         name: residenceData.name,
         address: residenceData.address 
     });
-    
+
     function handleClick() {
         document.getElementById("edit_residence_modal").showModal();
     }
@@ -20,9 +24,33 @@ export default function EditButton({ residenceData, apiUrl, sessionToken, classN
         setFormData({...formData, [name]: value});
     }
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
         console.log("Data to submit:", formData);
+        setMessage(null);
+        setError(null);
+
+        try {
+            const res = await fetch(`${apiUrl}/residences/${residenceData._id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    Cookie: `authjs.session-token=${sessionToken}`
+                },
+                body: JSON.stringify(formData)
+            });
+    
+            if (!res.ok) {
+                const error = await res.json();
+                throw new Error(error.message);
+            }
+
+            const {message} = await res.json();
+            setMessage(message);
+        } catch (error) {
+            console.error(error);
+            setError(error);
+        }
     }
     
     return (
@@ -57,6 +85,12 @@ export default function EditButton({ residenceData, apiUrl, sessionToken, classN
                                 btnStyle={"btn-primary"}
                             />
                         </form>
+                    {
+                        error && <AlertError error={error} />
+                    }
+                    {
+                        message && <AlertSuccess message={message} />
+                    }
                     </div>
                 </div>
                 <form method="dialog" className="modal-backdrop">
