@@ -4,6 +4,8 @@ import Button from "../buttons/Button";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import FormFieldset from "./FormFieldset";
+import AlertError from "../alerts/AlertError";
+import AlertSuccess from "../alerts/AlertSuccess";
 
 export default function NewResidenceForm({ apiUrl, sessionToken }) {
     const router = useRouter();
@@ -53,16 +55,10 @@ export default function NewResidenceForm({ apiUrl, sessionToken }) {
     return (
         <form onSubmit={handleSubmit} className="flex flex-col items-center gap-2">
             {
-                error &&
-                <div role="alert" className="alert alert-error">
-                    <span>{error.message}</span>
-                </div>
+                error && <AlertError error={error.message} />
             }
             {
-                message &&
-                <div role="alert" className="alert alert-success">
-                    <span>{message}</span>
-                </div>
+                message && <AlertSuccess message={message} />
             }
             <FormFieldset
                 title="Name"
