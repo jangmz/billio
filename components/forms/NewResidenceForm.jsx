@@ -3,6 +3,7 @@
 import Button from "../buttons/Button";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import FormFieldset from "./FormFieldset";
 
 export default function NewResidenceForm({ apiUrl, sessionToken }) {
     const router = useRouter();
@@ -63,14 +64,22 @@ export default function NewResidenceForm({ apiUrl, sessionToken }) {
                     <span>{message}</span>
                 </div>
             }
-            <fieldset className="fieldset">
-                <legend className="fieldset-legend">Name</legend>
-                <input type="text" name="name" id="name" value={residenceData.name} placeholder="Sunset apartment" className="input w-100" onChange={(e) => handleChange(e)} />
-            </fieldset>
-            <fieldset className="fieldset">
-                <legend className="fieldset-legend">Address</legend>
-                <input type="text" name="address" id="address" value={residenceData.address} placeholder="Rocky Road 12" className="input w-100" onChange={(e) => handleChange(e)} />
-            </fieldset>
+            <FormFieldset
+                title="Name"
+                type="text"
+                name="name"
+                value={residenceData.name}
+                placeholder="Sunset apartment"
+                onChange={(e) => handleChange(e)}
+            />
+            <FormFieldset
+                title="Address"
+                type="text"
+                name="address"
+                value={residenceData.address}
+                placeholder="Sand Road 76"
+                onChange={(e) => handleChange(e)}
+            />
             <Button 
                 text={"Create"}
                 type={"submit"}
