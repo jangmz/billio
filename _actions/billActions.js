@@ -141,6 +141,78 @@ export async function totalExpensesHalfYear(userId, residenceId) {
   }
 }
 
+// get last months bills -> grouped by category
+export async function lastMonthExpenses(userId, residenceId) {
+  try {
+    await connectDB();
+
+    const now = new Date();
+    const startOfCurrentMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    const startOfPreviousMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+    
+    const lastMonthExpenses = await Bill.aggregate([
+      {
+        $match: {
+          userId: new Types.ObjectId(userId),
+          residenceId: new Types.ObjectId(residenceId),
+          createdAt: {
+            $gte: startOfPreviousMonth,
+            $lt: startOfCurrentMonth,
+          },
+        },
+      },  
+      {
+        $lookup: {
+          from: "categories",
+          localField: "categoryId",
+          foreignField: "_id",
+          as: "category",
+        },
+      },
+      {
+        $unwind: "$category",
+      },
+      {
+        $group: {
+          _id: "$category.name",
+          totalAmount: { $sum: "$amount" },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          category: "$_id",
+          totalAmount: { $round: ["$totalAmount", 2] },
+        },
+      },
+      {
+        $sort: { category: 1 },
+      },
+    ]);
+
+    const residence = await Residence.findOne(
+      { _id: residenceId, userId },
+      { name: 1 }
+    );
+
+    if (!residence) {
+      throw new Error("Residence not found or does not belong to the user");
+    }
+
+    return {
+      residence: {
+        name: residence.name,
+        categories: lastMonthExpenses.reduce((acc, expense) => {
+          acc[expense.category] = { totalAmount: expense.totalAmount };
+          return acc;
+        }, {}),
+      },
+    };
+  } catch (error) {
+    return { error: error.message };
+  }
+}
+
 /*// get all bills by userId and categoryId
 export async function getBillsByUserAndCategory(userId, categoryId) {
   try {
