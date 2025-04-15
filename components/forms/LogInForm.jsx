@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import Button from "./buttons/Button";
+import Button from "../buttons/Button";
 
 export default function LogInForm({ signInAction}) {
     const router = useRouter();
