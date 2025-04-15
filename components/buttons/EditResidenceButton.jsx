@@ -41,8 +41,8 @@ export default function EditButton({ residenceData, apiUrl, sessionToken, classN
             });
     
             if (!res.ok) {
-                const error = await res.json();
-                throw new Error(error.message);
+                const {error} = await res.json();
+                throw new Error(error);
             }
 
             const {message} = await res.json();
