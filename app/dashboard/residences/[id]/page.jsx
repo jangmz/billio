@@ -36,6 +36,23 @@ export default async function ResidenceOverviewPage({ params }) {
     
         const { residence } = await residenceResponse.json();
 
+        // retrieve last month bills by category
+        const lastMonthRes = await fetch(`${apiUrl}/bills/last-month?residence=${residence._id}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Cookie: `authjs.session-token=${sessionToken}`
+            }
+        });
+
+        if (!lastMonthRes.ok) {
+            const {error} = await lastMonthRes.json();
+            throw new Error(`Error: ${error}` || "Unspecified error");
+        }
+    
+        const { data } = await lastMonthRes.json();
+        console.log(data);
+
         return (
             <div className="flex flex-col items-center gap-6">
                 <div className="flex self-end gap-5">
@@ -51,11 +68,25 @@ export default async function ResidenceOverviewPage({ params }) {
                     />
                     <ButtonWithIcon link="/dashboard/residences" text="Go back" icon={<IoMdArrowRoundBack />}/>
                 </div>
-                <div className="flex flex-col items-center justify-center gap-4">
+                {/* basic information of the property */}
+                <div className="flex flex-col items-center justify-center gap-3">
                     <h1 className="text-4xl">{residence.name}</h1>
                     <p>{residence.address}</p>
                     <p>Created: {formatDate(residence.createdAt)}</p>
                     <p>Last updated: {formatDateWithTime(residence.updatedAt)}</p>
+                </div>
+                {/* last month expenses by category */}
+                <div>
+                    <h2 className="text-2xl">Last Month Expenses by category</h2>
+                    {
+                        data.map(cat =>(
+                            <p>{cat.category}: {cat.totalAmount}</p>
+                        ))
+                    }
+                </div>
+                {/* expenses for past 3 months by category by month */}
+                <div>
+                    <h2 className="text-2xl">Expenses for past 3 months by category</h2>
                 </div>
             </div>  
         )
