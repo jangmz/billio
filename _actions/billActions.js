@@ -190,24 +190,7 @@ export async function lastMonthExpenses(userId, residenceId) {
       },
     ]);
 
-    const residence = await Residence.findOne(
-      { _id: residenceId, userId },
-      { name: 1 }
-    );
-
-    if (!residence) {
-      throw new Error("Residence not found or does not belong to the user");
-    }
-
-    return {
-      residence: {
-        name: residence.name,
-        categories: lastMonthExpenses.reduce((acc, expense) => {
-          acc[expense.category] = { totalAmount: expense.totalAmount };
-          return acc;
-        }, {}),
-      },
-    };
+    return lastMonthExpenses;
   } catch (error) {
     return { error: error.message };
   }
