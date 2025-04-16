@@ -1,3 +1,4 @@
+import AlertError from "@/components/alerts/AlertError";
 import ButtonWithIcon from "@/components/buttons/ButtonWithIcon";
 import DashResidenceCard from "@/components/cards/DashResidenceCard";
 import { validateSession } from "@/config/validateSession";
@@ -86,9 +87,7 @@ export default async function Residences() {
     } catch (error) {
         console.error("Error in residences page:", error);
         return (
-            <div role="alert" className="alert alert-error">
-                <span>Error: {error.message}</span>
-            </div>
+            <AlertError error={error.message} />
         )
     }
 }
