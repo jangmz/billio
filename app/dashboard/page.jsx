@@ -4,6 +4,7 @@ import DashResidenceCard from "@/components/cards/DashResidenceCard";
 import DashTitle from "@/components/DashTitle";
 import ResidenceSelector from "@/components/ResidenceSelector";
 import BigDashExpenses from "@/components/BigDashExpenses";
+import AlertError from "@/components/alerts/AlertError";
 
 const apiUrl = process.env.API_URL;
 
@@ -141,9 +142,7 @@ export default async function Dashboard() {
     } catch (error) {
         console.error("Error in dashboard:", error);
         return (
-            <div role="alert" className="alert alert-error">
-                <span>Error loading dashboard: {error.message}</span>
-            </div>
+            <AlertError error={error.message} />
         );
     }
 }
