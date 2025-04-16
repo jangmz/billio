@@ -69,6 +69,20 @@ export default async function ResidenceOverviewPage({ params }) {
         const currentMonth = await currentBillsRes.json();
 
         // retrieve bills for present and last 2 months
+        const threeMonthsRes = await fetch(`${apiUrl}/bills/3-months?residence=${residence._id}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Cookie: `authjs.session-token=${sessionToken}`
+            }
+        });
+
+        if (!threeMonthsRes.ok) {
+            const {error} = await threeMonthsRes.json();
+            throw new Error(`Error: ${error}` || "Unspecified error");
+        }
+    
+        const threeMonths = await threeMonthsRes.json();
 
         return (
             <div className="flex flex-col items-center gap-6">
@@ -120,6 +134,22 @@ export default async function ResidenceOverviewPage({ params }) {
                 <div>
                     <h2 className="text-2xl">Expenses for past 3 months by category</h2>
                     {/* TODO: table for expenses by category by last 3 months */}
+                    {
+                        threeMonths.data.length > 0 ? 
+                        threeMonths.data.map(monthData =>(
+                            <div key={monthData.month}>
+                                <p key={monthData.month}>{monthData.month} ({monthData.year})</p>
+                                {
+                                    monthData.categories.map(catData => (
+                                        <p key={catData.category}>{catData.category}: {catData.totalAmount}</p>
+                                    ))
+                                }
+                                <hr />
+                            </div>
+                            
+                        ))
+                        : <p>No data yet.</p>
+                    }
                 </div>
             </div>  
         )
