@@ -6,6 +6,7 @@ import DeleteButton from "@/components/buttons/DeleteResidenceButton";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { formatDate, formatDateWithTime } from "@/config/formatDate";
 import MonthExpenseChart from "@/components/charts/MonthExpenseChart";
+import AlertInfo from "@/components/alerts/AlertInfo";
 
 const apiUrl = process.env.API_URL;
 
@@ -100,59 +101,60 @@ export default async function ResidenceOverviewPage({ params }) {
                     />
                     <ButtonWithIcon link="/dashboard/residences" text="Go back" icon={<IoMdArrowRoundBack />}/>
                 </div>
-                {/* basic information of the property */}
-                <div className="flex flex-col items-center justify-center gap-3">
-                    <h1 className="text-4xl">{residence.name}</h1>
-                    <p>{residence.address}</p>
-                    <p>Created: {formatDate(residence.createdAt)}</p>
-                    <p>Last updated: {formatDateWithTime(residence.updatedAt)}</p>
-                </div>
-                {/* current month expenses by category */}
-                <div>
-                    <h2 className="text-2xl">Current Month Expenses</h2>
-                    {/* TODO: graph for expenses by category */}
-                    <MonthExpenseChart data={currentMonth.data} />
-                    {
-                        currentMonth.data.length > 0 ? 
-                        currentMonth.data.map(cat =>(
-                            <p key={cat.category}>{cat.category}: {cat.totalAmount}</p>
-                        ))
-                        : <p>No data yet.</p>
-                    }
-                </div>
-                {/* last month expenses by category */}
-                <div>
-                    <h2 className="text-2xl">Last Month Expenses</h2>
-                    {/* TODO: graph for expenses by category */}
-                    <MonthExpenseChart data={lastMonth.data} />
-                    {
-                        lastMonth.data.length > 0 ? 
-                        lastMonth.data.map(cat =>(
-                            <p key={cat.category}>{cat.category}: {cat.totalAmount}</p>
-                        ))
-                        : <p>No data yet.</p>
-                    }
-                </div>
-                {/* expenses for past 3 months by category by month */}
-                <div>
-                    <h2 className="text-2xl">Expenses for past 3 months by category</h2>
-                    {/* TODO: table for expenses by category by last 3 months */}
-                    {
-                        threeMonths.data.length > 0 ? 
-                        threeMonths.data.map(monthData =>(
-                            <div key={monthData.month}>
-                                <p key={monthData.month}>{monthData.month} ({monthData.year})</p>
-                                {
-                                    monthData.categories.map(catData => (
-                                        <p key={catData.category}>{catData.category}: {catData.totalAmount}</p>
-                                    ))
-                                }
-                                <hr />
-                            </div>
+                <div className="grid gap-4">
+                    {/* basic information of the property */}
+                    <div className="flex flex-col items-center justify-center gap-3">
+                        <div>
+                            <h1 className="text-4xl">{residence.name}</h1>
+                            <p>{residence.address}</p>
+                            <p>Created: {formatDate(residence.createdAt)}</p>
+                            <p>Last updated: {formatDateWithTime(residence.updatedAt)}</p>
+                        </div>
+                        {/* TODO: insert image */}
+                        {/*<Image />*/}
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-15">
+                        {/* current month expenses by category */}
+                        <div>
+                            <h2 className="text-2xl text-center">Current Month</h2>
+                            {
+                                currentMonth.data.length > 0 
+                                ? <MonthExpenseChart data={currentMonth.data} />
+                                : <AlertInfo information="No data yet." />
+                            }
+                        </div>
+                        {/* last month expenses by category */}
+                        <div>
+                            <h2 className="text-2xl text-center">Previous Month</h2>
                             
-                        ))
-                        : <p>No data yet.</p>
-                    }
+                            {
+                                lastMonth.data.length > 0 
+                                ? <MonthExpenseChart data={lastMonth.data} />
+                                : <AlertInfo information="No data yet." />
+                            }
+                        </div>
+                    </div>
+                    {/* expenses for past 3 months by category by month */}
+                    <div>
+                        <h2 className="text-2xl">Expenses for past 3 months by category</h2>
+                        {/* TODO: table for expenses by category by last 3 months */}
+                        {
+                            threeMonths.data.length > 0 ? 
+                            threeMonths.data.map(monthData =>(
+                                <div key={monthData.month}>
+                                    <p key={monthData.month}>{monthData.month} ({monthData.year})</p>
+                                    {
+                                        monthData.categories.map(catData => (
+                                            <p key={catData.category}>{catData.category}: {catData.totalAmount}</p>
+                                        ))
+                                    }
+                                    <hr />
+                                </div>
+                                
+                            ))
+                            : <AlertInfo information="No data yet." />
+                        }
+                    </div>
                 </div>
             </div>  
         )
