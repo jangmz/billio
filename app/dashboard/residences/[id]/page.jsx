@@ -118,10 +118,10 @@ export default async function ResidenceOverviewPage({ params }) {
                     <ButtonWithIcon link="/dashboard/residences" text="Go back" icon={<IoMdArrowRoundBack />}/>
                 </div>
                 <div className="grid gap-4">
-                    {/* basic information of the property */}
+                    {/* basic information of the property with image */}
                     <div className="flex flex-col items-center justify-center gap-3">
                         <div>
-                            <h1 className="text-4xl">{residence.name}</h1>
+                            <h1 className="text-4xl mb-3">{residence.name}</h1>
                             <p>{residence.address}</p>
                             <p>Created: {formatDate(residence.createdAt)}</p>
                             <p>Last updated: {formatDateWithTime(residence.updatedAt)}</p>
@@ -130,18 +130,18 @@ export default async function ResidenceOverviewPage({ params }) {
                         {/*<Image />*/}
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-15">
-                        {/* current month expenses by category */}
+                        {/* current month expenses chart by category */}
                         <div>
-                            <h2 className="text-2xl text-center">Current Month</h2>
+                            <h2 className="text-2xl text-center mb-2">Current Month</h2>
                             {
                                 currentMonth.data.length > 0 
                                 ? <MonthExpenseChart data={currentMonth.data} />
                                 : <AlertInfo information="No data yet." />
                             }
                         </div>
-                        {/* last month expenses by category */}
+                        {/* last month expenses chart by category */}
                         <div>
-                            <h2 className="text-2xl text-center">Previous Month</h2>
+                            <h2 className="text-2xl text-center mb-2">Previous Month</h2>
                             
                             {
                                 lastMonth.data.length > 0 
@@ -150,36 +150,44 @@ export default async function ResidenceOverviewPage({ params }) {
                             }
                         </div>
                     </div>
-                    {/* expenses for past 3 months by category by month */}
+                    {/* table of all expenses by month and category */}
                     <div>
-                        <h2 className="text-2xl">Expenses for past 3 months by category</h2>
-                        {/* TODO: table for expenses by category by last 3 months */}
-                        <table>
-                            <tr>
-                                <th>Month (year)</th>
-                                {
-                                    categories.map(category => (
-                                        <th key={category.name}>{category.name}</th>
-                                    ))
-                                }
-                            </tr>
-                            {
-                                allMonths.data.length > 0 ? 
-                                allMonths.data.map(monthData =>(
-                                    <tr key={monthData.month}>
-                                        <td>{monthData.month} ({monthData.year})</td>
+                        <h2 className="text-3xl text-center mb-2">All months</h2>
+                        <p className="text-sm text-gray-500 text-center mb-3">Total expenses in categories by month.</p>
+                        <div className="relative overflow-x-auto border-1 border-gray-200 sm:rounded-lg">
+                            <table className="w-full text-sm text-left text-gray-500">
+                                <thead className="text-xs text-gray-700 uppercase bg-base-50">
+                                    <tr>
+                                        <th scope="col" className="px-6 py-3">Month (year)</th>
                                         {
                                             categories.map(category => (
-                                                monthData.categories.map(catData => (
-                                                    category.name === catData.category && <td key={category._id}>{catData.totalAmount} €</td>
-                                                ))
+                                                <th key={category.name} scope="col" className="px-6 py-3">{category.name}</th>
                                             ))
                                         }
-                                    </tr>                    
-                                ))
-                                : <AlertInfo information="No data yet." />
-                            }
-                        </table>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {
+                                        allMonths.data.length > 0 ? 
+                                        allMonths.data.map(monthData =>(
+                                            <tr key={monthData.month + monthData.year} className="odd:bg-white even:bg-gray-50 border-b border-gray-200">
+                                                <td scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{monthData.month} ({monthData.year})</td>
+                                                {
+                                                    categories.map(category => (
+                                                        monthData.categories.map(catData => (
+                                                            category.name === catData.category 
+                                                            && 
+                                                            <td key={category._id} className="px-6 py-4">{`${catData.totalAmount} €` || "No data"}</td>
+                                                        ))
+                                                    ))
+                                                }
+                                            </tr>                    
+                                        ))
+                                        : <AlertInfo information="No data yet." />
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>  
