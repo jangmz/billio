@@ -5,6 +5,7 @@ import EditResidenceButton from "@/components/buttons/EditResidenceButton";
 import DeleteButton from "@/components/buttons/DeleteResidenceButton";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { formatDate, formatDateWithTime } from "@/config/formatDate";
+import MonthExpenseChart from "@/components/charts/MonthExpenseChart";
 
 const apiUrl = process.env.API_URL;
 
@@ -110,6 +111,7 @@ export default async function ResidenceOverviewPage({ params }) {
                 <div>
                     <h2 className="text-2xl">Current Month Expenses</h2>
                     {/* TODO: graph for expenses by category */}
+                    <MonthExpenseChart data={currentMonth.data} />
                     {
                         currentMonth.data.length > 0 ? 
                         currentMonth.data.map(cat =>(
@@ -122,6 +124,7 @@ export default async function ResidenceOverviewPage({ params }) {
                 <div>
                     <h2 className="text-2xl">Last Month Expenses</h2>
                     {/* TODO: graph for expenses by category */}
+                    <MonthExpenseChart data={lastMonth.data} />
                     {
                         lastMonth.data.length > 0 ? 
                         lastMonth.data.map(cat =>(
