@@ -56,7 +56,7 @@ export default function SideMenu() {
                             </Link>
                         </li>
                         <li>
-                            <Link href="#" className="flex item-center rounded-lg p-2 hover:bg-yellow-400 group">
+                            <Link href="/dashboard/categories" className="flex item-center rounded-lg p-2 hover:bg-yellow-400 group">
                                 <MdCategory size={28} />
                                 <span className="ms-3">Categories</span>
                             </Link>
