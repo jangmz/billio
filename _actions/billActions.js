@@ -4,7 +4,7 @@ import Bill from "@/models/billModel";
 import Residence from "@/models/residenceModel";
 import Category from "@/models/categoryModel";
 import connectDB from "@/config/connectDB";
-import { Types } from "mongoose";
+import { connect, Types } from "mongoose";
 
 // insert bill
 export async function insertBill(billData) {
@@ -141,6 +141,74 @@ export async function totalExpensesHalfYear(userId, residenceId) {
   }
 }
 
+// get expenses for current and past 2 months -> grouped by month, inside month grouped by category
+export async function threeMonthsBills(userId, residenceId) {
+  try {
+    await connectDB();
+
+    const now = new Date();
+    const startOfCurrentMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+    const startOfThreeMonthsAgo = new Date(now.getFullYear(), now.getMonth() - 2, 1);
+
+    const threeMonthsExpenses = await Bill.aggregate([
+      {
+        $match: {
+          userId: new Types.ObjectId(userId),
+          residenceId: new Types.ObjectId(residenceId),
+          createdAt: {
+            $gte: startOfThreeMonthsAgo,
+            $lt: startOfCurrentMonth
+          }
+        }
+      },
+      {
+        $lookup: {
+          from: "categories",
+          localField: "categoryId",
+          foreignField: "_id",
+          as: "category"
+        }
+      }, 
+      {
+        $unwind: "$category",
+      },
+      {
+        $group: {
+          _id: {
+            month: { $dateToString: { format: "%Y-%m", date: "$createdAt" } },
+            category: "$category.name"
+          },
+          totalAmount: { $sum: "$amount" },
+        },
+      },
+      {
+        $group: {
+          _id: "$_id.month",
+          categories: {
+            $push: {
+              category: "$_id.category",
+              totalAmount: { $round: ["$totalAmount", 2] },
+            }
+          }
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          month: "$_id",
+          categories: 1,
+        }
+      },
+      {
+        $sort: { month: 1 }
+      }
+    ]);
+    return threeMonthsExpenses;
+  } catch (error) {
+    return { error: error.message };
+  }
+}
+
 // get last months bills -> grouped by category
 export async function lastMonthExpenses(userId, residenceId) {
   try {
@@ -196,7 +264,7 @@ export async function lastMonthExpenses(userId, residenceId) {
   }
 }
 
-// get bills for current month by categories
+// get bills for current month -> grouped by categories
 export async function currentMonthBills(userId, residenceId) {
   try {
     await connectDB();
