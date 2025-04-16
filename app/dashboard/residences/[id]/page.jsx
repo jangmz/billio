@@ -1,10 +1,11 @@
+import { IoMdArrowRoundBack } from "react-icons/io";
 import { validateSession } from "@/config/validateSession";
+import { formatDate, formatDateWithTime } from "@/config/formatDate";
 import { cookies } from "next/headers";
+import Image from "next/image";
 import ButtonWithIcon from "@/components/buttons/ButtonWithIcon";
 import EditResidenceButton from "@/components/buttons/EditResidenceButton";
 import DeleteButton from "@/components/buttons/DeleteResidenceButton";
-import { IoMdArrowRoundBack } from "react-icons/io";
-import { formatDate, formatDateWithTime } from "@/config/formatDate";
 import MonthExpenseChart from "@/components/charts/MonthExpenseChart";
 import AlertInfo from "@/components/alerts/AlertInfo";
 
@@ -119,15 +120,21 @@ export default async function ResidenceOverviewPage({ params }) {
                 </div>
                 <div className="grid gap-4">
                     {/* basic information of the property with image */}
-                    <div className="flex flex-col items-center justify-center gap-3">
-                        <div>
+                    <div className="flex justify-center gap-8">
+                        <div className="p-6 border-1 border-gray-200 rounded-xl">
                             <h1 className="text-4xl mb-3">{residence.name}</h1>
-                            <p>{residence.address}</p>
+                            <p>Address: {residence.address}</p>
                             <p>Created: {formatDate(residence.createdAt)}</p>
                             <p>Last updated: {formatDateWithTime(residence.updatedAt)}</p>
                         </div>
                         {/* TODO: insert image */}
-                        {/*<Image />*/}
+                        <Image 
+                            src="/cottage_placeholder.jpg" 
+                            alt="property image" 
+                            width={400} 
+                            height={300}
+                            className="rounded-xl"
+                        />
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-15">
                         {/* current month expenses chart by category */}
