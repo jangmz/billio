@@ -50,8 +50,25 @@ export default async function ResidenceOverviewPage({ params }) {
             throw new Error(`Error: ${error}` || "Unspecified error");
         }
     
-        const { data } = await lastMonthRes.json();
-        console.log(data);
+        const lastMonth = await lastMonthRes.json();
+
+        // retrieve bills for current month
+        const currentBillsRes = await fetch(`${apiUrl}/bills/current-month?residence=${residence._id}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Cookie: `authjs.session-token=${sessionToken}`
+            }
+        });
+
+        if (!currentBillsRes.ok) {
+            const {error} = await currentBillsRes.json();
+            throw new Error(`Error: ${error}` || "Unspecified error");
+        }
+    
+        const currentMonth = await currentBillsRes.json();
+
+        // retrieve bills for present and last 2 months
 
         return (
             <div className="flex flex-col items-center gap-6">
@@ -75,18 +92,34 @@ export default async function ResidenceOverviewPage({ params }) {
                     <p>Created: {formatDate(residence.createdAt)}</p>
                     <p>Last updated: {formatDateWithTime(residence.updatedAt)}</p>
                 </div>
+                {/* current month expenses by category */}
+                <div>
+                    <h2 className="text-2xl">Current Month Expenses</h2>
+                    {/* TODO: graph for expenses by category */}
+                    {
+                        currentMonth.data.length > 0 ? 
+                        currentMonth.data.map(cat =>(
+                            <p key={cat.category}>{cat.category}: {cat.totalAmount}</p>
+                        ))
+                        : <p>No data yet.</p>
+                    }
+                </div>
                 {/* last month expenses by category */}
                 <div>
-                    <h2 className="text-2xl">Last Month Expenses by category</h2>
+                    <h2 className="text-2xl">Last Month Expenses</h2>
+                    {/* TODO: graph for expenses by category */}
                     {
-                        data.map(cat =>(
-                            <p>{cat.category}: {cat.totalAmount}</p>
+                        lastMonth.data.length > 0 ? 
+                        lastMonth.data.map(cat =>(
+                            <p key={cat.category}>{cat.category}: {cat.totalAmount}</p>
                         ))
+                        : <p>No data yet.</p>
                     }
                 </div>
                 {/* expenses for past 3 months by category by month */}
                 <div>
                     <h2 className="text-2xl">Expenses for past 3 months by category</h2>
+                    {/* TODO: table for expenses by category by last 3 months */}
                 </div>
             </div>  
         )
