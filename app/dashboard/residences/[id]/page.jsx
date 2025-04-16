@@ -70,8 +70,8 @@ export default async function ResidenceOverviewPage({ params }) {
     
         const currentMonth = await currentBillsRes.json();
 
-        // retrieve bills for present and last 2 months
-        const threeMonthsRes = await fetch(`${apiUrl}/bills/3-months?residence=${residence._id}`, {
+        // retrieve bills for present and all past months
+        const allMonthsRes = await fetch(`${apiUrl}/bills/all-months?residence=${residence._id}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -79,12 +79,28 @@ export default async function ResidenceOverviewPage({ params }) {
             }
         });
 
-        if (!threeMonthsRes.ok) {
-            const {error} = await threeMonthsRes.json();
+        if (!allMonthsRes.ok) {
+            const {error} = await allMonthsRes.json();
             throw new Error(`Error: ${error}` || "Unspecified error");
         }
     
-        const threeMonths = await threeMonthsRes.json();
+        const allMonths = await allMonthsRes.json();
+
+        // retrieve all categories
+        const catRes = await fetch(`${apiUrl}/categories`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Cookie: `authjs.session-token=${sessionToken}`
+            }
+        });
+
+        if (!catRes.ok) {
+            const {error} = await catRes.json();
+            throw new Error(`Error: ${error}` || "Unspecified error");
+        }
+    
+        const { categories } = await catRes.json();
 
         return (
             <div className="flex flex-col items-center gap-6">
@@ -138,22 +154,32 @@ export default async function ResidenceOverviewPage({ params }) {
                     <div>
                         <h2 className="text-2xl">Expenses for past 3 months by category</h2>
                         {/* TODO: table for expenses by category by last 3 months */}
-                        {
-                            threeMonths.data.length > 0 ? 
-                            threeMonths.data.map(monthData =>(
-                                <div key={monthData.month}>
-                                    <p key={monthData.month}>{monthData.month} ({monthData.year})</p>
-                                    {
-                                        monthData.categories.map(catData => (
-                                            <p key={catData.category}>{catData.category}: {catData.totalAmount}</p>
-                                        ))
-                                    }
-                                    <hr />
-                                </div>
-                                
-                            ))
-                            : <AlertInfo information="No data yet." />
-                        }
+                        <table>
+                            <tr>
+                                <th>Month (year)</th>
+                                {
+                                    categories.map(category => (
+                                        <th key={category.name}>{category.name}</th>
+                                    ))
+                                }
+                            </tr>
+                            {
+                                allMonths.data.length > 0 ? 
+                                allMonths.data.map(monthData =>(
+                                    <tr key={monthData.month}>
+                                        <td>{monthData.month} ({monthData.year})</td>
+                                        {
+                                            categories.map(category => (
+                                                monthData.categories.map(catData => (
+                                                    category.name === catData.category && <td key={category._id}>{catData.totalAmount} €</td>
+                                                ))
+                                            ))
+                                        }
+                                    </tr>                    
+                                ))
+                                : <AlertInfo information="No data yet." />
+                            }
+                        </table>
                     </div>
                 </div>
             </div>  

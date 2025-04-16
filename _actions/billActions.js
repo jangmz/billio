@@ -79,6 +79,72 @@ export async function getLatestBills(userId) {
   }
 }
 
+// get all expenses for current and past months -> grouped by month, inside month grouped by category
+export async function allMonthsBills(userId, residenceId) {
+  try {
+    await connectDB();
+
+    const now = new Date();
+    const startOfCurrentMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+
+    const allMonths = await Bill.aggregate([
+      {
+        $match: {
+          userId: new Types.ObjectId(userId),
+          residenceId: new Types.ObjectId(residenceId),
+          createdAt: {
+            $lt: startOfCurrentMonth
+          }
+        }
+      },
+      {
+        $lookup: {
+          from: "categories",
+          localField: "categoryId",
+          foreignField: "_id",
+          as: "category"
+        }
+      }, 
+      {
+        $unwind: "$category",
+      },
+      {
+        $group: {
+          _id: {
+            month: { $dateToString: { format: "%Y-%m", date: "$createdAt" } },
+            category: "$category.name"
+          },
+          totalAmount: { $sum: "$amount" },
+        },
+      },
+      {
+        $group: {
+          _id: "$_id.month",
+          categories: {
+            $push: {
+              category: "$_id.category",
+              totalAmount: { $round: ["$totalAmount", 2] },
+            }
+          }
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          month: "$_id",
+          categories: 1,
+        }
+      },
+      {
+        $sort: { month: -1 }
+      }
+    ]);
+    return allMonths;
+  } catch (error) {
+    return { error: error.message };
+  }
+}
+
 // get total expenses /month for the past 6 months by userId and residenceId
 export async function totalExpensesHalfYear(userId, residenceId) {
   try {
@@ -200,7 +266,7 @@ export async function threeMonthsBills(userId, residenceId) {
         }
       },
       {
-        $sort: { month: 1 }
+        $sort: { month: -1 }
       }
     ]);
     return threeMonthsExpenses;
