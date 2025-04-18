@@ -29,7 +29,7 @@ export default function CategoryCard({ category, apiUrl, sessionToken }) {
         console.log("Data for update:", formData);
 
         try {
-            const res = await fetch(`${apiUrl}/categories/${residenceData._id}`, {
+            const res = await fetch(`${apiUrl}/categories/${category._id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
