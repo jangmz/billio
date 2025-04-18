@@ -1,15 +1,14 @@
 import { NextResponse } from "next/server";
 import { getCategory, updateCategory, deleteCategory } from "@/_actions/categoryActions";
-import { authenticate } from "@/config/authMiddleware";
+import { validateSession } from "@/config/validateSession";
 
 // GET /api/categories/[id] -> retrieve category data by userId
 export async function GET(req, { params }) {
-    const user = await authenticate(req);
+    // validate session
+    const session = await validateSession();
 
-    if (user instanceof NextResponse) return user; // if the returned value is NextResponse, return that authentication error
-    
     try {
-        const userId = user.id;
+        const userId = session.user.id;
         const categoryId = await params.id;
         const category = await getCategory(categoryId, userId);
 
@@ -29,12 +28,11 @@ export async function GET(req, { params }) {
 
 // PUT /api/categories/[id] -> update category data
 export async function PUT(req, { params }) {
-    const user = await authenticate(req);
-    
-    if (user instanceof NextResponse) return user; // if the returned value is NextResponse, return that authentication error
-    
+    // validate session
+    const session = await validateSession();
+
     try {
-        const userId = user.id;
+        const userId = session.user.id;
         const categoryId = await params.id;
         const { name } = await req.json();
         const updatedCategory = await updateCategory(categoryId, userId, name);
@@ -55,12 +53,11 @@ export async function PUT(req, { params }) {
 
 // DELETE /api/categories/[id] -> delete category
 export async function DELETE(req, { params }) {
-    const user = await authenticate(req);
+    // validate session
+    const session = await validateSession();
 
-    if (user instanceof NextResponse) return user; // if the returned value is NextResponse, return that authentication error
-    
     try {
-        const userId = user.id;
+        const userId = session.user.id;
         const categoryId = await params.id;
         const deletedCategory = await deleteCategory(categoryId, userId);
 
