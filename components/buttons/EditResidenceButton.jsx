@@ -61,7 +61,7 @@ export default function EditButton({ residenceData, apiUrl, sessionToken, classN
             </button>
             <dialog id="edit_residence_modal" className="modal">
                 <div className="modal-box text-center">
-                    <h3 className="font-bold text-lg">Edit residence data</h3>
+                    <h3 className="font-bold text-xl">Edit residence data</h3>
                     <p className="py-4 text-xs">Press ESC or click outside to close</p>
                     <div>
                         <form onSubmit={handleSubmit} className="flex flex-col items-center gap-2">
