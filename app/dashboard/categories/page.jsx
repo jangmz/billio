@@ -2,7 +2,7 @@ import { validateSession } from "@/config/validateSession";
 import { cookies } from "next/headers";
 import { FaPlus } from "react-icons/fa6";
 import AlertError from "@/components/alerts/AlertError";
-import ButtonWithIcon from "@/components/buttons/ButtonWithIcon";
+import AddCategoryButton from "@/components/buttons/AddCategoryButton";
 import AlertInfo from "@/components/alerts/AlertInfo";
 import CategoryCard from "@/components/cards/CategoryCard";
 
@@ -45,7 +45,7 @@ export default async function CategoriesPage() {
         return(
             <div className="flex flex-col gap-6">
                 <div className="flex justify-end">
-                    <ButtonWithIcon link="#" text="New category (dialog)" icon={<FaPlus/>} />
+                    <AddCategoryButton text="New category (dialog)" icon={<FaPlus/>} />
                 </div>
                 {/* CARDS */}
                 <div className="grid grid-cols-1 gap-4 mb-4 md:grid-cols-2 lg:grid-cols-3">
