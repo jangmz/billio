@@ -21,10 +21,9 @@ export default function AddCategoryButton({ text, icon, apiUrl, sessionToken }) 
     async function handleSubmit(e) {
         e.preventDefault();
 
+        console.log("Submit function");
         setMessage(null);
         setError(null);
-
-        console.log("Data to submit:", formData);
 
         try {
             const res = await fetch(`${apiUrl}/categories`, {

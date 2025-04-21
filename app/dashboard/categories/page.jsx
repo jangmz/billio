@@ -45,7 +45,12 @@ export default async function CategoriesPage() {
         return(
             <div className="flex flex-col gap-6">
                 <div className="flex justify-end">
-                    <AddCategoryButton text="New category (dialog)" icon={<FaPlus/>} />
+                    <AddCategoryButton 
+                        text="New category (dialog)" 
+                        icon={<FaPlus/>} 
+                        apiUrl={apiUrl}
+                        sessionToken={sessionToken}
+                    />
                 </div>
                 {/* CARDS */}
                 <div className="grid grid-cols-1 gap-4 mb-4 md:grid-cols-2 lg:grid-cols-3">
