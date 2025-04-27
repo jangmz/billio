@@ -46,7 +46,7 @@ export default async function CategoriesPage() {
             <div className="flex flex-col gap-6">
                 <div className="flex justify-end">
                     <AddCategoryButton 
-                        text="New category (dialog)" 
+                        text="New category" 
                         icon={<FaPlus/>} 
                         apiUrl={apiUrl}
                         sessionToken={sessionToken}
