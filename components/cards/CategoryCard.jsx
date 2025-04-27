@@ -19,6 +19,12 @@ export default function CategoryCard({ category, apiUrl, sessionToken }) {
         setFormData({ ...formData, [name]: value });
     }
 
+    // delete category
+    function handleDelete() {
+        // delete api call, ask for confirmation
+        console.log("Delete:", category.name);
+    }
+
     // updating data
     async function handleSubmit(e) {
         e.preventDefault();
@@ -82,11 +88,19 @@ export default function CategoryCard({ category, apiUrl, sessionToken }) {
                                 value={formData.name}
                                 onChange={(e) => handleChange(e)}
                             />
-                            <Button
-                                text={"Update"}
-                                type={"submit"}
-                                btnStyle={"btn-primary"}
-                            />
+                            <div className="flex gap-5">
+                                <Button
+                                    text={"Update"}
+                                    type={"submit"}
+                                    btnStyle={"btn-primary"}
+                                />
+                                <Button
+                                    text={"Delete"}
+                                    type={"button"}
+                                    btnStyle={""}
+                                    onClick={handleDelete}
+                                />
+                            </div>
                         </form>
                     </div>
                 </div>
