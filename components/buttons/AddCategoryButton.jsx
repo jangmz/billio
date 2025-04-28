@@ -42,6 +42,8 @@ export default function AddCategoryButton({ text, icon, apiUrl, sessionToken }) 
 
             const {message} = await res.json();
             setMessage(message);
+
+            setFormData({ name: "" });
         } catch (error) {
             console.error(error);
             setError(error);
@@ -49,6 +51,8 @@ export default function AddCategoryButton({ text, icon, apiUrl, sessionToken }) 
     }
 
     function handleClick() {
+        setMessage(null);
+        setError(null);
         document.getElementById("new_category_modal").showModal();
     }
 
