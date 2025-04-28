@@ -5,8 +5,10 @@ import AlertError from "../alerts/AlertError";
 import AlertSuccess from "../alerts/AlertSuccess";
 import Button from "../buttons/Button";
 import { useState } from "react";
+//import { useRouter } from "next/router";
 
 export default function CategoryCard({ category, apiUrl, sessionToken }) {
+    //const router = useRouter();
     const [error, setError] = useState(null);
     const [message, setMessage] = useState(null);
     const [formData, setFormData] = useState({
@@ -20,9 +22,37 @@ export default function CategoryCard({ category, apiUrl, sessionToken }) {
     }
 
     // delete category
-    function handleDelete() {
-        // delete api call, ask for confirmation
-        console.log("Delete:", category.name);
+    async function handleDelete() {
+        setError(null);
+        setMessage(null);
+
+        if(!confirm("Are you sure you want to delete this category?")) {
+            return;
+        }
+
+        console.log("Delete category:", category.name);
+        
+        try {
+            const response = await fetch(`${apiUrl}/categories/${category._id}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    Cookie: `authjs.session-token=${sessionToken}`
+                }
+            });
+
+            if (!response.ok) {
+                const { error } = await response.json();
+                throw new Error(error || "Failed to delete category.");
+            }
+
+            //router.push("/dashboard/categories");
+            const { message } = await response.json();
+            setMessage(message);
+        } catch (error) {
+            console.error("Error deleting a category:", error);
+            setError(error);
+        }
     }
 
     // updating data
@@ -97,7 +127,7 @@ export default function CategoryCard({ category, apiUrl, sessionToken }) {
                                 <Button
                                     text={"Delete"}
                                     type={"button"}
-                                    btnStyle={""}
+                                    btnStyle={"btn-error"}
                                     onClick={handleDelete}
                                 />
                             </div>
