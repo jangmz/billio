@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { insertCategory, getCategories } from "@/_actions/categoryActions";
+import { insertCategory, getCategories, getCategoryByName } from "@/_actions/categoryActions";
 import { validateSession } from "@/config/validateSession";
 
 // POST /api/categories -> insert new category
@@ -10,6 +10,14 @@ export async function POST(req) {
 
         const categoryData = await req.json(); // name
         categoryData.userId = session.user.id; 
+
+        const categoryExists = await getCategoryByName(categoryData.name, categoryData.userId);
+
+        console.log("Category exists:",categoryExists);
+
+        if (categoryExists) {
+            throw new Error("Category already exists!");
+        }
 
         const category = await insertCategory(categoryData);
 
