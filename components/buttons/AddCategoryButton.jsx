@@ -21,7 +21,6 @@ export default function AddCategoryButton({ text, icon, apiUrl, sessionToken }) 
     async function handleSubmit(e) {
         e.preventDefault();
 
-        console.log("Submit function");
         setMessage(null);
         setError(null);
 
@@ -36,8 +35,8 @@ export default function AddCategoryButton({ text, icon, apiUrl, sessionToken }) 
             });
     
             if (!res.ok) {
-                const {error} = await res.json();
-                throw new Error(error);
+                const { error } = await res.json();
+                throw new Error(error || "Unknown error occured.");
             }
 
             const {message} = await res.json();
@@ -45,8 +44,7 @@ export default function AddCategoryButton({ text, icon, apiUrl, sessionToken }) 
 
             setFormData({ name: "" });
         } catch (error) {
-            console.error(error);
-            setError(error);
+            setError(error.message);
         }
     }
 
