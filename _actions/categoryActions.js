@@ -37,6 +37,17 @@ export async function getCategory(categoryId, userId) {
     }
 }
 
+// retrieve category by name and user id
+export async function getCategoryByName(categoryName, userId) {
+    try {
+        await connectDB();
+        const category = await Category.findOne({ name: categoryName, userId });
+        return category
+    } catch (error) {
+        return { error: error.message };
+    }
+}
+
 // update category data by id and userid
 export async function updateCategory(categoryId, userId, name) {
     try {
