@@ -6,21 +6,18 @@ import AlertError from "../alerts/AlertError";
 import AlertSuccess from "../alerts/AlertSuccess";
 import Button from "./Button";
 
-export default function AddCategoryButton({ text, icon, apiUrl, sessionToken }) {
+export default function AddCategoryButton({ text, icon, apiUrl, sessionToken, onAddCategory }) {
     const [error, setError] = useState(null);
     const [message, setMessage] = useState(null);
-    const [formData, setFormData] = useState({
-        name: ""
-    });
+    const [formData, setFormData] = useState({ name: "" });
 
     function handleChange(e) {
-        const {name, value} = e.target;
-        setFormData({...formData, [name]: value});
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
     }
 
     async function handleSubmit(e) {
         e.preventDefault();
-
         setMessage(null);
         setError(null);
 
@@ -39,9 +36,15 @@ export default function AddCategoryButton({ text, icon, apiUrl, sessionToken }) 
                 throw new Error(error || "Unknown error occured.");
             }
 
-            const {message} = await res.json();
+            const { message, category } = await res.json();
             setMessage(message);
 
+            // callback to update the parent state
+            if (onAddCategory) {
+                onAddCategory(category);
+            }
+
+            // reset form
             setFormData({ name: "" });
         } catch (error) {
             setError(error.message);
@@ -66,12 +69,8 @@ export default function AddCategoryButton({ text, icon, apiUrl, sessionToken }) 
                     <p className="py-4 text-xs">Press ESC or click outside to close</p>
                     <div>
                         <form onSubmit={handleSubmit} className="flex flex-col items-center gap-2">
-                            {
-                                error && <AlertError error={error} />
-                            }
-                            {
-                                message && <AlertSuccess message={message} />
-                            }
+                            {error && <AlertError error={error} />}
+                            {message && <AlertSuccess message={message} />}
                             <FormFieldset 
                                 title="Name"
                                 type="text"
@@ -79,11 +78,18 @@ export default function AddCategoryButton({ text, icon, apiUrl, sessionToken }) 
                                 value={formData.name}
                                 onChange={(e) => handleChange(e)}
                             />
-                            <Button
-                                text={"Create"}
-                                type={"submit"}
-                                btnStyle={"btn-primary"}
-                            />
+                            <div className="modal-action">
+                                <Button
+                                    text={"Create"}
+                                    type={"submit"}
+                                    btnStyle={"btn-primary"}
+                                />
+                                <Button
+                                    text={"Cancel"}
+                                    type={"button"}
+                                    onClick={() => document.getElementById("new_category_modal").close()}
+                                />
+                            </div>
                         </form>
                     </div>
                 </div>
