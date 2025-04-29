@@ -1,6 +1,7 @@
 import AlertError from "@/components/alerts/AlertError";
 import ButtonWithIcon from "@/components/buttons/ButtonWithIcon";
 import DashResidenceCard from "@/components/cards/DashResidenceCard";
+import DashTitle from "@/components/DashTitle";
 import { validateSession } from "@/config/validateSession";
 import { cookies } from "next/headers";
 import Image from "next/image";
@@ -65,8 +66,12 @@ export default async function Residences() {
 
         return (
             <div className="flex flex-col gap-6">
-                <div className="flex justify-end">
-                    <ButtonWithIcon link="/dashboard/residences/new" text="Add Residence" icon={<FaPlus/>} />
+                {/* title and top action menu */}
+                <div className="flex justify-between">
+                    <DashTitle title={"Residences"} />
+                    <div className="">
+                        <ButtonWithIcon link="/dashboard/residences/new" text="Add Residence" icon={<FaPlus/>} />
+                    </div>
                 </div>
                 {/*card*/}
                 <div className="grid grid-cols-1 gap-4 mb-4 md:grid-cols-2">

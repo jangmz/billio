@@ -6,6 +6,7 @@ import AddCategoryButton from "@/components/buttons/AddCategoryButton";
 import AlertInfo from "@/components/alerts/AlertInfo";
 import CategoryCard from "@/components/cards/CategoryCard";
 import CategoriesList from "@/components/CategoriesList";
+import DashTitle from "@/components/DashTitle";
 
 const apiUrl = process.env.API_URL;
 
@@ -45,15 +46,19 @@ export default async function CategoriesPage() {
         const { categories } = await retrieveData(sessionToken, "/categories");
 
         return(
+
             <div className="flex flex-col gap-6">
-                {/* Top action menu */}
-                <div className="flex justify-end">
-                    <AddCategoryButton 
-                        text="New category" 
-                        icon={<FaPlus/>} 
-                        apiUrl={apiUrl}
-                        sessionToken={sessionToken}
-                    />
+                {/* Title and Top action menu */}
+                <div className="flex items-center justify-between">
+                    <DashTitle title={"Categories"} />
+                    <div className="">
+                        <AddCategoryButton 
+                            text="New category" 
+                            icon={<FaPlus/>} 
+                            apiUrl={apiUrl}
+                            sessionToken={sessionToken}
+                        />
+                    </div>
                 </div>
                 {/* Categories displayed */}
                 <CategoriesList 
