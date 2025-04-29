@@ -25,10 +25,10 @@ export default function BigDashExpenses({ residences, totalExpenses }) {
     const [selectedResidence, setSelectedResidence] = useState(residences[0]);
     const [displayedExpenses, setDisplayedExpenses] = useState([]);
 
-    console.log(displayedExpenses);
+    //console.log(displayedExpenses);
 
     useEffect(() => {
-        console.log("Searching for property:", selectedResidence.name);
+        //console.log("Searching for property:", selectedResidence.name);
         if (!totalExpenses || totalExpenses.length === 0) {
             setDisplayedExpenses([]);
         } else {
@@ -36,7 +36,7 @@ export default function BigDashExpenses({ residences, totalExpenses }) {
             setDisplayedExpenses(data ? data.expenses : []);
         }
 
-        console.log("Expenses are set.");
+        //console.log("Expenses are set.");
     }, [selectedResidence]);
 
     function changeResidence(e) {
@@ -76,18 +76,6 @@ export default function BigDashExpenses({ residences, totalExpenses }) {
                 displayedExpenses.length > 0 ?
                 <Bar data={chartData} options={chartOptions} /> :
                 <p>No data yet</p>
-                /*displayedExpenses.length !== 0 ?
-                <ul>
-                    {
-                        displayedExpenses.map((expense) => (
-                            <li key={`${expense.month}-${expense.year}`}>
-                                Month:{expense.month} ({expense.year}) = {expense.totalExpenses}
-                            </li>
-                        ))
-                    }
-                </ul>
-                 : 
-                <p>No data yet.</p>*/
             }
         </div>
     );
