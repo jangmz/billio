@@ -5,10 +5,10 @@ import AlertError from "../alerts/AlertError";
 import AlertSuccess from "../alerts/AlertSuccess";
 import Button from "../buttons/Button";
 import { useState } from "react";
-//import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 export default function CategoryCard({ category, apiUrl, sessionToken }) {
-    //const router = useRouter();
+    const router = useRouter();
     const [error, setError] = useState(null);
     const [message, setMessage] = useState(null);
     const [formData, setFormData] = useState({
@@ -46,12 +46,13 @@ export default function CategoryCard({ category, apiUrl, sessionToken }) {
                 throw new Error(error || "Failed to delete category.");
             }
 
-            //router.push("/dashboard/categories");
             const { message } = await response.json();
             setMessage(message);
         } catch (error) {
             console.error("Error deleting a category:", error);
             setError(error);
+        } finally {
+            // TODO: exit modal, refresh the page
         }
     }
 
