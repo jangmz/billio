@@ -97,11 +97,13 @@ export default function AddBillButton({ text, icon, apiUrl, sessionToken, catego
                                 text={"Residence (required)"}
                                 name={"residence"}
                                 options={residences}
+                                onChange={(e) => handleChange(e)}
                             />
                             <DropdownSelector
                                 text={"Category (required)"}
                                 name={"category"}
-                                options={categories} 
+                                options={categories}
+                                onChange={(e) => handleChange(e)}
                             />
                             <FormFieldsetRequired 
                                 title="Amount (required)"
@@ -121,6 +123,7 @@ export default function AddBillButton({ text, icon, apiUrl, sessionToken, catego
                                 text={"Status (required)"}
                                 name={"status"}
                                 options={["Unpaid", "Paid"]}
+                                onChange={(e) => handleChange(e)}
                             />
                             <FormFieldset 
                                 title="Recurring"
@@ -133,11 +136,12 @@ export default function AddBillButton({ text, icon, apiUrl, sessionToken, catego
                                 text={"Recurrence period"}
                                 name={"recurrencePeriod"}
                                 options={["", "monthly", "quarterly", "yearly"]}
+                                onChange={(e) => handleChange(e)}
                             />
                             <FormFieldset 
                                 title="Receipt URL"
                                 type="text"
-                                name="receipt-url"
+                                name="receiptUrl"
                                 value={formData.receiptUrl}
                                 onChange={(e) => handleChange(e)}
                             />
