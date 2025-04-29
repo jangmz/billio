@@ -62,13 +62,13 @@ export default function SideMenu() {
                             </Link>
                         </li>
                         <li>
-                            <Link href="#" className="flex item-center rounded-lg p-2 hover:bg-yellow-400 group">
+                            <Link href="/dashboard/bills" className="flex item-center rounded-lg p-2 hover:bg-yellow-400 group">
                                 <RiBillFill size={28} />
                                 <span className="ms-3">Bills</span>
                             </Link>
                         </li>
                         <li>
-                            <Link href="#" className="flex item-center rounded-lg p-2 hover:bg-yellow-400 group">
+                            <Link href="/dashboard/reports" className="flex item-center rounded-lg p-2 hover:bg-yellow-400 group">
                                 <HiDocumentReport size={28} />
                                 <span className="ms-3">Reports</span>
                             </Link>
@@ -83,7 +83,7 @@ export default function SideMenu() {
                         </Link>
                     </li>
                     <li>
-                        <Link href="#" className="flex item-center rounded-lg p-2 hover:bg-yellow-400 group">
+                        <Link href="/dashboard/settings" className="flex item-center rounded-lg p-2 hover:bg-yellow-400 group">
                             <IoSettingsSharp size={28} />
                             <span className="ms-3">Settings</span>
                         </Link>
@@ -92,7 +92,7 @@ export default function SideMenu() {
                         <SignOutMenuButton />
                     </li>
                     <li>
-                        <Link href="#" className="flex item-center rounded-lg p-2 hover:bg-yellow-400 group">
+                        <Link href="/dashboard/support-feedback" className="flex item-center rounded-lg p-2 hover:bg-yellow-400 group">
                             <MdContactSupport size={28} />
                             <span className="ms-3">Support & Feedback</span>
                         </Link>
