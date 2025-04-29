@@ -32,7 +32,9 @@ export default function AddBillButton({ text, icon, apiUrl, sessionToken, catego
         setMessage(null);
         setError(null);
 
-        try {
+        console.log("Submitted form:", formData);
+
+        /*try {
             const res = await fetch(`${apiUrl}/bills`, {
                 method: "POST",
                 headers: {
@@ -68,7 +70,7 @@ export default function AddBillButton({ text, icon, apiUrl, sessionToken, catego
             });
         } catch (error) {
             setError(error.message);
-        }
+        }*/
     }
 
     function handleClick() {
@@ -91,15 +93,13 @@ export default function AddBillButton({ text, icon, apiUrl, sessionToken, catego
                         <form onSubmit={handleSubmit} className="flex flex-col items-center gap-2">
                             {error && <AlertError error={error} />}
                             {message && <AlertSuccess message={message} />}
-                            {/* dropdown - residence (id value) */}
                             <DropdownSelector 
-                                text={"Residence"}
+                                text={"Residence (required)"}
                                 name={"residence"}
                                 options={residences}
                             />
-                            {/* dropdown - category (id value) */}
                             <DropdownSelector
-                                text={"Category"}
+                                text={"Category (required)"}
                                 name={"category"}
                                 options={categories} 
                             />
@@ -113,11 +113,15 @@ export default function AddBillButton({ text, icon, apiUrl, sessionToken, catego
                             <FormFieldset 
                                 title="Due date"
                                 type="date"
-                                name="due-date"
+                                name="dueDate"
                                 value={formData.dueDate}
                                 onChange={(e) => handleChange(e)}
                             />
-                            {/* dropdown - status - Paid/Unpaid */}
+                            <DropdownSelector 
+                                text={"Status (required)"}
+                                name={"status"}
+                                options={["Unpaid", "Paid"]}
+                            />
                             <FormFieldset 
                                 title="Recurring"
                                 type="checkbox"
@@ -125,7 +129,11 @@ export default function AddBillButton({ text, icon, apiUrl, sessionToken, catego
                                 value={formData.recurring}
                                 onChange={(e) => handleChange(e)}
                             />
-                            {/* dropdown - recurrencePeriod (monthly, quarterly, yearly, null) */}
+                            <DropdownSelector 
+                                text={"Recurrence period"}
+                                name={"recurrencePeriod"}
+                                options={["", "monthly", "quarterly", "yearly"]}
+                            />
                             <FormFieldset 
                                 title="Receipt URL"
                                 type="text"
