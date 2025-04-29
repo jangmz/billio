@@ -23,7 +23,7 @@ export default async function CategoriesPage() {
         // retrieve user categories
         const { categories } = await retrieveData(sessionToken, "/categories");
 
-        return(
+        return (
             <div className="flex flex-col gap-6">
                 {/* Title and Top action menu */}
                 <div className="flex items-center justify-between">
