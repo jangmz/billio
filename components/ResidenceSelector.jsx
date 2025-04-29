@@ -12,7 +12,7 @@ export default function ResidenceSelector({ residences }) {
 
     return (
         <div>
-            <select onChange={changeResidence}>
+            <select id="residence" name="residence" onChange={changeResidence}>
                 {
                     residences.map((residence) => (
                         <option key={residence._id} value={residence._id}>{residence.name} ({residence.address})</option>
