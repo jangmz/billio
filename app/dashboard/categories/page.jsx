@@ -5,6 +5,7 @@ import AlertError from "@/components/alerts/AlertError";
 import AddCategoryButton from "@/components/buttons/AddCategoryButton";
 import AlertInfo from "@/components/alerts/AlertInfo";
 import CategoryCard from "@/components/cards/CategoryCard";
+import CategoriesList from "@/components/CategoriesList";
 
 const apiUrl = process.env.API_URL;
 
@@ -17,12 +18,13 @@ async function retrieveData(sessionToken, endpoint, queryParameter="") {
         headers: { 
             "Content-Type": "application/json",
             Cookie: `authjs.session-token=${sessionToken}` 
-        }
+        },
+        cache: "no-store"
     });
 
     if (!response.ok) {
         const { error } = await response.json();
-        throw new Error(error || "Unspecified error occured");
+        throw new Error(error || "Failed to fetch categories");
     }
 
     const data = await response.json();
@@ -44,6 +46,7 @@ export default async function CategoriesPage() {
 
         return(
             <div className="flex flex-col gap-6">
+                {/* Top action menu */}
                 <div className="flex justify-end">
                     <AddCategoryButton 
                         text="New category" 
@@ -52,28 +55,16 @@ export default async function CategoriesPage() {
                         sessionToken={sessionToken}
                     />
                 </div>
-                {/* CARDS */}
-                <div className="grid grid-cols-1 gap-4 mb-4 md:grid-cols-2 lg:grid-cols-3">
-                    {
-                        categories.length !== 0 ?
-                        categories.map(category => (
-                            <div key={category._id} className="flex flex-col">
-                                <CategoryCard 
-                                    category={category} 
-                                    apiUrl={apiUrl}
-                                    sessionToken={sessionToken}
-                                />
-                            </div>
-                        ))
-                        : <AlertInfo information="No data yet" />
-                    }
-                </div>
+                {/* Categories displayed */}
+                <CategoriesList 
+                    initialCategories={categories}
+                    apiUrl={apiUrl}
+                    sessionToken={sessionToken}
+                />
             </div>
         );
     } catch (error) {
         console.error(error);
-        return(
-            <AlertError error={error.message} />
-        );   
+        return <AlertError error={error.message} />;   
     }
 }
