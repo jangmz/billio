@@ -1,4 +1,5 @@
 import { validateSession } from "@/config/validateSession";
+import { retrieveData } from "@/config/getRequest";
 import { cookies } from "next/headers";
 import { FaPlus } from "react-icons/fa6";
 import AlertError from "@/components/alerts/AlertError";
@@ -9,29 +10,6 @@ import CategoriesList from "@/components/CategoriesList";
 import DashTitle from "@/components/DashTitle";
 
 const apiUrl = process.env.API_URL;
-
-// endpoint -> /categories or /categories/[id] ...
-// queryParameter -> ?residence=...
-
-async function retrieveData(sessionToken, endpoint, queryParameter="") {
-    const response = await fetch(`${apiUrl}${endpoint}${queryParameter}`, {
-        method: "GET",
-        headers: { 
-            "Content-Type": "application/json",
-            Cookie: `authjs.session-token=${sessionToken}` 
-        },
-        cache: "no-store"
-    });
-
-    if (!response.ok) {
-        const { error } = await response.json();
-        throw new Error(error || "Failed to fetch categories");
-    }
-
-    const data = await response.json();
-    //console.log(data);
-    return data;
-}
 
 export default async function CategoriesPage() {
     try {
@@ -46,7 +24,6 @@ export default async function CategoriesPage() {
         const { categories } = await retrieveData(sessionToken, "/categories");
 
         return(
-
             <div className="flex flex-col gap-6">
                 {/* Title and Top action menu */}
                 <div className="flex items-center justify-between">
