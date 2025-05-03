@@ -25,6 +25,9 @@ export async function POST(req) {
 
         const billData = await req.json(); // categoryId, residenceId needed in request
         billData.userId = session.user.id;
+
+        //console.log(billData); //OK
+
         const bill = await insertBill(billData);
 
         if (bill?.error || !bill) throw new Error(bill?.error || "Failed to create new bill");
