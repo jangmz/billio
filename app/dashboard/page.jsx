@@ -53,7 +53,7 @@ export default async function Dashboard() {
         //console.log("Dashboard - total expenses past 6 months", totalExpenses);
 
         // 3) retrieve user bills - last 10
-        const recentBillsResponse = await fetch(`${apiUrl}/bills/latest`, {
+        const recentBillsResponse = await fetch(`${apiUrl}/bills/latest?limit=10`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
