@@ -61,7 +61,7 @@ export default async function Residences() {
             if (!lastMonthExpenses) {
                 return null;
             } else {
-                return lastMonthExpenses.expenses[lastMonthExpenses.expenses.length - 2]?.totalExpenses || 0;
+                return lastMonthExpenses.expenses[lastMonthExpenses.expenses.length - 1]?.totalExpenses || 0;
             }
         }
 
