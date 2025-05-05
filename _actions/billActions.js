@@ -47,14 +47,14 @@ export async function getUserBills(userId) {
   }
 }
 
-// returns 10 recent bills by user id
-export async function getLatestBills(userId) {
+// returns recent bills by user id and limited by number provided
+export async function getLatestBills(userId, billsLimit) {
   try {
     await connectDB();
     const data = await Bill.aggregate([
       { $match: { userId: new Types.ObjectId(userId) } },
       { $sort: { createdAt: -1 } },
-      { $limit: 10 },
+      { $limit: billsLimit },
       { $lookup: {
         from: "residences",
         localField: "residenceId",
