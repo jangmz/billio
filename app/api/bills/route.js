@@ -26,6 +26,7 @@ export async function POST(req) {
         const billData = await req.json(); // categoryId, residenceId needed in request
         billData.userId = session.user.id;
 
+        //console.log("Data in API endpoint:");
         //console.log(billData); //OK
 
         const bill = await insertBill(billData);

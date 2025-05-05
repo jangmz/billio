@@ -15,11 +15,11 @@ export default function AddBillButton({ text, icon, apiUrl, sessionToken, catego
         categoryId: categories[0]._id,
         residenceId: residences[0]._id,
         amount: 0,
-        dueDate: new Date().getDate(),
         status: "Unpaid",
-        recurring: false, // true/false
-        recurrencePeriod: null, // monthly, quarterly, yearly, null
-        receiptUrl: ""
+        //dueDate: new Date().getDate(),
+        //recurring: false, // true/false
+        //recurrencePeriod: null, // monthly, quarterly, yearly, null
+        //receiptUrl: ""
     });
 
     function handleChange(e) {
@@ -32,7 +32,7 @@ export default function AddBillButton({ text, icon, apiUrl, sessionToken, catego
         setMessage(null);
         setError(null);
 
-        console.log("Submitted form:", formData);
+        //console.log("Submitted form (button):", formData);
 
         try {
             const res = await fetch(`${apiUrl}/bills`, {
@@ -59,14 +59,12 @@ export default function AddBillButton({ text, icon, apiUrl, sessionToken, catego
 
             // reset form
             setFormData({
-                categoryId: categories[0]._id,
-                residenceId: residences[0]._id,
                 amount: 0,
-                dueDate: new Date().getDate(),
                 status: "Unpaid",
-                recurring: false,
-                recurrencePeriod: null,
-                receiptUrl: ""
+                //dueDate: new Date().getDate(),
+                //recurring: false,
+                //recurrencePeriod: null,
+                //receiptUrl: ""
             });
         } catch (error) {
             setError(error.message);
@@ -95,13 +93,13 @@ export default function AddBillButton({ text, icon, apiUrl, sessionToken, catego
                             {message && <AlertSuccess message={message} />}
                             <DropdownSelector 
                                 text={"Residence (required)"}
-                                name={"residence"}
+                                name={"residenceId"}
                                 options={residences}
                                 onChange={(e) => handleChange(e)}
                             />
                             <DropdownSelector
                                 text={"Category (required)"}
-                                name={"category"}
+                                name={"categoryId"}
                                 options={categories}
                                 onChange={(e) => handleChange(e)}
                             />
@@ -112,6 +110,12 @@ export default function AddBillButton({ text, icon, apiUrl, sessionToken, catego
                                 value={formData.amount}
                                 onChange={(e) => handleChange(e)}
                             />
+                            <DropdownSelector 
+                                text={"Status (required)"}
+                                name={"status"}
+                                options={["Unpaid", "Paid"]}
+                                onChange={(e) => handleChange(e)}
+                            />
                             {/*<FormFieldset 
                                 title="Due date"
                                 type="date"
@@ -119,12 +123,6 @@ export default function AddBillButton({ text, icon, apiUrl, sessionToken, catego
                                 value={formData.dueDate}
                                 onChange={(e) => handleChange(e)}
                             />*/}
-                            <DropdownSelector 
-                                text={"Status (required)"}
-                                name={"status"}
-                                options={["Unpaid", "Paid"]}
-                                onChange={(e) => handleChange(e)}
-                            />
                             {/*<FormFieldset 
                                 title="Recurring"
                                 type="checkbox"

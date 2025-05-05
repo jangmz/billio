@@ -13,10 +13,10 @@ export async function insertBill(billData) {
 
     const { userId, categoryId, residenceId } = billData;
 
-    /*console.log("data check in actions...");
-    console.log("User:", userId); //ok
-    console.log("Residence:", residenceId); //ok
-    console.log("Category:", categoryId); //ok*/
+    //console.log("Data for DB query");
+    //console.log("User:", userId); //ok
+    //console.log("Residence:", residenceId); //ok
+    //console.log("Category:", categoryId); //ok
 
     // validate residence and category ownership
     const residence = await Residence.findOne({ _id: residenceId, userId });
