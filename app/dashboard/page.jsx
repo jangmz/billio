@@ -50,7 +50,7 @@ export default async function Dashboard() {
         }
     
         const { totalExpenses } = await totalExpensesResponse.json();
-        //console.log(totalExpenses);
+        //console.log("Dashboard - total expenses past 6 months", totalExpenses);
 
         // 3) retrieve user bills - last 10
         const recentBillsResponse = await fetch(`${apiUrl}/bills/latest`, {
@@ -83,7 +83,7 @@ export default async function Dashboard() {
             let pastMonthExpenses = 0;
             
             totalExpenses.map(property => {
-                pastMonthExpenses += property.expenses[property.expenses.length - 2].totalExpenses;
+                pastMonthExpenses += property.expenses[property.expenses.length - 2]?.totalExpenses || 0;
             });
 
             //console.log("Total expenses for last month:", pastMonthExpenses);

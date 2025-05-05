@@ -52,6 +52,7 @@ export default async function Residences() {
         }
     
         const { totalExpenses } = await totalExpensesResponse.json();
+        console.log("Residences - total expenses past 6 months:", totalExpenses);
 
         // helper function for extracting total expenses for past month
         function extractTotalExpenses(residence) {
@@ -60,7 +61,7 @@ export default async function Residences() {
             if (!lastMonthExpenses) {
                 return null;
             } else {
-                return lastMonthExpenses.expenses[lastMonthExpenses.expenses.length - 2].totalExpenses;
+                return lastMonthExpenses.expenses[lastMonthExpenses.expenses.length - 2]?.totalExpenses || 0;
             }
         }
 
