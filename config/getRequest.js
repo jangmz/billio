@@ -1,10 +1,8 @@
 // endpoint -> /categories or /categories/[id] ...
 // queryParameter -> ?residence=...
 
-const apiUrl = process.env.API_URL;
-
-export async function retrieveData(sessionToken, endpoint, queryParameter="") {
-    const response = await fetch(`${apiUrl}${endpoint}${queryParameter}`, {
+export async function retrieveData(sessionToken, apiEndpoint, queryParameter="") {
+    const response = await fetch(`${apiEndpoint}${queryParameter}`, {
         method: "GET",
         headers: { 
             "Content-Type": "application/json",
