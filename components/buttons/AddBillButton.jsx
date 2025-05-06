@@ -12,8 +12,8 @@ export default function AddBillButton({ text, icon, apiUrl, sessionToken, catego
     const [error, setError] = useState(null);
     const [message, setMessage] = useState(null);
     const [formData, setFormData] = useState({
-        categoryId: categories[0]._id,
-        residenceId: residences[0]._id,
+        categoryId: categories[0]?._id,
+        residenceId: residences[0]?._id,
         amount: 0,
         status: "Unpaid",
         //dueDate: new Date().getDate(),
