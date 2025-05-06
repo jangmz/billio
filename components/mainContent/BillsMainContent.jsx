@@ -46,6 +46,12 @@ export default function BillsMainContent({ apiUrl, sessionToken, userId }) {
         setBills((prevBills) => [newBill, ...prevBills]);
     }
 
+    // update bills on delete
+    function handleDeleteBill(billId) {
+        const tempBills = bills.filter((bill) => bill._id !== billId);
+        setBills(tempBills);
+    }
+
     if (error) {
         return <AlertError error={error} />;
     }
@@ -68,7 +74,12 @@ export default function BillsMainContent({ apiUrl, sessionToken, userId }) {
                 </div>
             </div>
             {/* table of 50 recent bills */}
-            <BillsTable bills={bills} />
+            <BillsTable 
+                bills={bills} 
+                apiUrl={apiUrl}
+                sessionToken={sessionToken}
+                onDeleteBill={handleDeleteBill} // passing callback for updating state on delete
+            />
         </div>
     );
 }

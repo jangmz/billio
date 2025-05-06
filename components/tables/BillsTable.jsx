@@ -1,6 +1,9 @@
 "use client";
 
-export default function BillsTable({ bills }) {
+import { FaTrash } from "react-icons/fa";
+import DeleteBillButton from "../buttons/DeleteBillButton";
+
+export default function BillsTable({ bills, apiUrl, sessionToken, onDeleteBill }) {
     return (
         <div className="relative overflow-x-auto border-1 border-gray-200 sm:rounded-lg">
             <table className="w-full text-sm text-left text-gray-500">
@@ -10,6 +13,7 @@ export default function BillsTable({ bills }) {
                         <th scope="col" className="px-6 py-3">Category</th>
                         <th scope="col" className="px-6 py-3">Amount</th>
                         <th scope="col" className="px-6 py-3">Status</th>
+                        <th scope="col" className="px-6 py-3">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -20,6 +24,15 @@ export default function BillsTable({ bills }) {
                                 <td className="px-6 py-4">{bill.category}</td>
                                 <td className="px-6 py-4">{bill.amount}€</td>
                                 <td className="px-6 py-4">{bill.status}</td>
+                                <td className="px-6 py-4">
+                                    <DeleteBillButton 
+                                        icon={<FaTrash />}
+                                        billId={bill._id}
+                                        apiUrl={apiUrl}
+                                        sessionToken={sessionToken}
+                                        onDeleteBill={onDeleteBill}
+                                    />
+                                </td>
                             </tr>
                         ))
                     }
