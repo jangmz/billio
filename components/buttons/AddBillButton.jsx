@@ -52,6 +52,12 @@ export default function AddBillButton({ text, icon, apiUrl, sessionToken, catego
             const { message, bill } = await res.json();
             setMessage(message);
 
+            //console.log("Saved bill:", bill);
+
+            // retrieve residence name and category name, to be sent back
+            bill.category = categories.find(category => category._id === bill.categoryId).name;
+            bill.residence = residences.find(residence => residence._id === bill.residenceId).name;
+
             // callback to update the parent state
             if (onAddBill) {
                 onAddBill(bill);
@@ -59,6 +65,8 @@ export default function AddBillButton({ text, icon, apiUrl, sessionToken, catego
 
             // reset form
             setFormData({
+                categoryId: bill.categoryId,
+                residenceId: bill.residenceId,
                 amount: 0,
                 status: "Unpaid",
                 //dueDate: new Date().getDate(),
