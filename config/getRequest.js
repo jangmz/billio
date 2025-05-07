@@ -13,7 +13,7 @@ export async function retrieveData(sessionToken, apiEndpoint, queryParameter="")
 
     if (!response.ok) {
         const { error } = await response.json();
-        throw new Error(error || `Failed to fetch: ${endpoint}${queryParameter}`);
+        throw new Error(error || `Failed to fetch: ${apiEndpoint}${queryParameter}`);
     }
 
     const data = await response.json();

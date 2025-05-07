@@ -21,7 +21,7 @@ export default async function CategoriesPage() {
         const sessionToken = (await cookieStore).get("authjs.session-token")?.value;
 
         // retrieve user categories
-        const { categories } = await retrieveData(sessionToken, "/categories");
+        const { categories } = await retrieveData(sessionToken, `${apiUrl}/categories`);
 
         return (
             <div className="flex flex-col gap-6">
