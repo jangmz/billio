@@ -30,7 +30,7 @@ export async function GET(req, { params }) {
         if (bill?.error || !bill) throw new Error(bill?.error || "Failed to retrieve bill data");
 
         return NextResponse.json(
-            { message: "Bill retreieved", data: bill },
+            { message: "Bill retreieved", bill },
             { status: 200 }
         );
     } catch (error) {
@@ -55,7 +55,7 @@ export async function PUT(req, { params }) {
         if (updatedBill?.error || !updatedBill) throw new Error(updateBill?.error || "Failed to updated bill");
         
         return NextResponse.json(
-            { message: "Data updated", data: updatedBill },
+            { message: "Data updated", updatedBill },
             { status: 200 }
         )
     } catch (error) {
@@ -79,7 +79,7 @@ export async function DELETE(req, { params }) {
         if (deletedBill?.error || !deletedBill) throw new Error(deletedBill?.error || "Failed to delete a bill");
         
         return NextResponse.json(
-            { message: "Bill deleted", data: deletedBill },
+            { message: "Bill deleted", deletedBill },
             { status: 200 }
         );
     } catch (error) {
