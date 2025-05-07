@@ -25,9 +25,9 @@ export default function BillsMainContent({ apiUrl, sessionToken, userId }) {
                 const { categories } = await retrieveData(sessionToken, `${apiUrl}/categories`);
                 const { residences } = await retrieveData(sessionToken, `${apiUrl}/residences`, `?u=${userId}`);
 
-                console.log("Bills:", latestBills);
-                console.log("Categories:", categories);
-                console.log("Residences:", residences);                
+                //console.log("Bills:", latestBills);
+                //console.log("Categories:", categories);
+                //console.log("Residences:", residences);                
 
                 setBills(latestBills);
                 setCategories(categories);
@@ -50,6 +50,15 @@ export default function BillsMainContent({ apiUrl, sessionToken, userId }) {
     function handleDeleteBill(billId) {
         const tempBills = bills.filter((bill) => bill._id !== billId);
         setBills(tempBills);
+    }
+
+    // update bills on update
+    function handleUpdateBill(updatedBill) {
+        setBills((prevBills) => 
+            prevBills.map(bill =>
+                bill._id === updatedBill._id ? updatedBill : bill
+            )
+        );
     }
 
     if (error) {
@@ -76,8 +85,11 @@ export default function BillsMainContent({ apiUrl, sessionToken, userId }) {
             {/* table of 50 recent bills */}
             <BillsTable 
                 bills={bills} 
+                categories={categories} // for edit form
+                residences={residences} // for edit form
                 apiUrl={apiUrl}
                 sessionToken={sessionToken}
+                onUpdateBill={handleUpdateBill} // passing callback for updating state on update
                 onDeleteBill={handleDeleteBill} // passing callback for updating state on delete
             />
         </div>
