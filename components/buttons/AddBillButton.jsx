@@ -102,6 +102,7 @@ export default function AddBillButton({ text, icon, apiUrl, sessionToken, catego
                             <DropdownSelector 
                                 text={"Residence (required)"}
                                 name={"residenceId"}
+                                currentValue={formData.residenceId}
                                 options={residences}
                                 onChange={(e) => handleChange(e)}
                             />
@@ -109,6 +110,7 @@ export default function AddBillButton({ text, icon, apiUrl, sessionToken, catego
                                 text={"Category (required)"}
                                 name={"categoryId"}
                                 options={categories}
+                                currentValue={formData.categoryId}
                                 onChange={(e) => handleChange(e)}
                             />
                             <FormFieldsetRequired 
@@ -122,6 +124,7 @@ export default function AddBillButton({ text, icon, apiUrl, sessionToken, catego
                                 text={"Status (required)"}
                                 name={"status"}
                                 options={["Unpaid", "Paid"]}
+                                currentValue={formData.status}
                                 onChange={(e) => handleChange(e)}
                             />
                             {/*<FormFieldset 

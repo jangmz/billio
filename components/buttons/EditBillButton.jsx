@@ -99,6 +99,7 @@ export default function EditBillButton({ icon, bill, categories, residences, api
                                 text={"Status (required)"}
                                 name={"status"}
                                 options={["Unpaid", "Paid"]}
+                                currentValue={formData.status}
                                 onChange={(e) => handleChange(e)}
                             />
                             {/*<FormFieldset 
