@@ -160,6 +160,7 @@ export default function AddBillButton({ text, icon, apiUrl, sessionToken, catego
                                 <Button
                                     text={"Cancel"}
                                     type={"button"}
+                                    btnStyle={"btn-error"}
                                     onClick={() => document.getElementById("new_bill_modal").close()}
                                 />
                             </div>
