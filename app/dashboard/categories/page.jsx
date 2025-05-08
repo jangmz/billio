@@ -1,13 +1,6 @@
 import { validateSession } from "@/config/validateSession";
-import { retrieveData } from "@/config/getRequest";
 import { cookies } from "next/headers";
-import { FaPlus } from "react-icons/fa6";
 import AlertError from "@/components/alerts/AlertError";
-import AddCategoryButton from "@/components/buttons/AddCategoryButton";
-import AlertInfo from "@/components/alerts/AlertInfo";
-import CategoryCard from "@/components/cards/CategoryCard";
-import CategoriesList from "@/components/CategoriesList";
-import DashTitle from "@/components/DashTitle";
 import CategoriesMainContent from "@/components/mainContent/CategoriesMainContent";
 
 const apiUrl = process.env.API_URL;

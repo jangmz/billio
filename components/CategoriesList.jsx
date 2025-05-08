@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import AlertInfo from "./alerts/AlertInfo";
 import CategoryCard from "./cards/CategoryCard";
 
