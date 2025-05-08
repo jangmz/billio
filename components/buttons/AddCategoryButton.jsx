@@ -22,7 +22,7 @@ export default function AddCategoryButton({ text, icon, apiUrl, sessionToken, on
         setError(null);
 
         try {
-            const res = await fetch(`${apiUrl}/categories`, {
+            const response = await fetch(`${apiUrl}/categories`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -31,12 +31,12 @@ export default function AddCategoryButton({ text, icon, apiUrl, sessionToken, on
                 body: JSON.stringify(formData)
             });
     
-            if (!res.ok) {
-                const { error } = await res.json();
+            if (!response.ok) {
+                const { error } = await response.json();
                 throw new Error(error || "Unknown error occured.");
             }
 
-            const { message, category } = await res.json();
+            const { message, category } = await response.json();
             setMessage(message);
 
             // callback to update the parent state

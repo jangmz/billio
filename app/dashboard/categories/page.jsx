@@ -8,6 +8,7 @@ import AlertInfo from "@/components/alerts/AlertInfo";
 import CategoryCard from "@/components/cards/CategoryCard";
 import CategoriesList from "@/components/CategoriesList";
 import DashTitle from "@/components/DashTitle";
+import CategoriesMainContent from "@/components/mainContent/CategoriesMainContent";
 
 const apiUrl = process.env.API_URL;
 
@@ -20,30 +21,16 @@ export default async function CategoriesPage() {
         const cookieStore = cookies();
         const sessionToken = (await cookieStore).get("authjs.session-token")?.value;
 
-        // retrieve user categories
-        const { categories } = await retrieveData(sessionToken, `${apiUrl}/categories`);
+        if (!sessionToken) {
+            throw new Error("Session token is missing");
+        }
 
         return (
-            <div className="flex flex-col gap-6">
-                {/* Title and Top action menu */}
-                <div className="flex items-center justify-between">
-                    <DashTitle title={"Categories"} />
-                    <div className="">
-                        <AddCategoryButton 
-                            text="New category" 
-                            icon={<FaPlus/>} 
-                            apiUrl={apiUrl}
-                            sessionToken={sessionToken}
-                        />
-                    </div>
-                </div>
-                {/* Categories displayed */}
-                <CategoriesList 
-                    initialCategories={categories}
-                    apiUrl={apiUrl}
-                    sessionToken={sessionToken}
-                />
-            </div>
+            <CategoriesMainContent 
+                apiUrl={apiUrl}
+                sessionToken={sessionToken}
+                userId={session.user.id}
+            />
         );
     } catch (error) {
         console.error(error);

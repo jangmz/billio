@@ -7,7 +7,7 @@ import Button from "../buttons/Button";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function CategoryCard({ category, apiUrl, sessionToken }) {
+export default function CategoryCard({ category, apiUrl, sessionToken, onDeleteCategory, onUpdateCategory }) {
     const router = useRouter();
     const [error, setError] = useState(null);
     const [message, setMessage] = useState(null);
@@ -46,13 +46,12 @@ export default function CategoryCard({ category, apiUrl, sessionToken }) {
                 throw new Error(error || "Failed to delete category.");
             }
 
-            const { message } = await response.json();
+            const { message, deletedCategory } = await response.json();
+            onDeleteCategory(deletedCategory._id);
             setMessage(message);
         } catch (error) {
             console.error("Error deleting a category:", error);
             setError(error);
-        } finally {
-            // TODO: exit modal, refresh the page
         }
     }
 
@@ -80,7 +79,8 @@ export default function CategoryCard({ category, apiUrl, sessionToken }) {
                 throw new Error(error);
             }
 
-            const { message } = await res.json();
+            const { message, updatedCategory } = await res.json();
+            onUpdateCategory(updatedCategory);
             setMessage(message);
         } catch (error) {
             console.error(error);
