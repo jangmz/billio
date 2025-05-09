@@ -47,21 +47,6 @@ export default function ResidencesMainContent({ apiUrl, sessionToken, userId }) 
         setResidences((prevResidences) => [...prevResidences, newResidence]);
     }
 
-    // updating state on delete
-    function handleDeleteResidence(residenceId) {
-        const tempResidences = residences.filter((residence) => residence._id !== residenceId);
-        setResidences(tempResidences);
-    }
-
-    // updating state on update
-    function handleUpdateResidence(updatedResidence) {
-        setResidences((prevResidences) =>
-            prevResidences.map(residence =>
-                residence._id === updatedResidence._id ? updatedResidence : residence
-            )
-        )
-    }
-
     if (error) {
         return <AlertError error={error} />;
     }
@@ -82,13 +67,16 @@ export default function ResidencesMainContent({ apiUrl, sessionToken, userId }) 
                 </div>
             </div>
             {/*card*/}
-            <div className="grid grid-cols-1 gap-4 mb-4 md:grid-cols-2">
+            <div className="grid grid-cols-1 gap-4 mb-4 md:grid-cols-2 lg:grid-cols-3">
                 {
                     residences.length !== 0 &&
                     residences.map((residence) => (
                         <div key={residence._id} className="flex flex-col">
                             <Link href={`/dashboard/residences/${residence._id}`}>
-                                <DashResidenceCard residence={residence} pastMonth={extractTotalExpenses(residence)} />
+                                <DashResidenceCard 
+                                    residence={residence} 
+                                    pastMonth={extractTotalExpenses(residence)} 
+                                />
                             </Link>
                             {/*<Image src={residence.imageUrl} alt={`${residence.name} image`} width={96} height={32} />*/}
                         </div>
