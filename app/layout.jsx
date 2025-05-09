@@ -1,17 +1,17 @@
-import { Poppins } from "next/font/google";
+//import { Poppins } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/menus/Navbar";
 import Footer from "@/components/sections/Footer";
 import { auth } from "@/auth";
 
-const poppins = Poppins({
+/*const poppins = Poppins({
   weight: ["400", "700"],
   subset: ["latin"],
-});
+});*/
 
 export const metadata = {
   title: "Billio",
-  description: "The best expense tracking app for your house/apartment.",
+  description: "The best expense tracking app for your properties.",
   keywords: "expense tracker, utility expense tracker, apartment, house, landlord"
 };
 

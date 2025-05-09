@@ -16,21 +16,19 @@ export default async function DashboardLayout({ children }) {
   const session = await auth();
 
   return (
-    <html lang="en" className="h-full">
-      <body className="flex flex-col min-h-screen">
-        <header className="sticky top-0 z-50">
-          {
-            session?.user && <SideMenu />
-          }
-        </header>
-        <main>
-            <div className="p-4 sm:ml-64">
-                <div className="p-2">
-                    {children}
-                </div>
-            </div>
-        </main>
-      </body>
-    </html>
+    <body className="flex flex-col min-h-screen">
+      <header className="sticky top-0 z-50">
+        {
+          session?.user && <SideMenu />
+        }
+      </header>
+      <div>
+          <div className="p-4 sm:ml-64">
+              <div className="p-2">
+                  {children}
+              </div>
+          </div>
+      </div>
+    </body>
   );
 }
