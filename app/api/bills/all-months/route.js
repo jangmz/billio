@@ -47,7 +47,7 @@ export async function GET(req) {
         }
 
         return NextResponse.json(
-            { message: "Data retrieved", data: allMonths },
+            { message: "Data retrieved", allMonths },
             { status: 200 }
         );
     } catch (error) {

@@ -25,7 +25,7 @@ export async function GET(req) {
         }
 
         return NextResponse.json(
-            { message: "Data retrieved", data: currentMonth },
+            { message: "Data retrieved", currentMonth },
             { status: 200 }
         );
     } catch (error) {
