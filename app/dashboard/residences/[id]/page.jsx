@@ -190,7 +190,11 @@ export default async function ResidenceOverviewPage({ params }) {
                                                 }
                                             </tr>                    
                                         ))
-                                        : <AlertInfo information="No data yet." />
+                                        : <tr>
+                                            <td>
+                                                <AlertInfo information="No data yet." />
+                                            </td>
+                                        </tr>
                                     }
                                 </tbody>
                             </table>
