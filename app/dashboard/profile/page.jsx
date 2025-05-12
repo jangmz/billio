@@ -1,25 +1,26 @@
 import { auth } from "@/auth";
+import AvatarImage from "@/components/AvatarImage";
 import { checkSession } from "@/config/checkSession";
 import Image from "next/image";
+import ProfileMainContent from "@/components/mainContent/ProfileMainContent";
+import { validateSession } from "@/config/validateSession";
+import { cookies } from "next/headers";
+
+const apiUrl = process.env.API_URL;
 
 export default async function ProfilePage() {
-    await checkSession();
-    const session = await auth();
+    // validate session
+    const session = await validateSession();
+
+    // retrieve cookies
+    const cookieStore = cookies();
+    const sessionToken = (await cookieStore).get("authjs.session-token")?.value;
 
   return (
-    <div>
-        <h1>Name: {session?.user?.name}</h1>
-        <h2>Email: {session?.user?.email}</h2>
-        {
-          session?.user?.image && 
-          <Image 
-            src={session.user.image} 
-            width={48} 
-            height={48} 
-            alt={"avatar"} 
-            style={{ borderRadius: "50%" }}
-          />
-        }
-      </div>
+    <ProfileMainContent 
+      userData={session.user}
+      apiUrl={apiUrl}
+      sessionToken={sessionToken}
+    />  
   )
 }
