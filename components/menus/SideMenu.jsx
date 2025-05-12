@@ -83,12 +83,6 @@ export default function SideMenu() {
                         </Link>
                     </li>
                     <li>
-                        <Link href="/dashboard/settings" className="flex item-center rounded-lg p-2 hover:bg-yellow-400 group">
-                            <IoSettingsSharp size={28} />
-                            <span className="ms-3">Settings</span>
-                        </Link>
-                    </li>
-                    <li>
                         <SignOutMenuButton />
                     </li>
                     <li>
