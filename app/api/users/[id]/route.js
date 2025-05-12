@@ -1,18 +1,18 @@
 import { NextResponse } from "next/server";
 import { getUserById, updateUserById, deleteUserById } from "@/_actions/userActions";
 import { authenticate } from "@/config/authMiddleware";
+import { validateSession } from "@/config/validateSession";
 
 // GET /api/users/[id] -> retrieve user data
 export async function GET(req, { params }) {
-    const user = await authenticate(req);
-    
-    if (user instanceof NextResponse) return user; // if the returned value is NextResponse, return that authentication error
-    
+    // validate session
+    const session = await validateSession();
+
     try {
         const userId = await params.id;
         
         // check if logged user is the same as for which it wants to retrieve data
-        if (userId !== user.id) {
+        if (userId !== session.user.id) {
             const error = new Error("Not authorized");
             error.status = 401;
             throw error;
@@ -36,15 +36,14 @@ export async function GET(req, { params }) {
 
 // PUT /api/users/[id] -> update user data
 export async function PUT(req, { params }) {
-    const user = await authenticate(req);
-    
-    if (user instanceof NextResponse) return user; // if the returned value is NextResponse, return that authentication error
-    
+    // validate session
+    const session = await validateSession();
+
     try {
         const userId = await params.id;
 
         // check if logged user is the same as for which it wants to update data
-        if (userId !== user.id) {
+        if (userId !== session.user.id) {
             const error = new Error("Not authorized");
             error.status = 401;
             throw error;
@@ -69,15 +68,14 @@ export async function PUT(req, { params }) {
 
 // DELETE /api/users/[id] -> delete user data
 export async function DELETE(req, { params }) {
-    const user = await authenticate(req);
-    
-    if (user instanceof NextResponse) return user; // if the returned value is NextResponse, return that authentication error
-  
+    // validate session
+    const session = await validateSession();
+
     try {
         const userId = await params.id;
 
         // check if logged user is the same as for which it wants to retrieve data
-        if (userId !== user.id) {
+        if (userId !== session.user.id) {
             const error = new Error("Not authorized");
             error.status = 401;
             throw error;
