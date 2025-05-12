@@ -1,8 +1,6 @@
 import { validateSession } from "@/config/validateSession";
 import { cookies } from "next/headers";
-import DashResidenceCard from "@/components/cards/DashResidenceCard";
 import DashTitle from "@/components/DashTitle";
-import ResidenceSelector from "@/components/ResidenceSelector";
 import BigDashExpenses from "@/components/BigDashExpenses";
 import AlertError from "@/components/alerts/AlertError";
 
