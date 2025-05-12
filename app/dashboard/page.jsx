@@ -90,24 +90,41 @@ export default async function Dashboard() {
             return pastMonthExpenses;
         }
 
+        function combineCurrentMonthExpenses() {
+            let currentMonthExpenses = 0;
+            
+            totalExpenses.map(property => {
+                currentMonthExpenses += property.expenses[property.expenses.length - 1]?.totalExpenses || 0;
+            });
+
+            //console.log("Total expenses for last month:", currentMonthExpenses);
+            return currentMonthExpenses;
+        }
+
         return (
             <div>
                 {/* 1st row (residence cards with total expenses for past month) */}
-                <DashTitle title={"Past months expenses"} />
-                <div className="grid grid-cols-1 gap-4 mb-4">
-                    {
-                        <div className="flex flex-col items-center justify-center gap-1 p-3 h-32 mb-4 rounded-sm bg-gray-200">
-                            <span className="text-5xl font-bold">
-                                {combinePastMonthExpenses()} €
-                            </span>
-                            <span className="text-sm text-gray-500">
-                                For all residences
-                            </span>
-                        </div>
-                    }
+                <DashTitle title={"Total Expenses"} />
+                <div className="grid grid-cols-2 gap-4 mb-4">
+                    <div className="flex flex-col items-center justify-center gap-1 p-3 h-32 mb-4 rounded-sm bg-gray-200">
+                        <span className="text-5xl font-bold">
+                            {combineCurrentMonthExpenses()} €
+                        </span>
+                        <span className="text-sm text-gray-500">
+                            Current Month
+                        </span>
+                    </div>
+                    <div className="flex flex-col items-center justify-center gap-1 p-3 h-32 mb-4 rounded-sm bg-gray-200">
+                        <span className="text-5xl font-bold">
+                            {combinePastMonthExpenses()} €
+                        </span>
+                        <span className="text-sm text-gray-500">
+                            Previous Month
+                        </span>
+                    </div>
                 </div>
                 {/* 2nd row (total amount per category per residence) */}
-                <DashTitle title={"Expenses past 6 months"} />
+                <DashTitle title={"Expenses per residence"} />
                 <BigDashExpenses residences={residences} totalExpenses={totalExpenses} />
                 {/* 3rd row (last 20 bills displayed in a table format) */}
                 <DashTitle title={"Recent bills"} />
