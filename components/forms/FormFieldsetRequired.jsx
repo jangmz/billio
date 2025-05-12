@@ -1,4 +1,4 @@
-export default function FormFieldsetRequired({type, name, title, placeholder, value, onChange}) {
+export default function FormFieldsetRequired({type, name, title, placeholder, value ="", onChange}) {
     return (
         <fieldset className="fieldset">
             <legend className="fieldset-legend">{title}</legend>

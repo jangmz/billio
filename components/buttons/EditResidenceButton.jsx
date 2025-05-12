@@ -1,21 +1,37 @@
 "use client";
 
 import { FaEdit } from "react-icons/fa"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "./Button";
 import FormFieldset from "../forms/FormFieldset";
 import AlertError from "../alerts/AlertError";
 import AlertSuccess from "../alerts/AlertSuccess";
+import FormFieldsetRequired from "../forms/FormFieldsetRequired";
 
-export default function EditButton({ residenceData, apiUrl, sessionToken, className }) {
+/*
+    TODO: check if residenceData is undefined and why is it not displayed in input
+*/
+
+export default function EditButton({ residenceData, apiUrl, sessionToken, className, onResidenceUpdate }) {
     const [error, setError] = useState(null);
     const [message, setMessage] = useState(null);
     const [formData, setFormData] = useState({
-        name: residenceData.name,
-        address: residenceData.address 
+        name: residenceData?.name || "",
+        address: residenceData?.address || "" 
     });
 
+    useEffect(() => {
+        if (residenceData) {
+            setFormData({
+                name: residenceData.name,
+                address: residenceData.address
+            });
+        }
+    }, [residenceData]);
+
     function handleClick() {
+        setMessage(null);
+        setError(null);
         document.getElementById("edit_residence_modal").showModal();
     }
 
@@ -26,7 +42,7 @@ export default function EditButton({ residenceData, apiUrl, sessionToken, classN
 
     async function handleSubmit(e) {
         e.preventDefault();
-        console.log("Data to submit:", formData);
+        //console.log("Data to submit:", formData);
         setMessage(null);
         setError(null);
 
@@ -41,11 +57,17 @@ export default function EditButton({ residenceData, apiUrl, sessionToken, classN
             });
     
             if (!res.ok) {
-                const {error} = await res.json();
+                const { error } = await res.json();
                 throw new Error(error);
             }
 
-            const {message} = await res.json();
+            const { message, updatedResidence } = await res.json();
+
+            // callback to update the state
+            if (onResidenceUpdate) {
+                onResidenceUpdate(updatedResidence);
+            }
+
             setMessage(message);
         } catch (error) {
             console.error(error);
@@ -71,14 +93,14 @@ export default function EditButton({ residenceData, apiUrl, sessionToken, classN
                             {
                                 message && <AlertSuccess message={message} />
                             }
-                            <FormFieldset 
+                            <FormFieldsetRequired 
                                 title="Name"
                                 type="text"
                                 name="name"
                                 value={formData.name}
                                 onChange={(e) => handleChange(e)}
                             />
-                            <FormFieldset 
+                            <FormFieldsetRequired 
                                 title="Address"
                                 type="text"
                                 name="address"
