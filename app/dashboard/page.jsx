@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import DashTitle from "@/components/DashTitle";
 import BigDashExpenses from "@/components/BigDashExpenses";
 import AlertError from "@/components/alerts/AlertError";
+import ExpenseDisplayCard from "@/components/cards/ExpenseDisplayCard";
 
 const apiUrl = process.env.API_URL;
 
@@ -104,26 +105,21 @@ export default async function Dashboard() {
                 {/* 1st row (residence cards with total expenses for past month) */}
                 <DashTitle title={"Total Expenses"} />
                 <div className="grid grid-cols-2 gap-4 mb-4">
-                    <div className="flex flex-col items-center justify-center gap-1 p-3 h-32 mb-4 rounded-sm bg-gray-200">
-                        <span className="text-5xl font-bold">
-                            {combineCurrentMonthExpenses()} €
-                        </span>
-                        <span className="text-sm text-gray-500">
-                            Current Month
-                        </span>
-                    </div>
-                    <div className="flex flex-col items-center justify-center gap-1 p-3 h-32 mb-4 rounded-sm bg-gray-200">
-                        <span className="text-5xl font-bold">
-                            {combinePastMonthExpenses()} €
-                        </span>
-                        <span className="text-sm text-gray-500">
-                            Previous Month
-                        </span>
-                    </div>
+                    <ExpenseDisplayCard 
+                        value={combineCurrentMonthExpenses()}
+                        text={"Current month"}
+                    />
+                    <ExpenseDisplayCard 
+                        value={combinePastMonthExpenses()}
+                        text={"Previous month"}
+                    />
                 </div>
                 {/* 2nd row (total amount per category per residence) */}
                 <DashTitle title={"Expenses per residence"} />
-                <BigDashExpenses residences={residences} totalExpenses={totalExpenses} />
+                <BigDashExpenses 
+                    residences={residences} 
+                    totalExpenses={totalExpenses} 
+                />
                 {/* 3rd row (last 20 bills displayed in a table format) */}
                 <DashTitle title={"Recent bills"} />
                 <div className="relative overflow-x-auto border-1 border-gray-200 sm:rounded-lg">

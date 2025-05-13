@@ -25,18 +25,13 @@ export default function BigDashExpenses({ residences, totalExpenses }) {
     const [selectedResidence, setSelectedResidence] = useState(residences[0]);
     const [displayedExpenses, setDisplayedExpenses] = useState([]);
 
-    //console.log(displayedExpenses);
-
     useEffect(() => {
-        //console.log("Searching for property:", selectedResidence.name);
         if (!totalExpenses || totalExpenses.length === 0) {
             setDisplayedExpenses([]);
         } else {
             const data = totalExpenses?.find((property) => property.residence === selectedResidence.name);
             setDisplayedExpenses(data ? data.expenses : []);
         }
-
-        //console.log("Expenses are set.");
     }, [selectedResidence]);
 
     function changeResidence(e) {
@@ -62,7 +57,7 @@ export default function BigDashExpenses({ residences, totalExpenses }) {
     };
 
     return (
-        <div className="flex flex-col items-start justify-between p-3 h-120 mb-4 rounded-sm bg-gray-200">
+        <div className="flex flex-col items-start justify-between p-3 h-120 mb-4 rounded-sm bg-base-200">
             <select onChange={changeResidence} className="rounded-lg p-2 bg-base-100 hover:bg-yellow-400">
                 {
                     residences.map((residence) => (
