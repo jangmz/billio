@@ -13,6 +13,8 @@ export default function ProfileMainContent({ userData, apiUrl, sessionToken }) {
             const confirmed = confirm("Are you sure you want to delete your account? This action cannot be undone.");
             if (!confirmed) return;
 
+            console.log(`Delete user API: ${apiUrl}/users/${userData.id}`);
+
             // API for deleting account
             /*const response = await fetch(`${apiUrl}/users/${userData.id}`,{
                 method: "DELETE",
