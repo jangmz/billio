@@ -11,6 +11,7 @@ import Image from "next/image";
 import MonthExpenseChart from "../charts/MonthExpenseChart";
 import { retrieveData } from "@/config/getRequest";
 import { useState, useEffect } from "react";
+import ResidenceDataInfo from "../cards/ResidenceDataInfo";
 
 export default function ResidencesEditMainContent({ apiUrl, sessionToken, userId, residenceId }) {
     const [residence, setResidence] = useState({});
@@ -72,22 +73,13 @@ export default function ResidencesEditMainContent({ apiUrl, sessionToken, userId
             </div>
             <div className="grid gap-4">
                 {/* basic information of the property with image */}
-                <div className="flex justify-center gap-8">
-                    <div className="p-6 border-1 border-gray-200 rounded-xl">
-                        <h1 className="text-4xl mb-3">{residence.name}</h1>
-                        <p>Address: {residence.address}</p>
-                        <p>Created: {formatDate(residence.createdAt)}</p>
-                        <p>Last updated: {formatDateWithTime(residence.updatedAt)}</p>
-                    </div>
-                    {/* TODO: insert image */}
-                    <Image 
-                        src="/cottage_placeholder.jpg" 
-                        alt="property image" 
-                        width={400} 
-                        height={300}
-                        className="rounded-xl"
-                    />
-                </div>
+                <ResidenceDataInfo
+                    srcImg={"/cottage_placeholder.jpg" }
+                    altImg={"property image"}
+                    wImg={400}
+                    hImg={300}
+                    residence={residence}
+                />
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-15">
                     {/* current month expenses chart by category */}
                     <div>
