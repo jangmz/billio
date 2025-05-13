@@ -1,4 +1,4 @@
-export default function FormFieldsetRequired({type, name, title, placeholder, value ="", onChange}) {
+export default function FormFieldsetRequired({type, name, title, placeholder, value ="", style, onChange}) {
     return (
         <fieldset className="fieldset">
             <legend className="fieldset-legend">{title}</legend>
@@ -9,7 +9,7 @@ export default function FormFieldsetRequired({type, name, title, placeholder, va
                 id={name} 
                 value={value} 
                 placeholder={placeholder} 
-                className="input w-100" 
+                className={`input w-100 ${style}`}
                 required
             />
         </fieldset>
