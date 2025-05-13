@@ -95,11 +95,31 @@ export default function CategoryCard({ category, apiUrl, sessionToken, onDeleteC
 
     return (
         <>
-            <button type="button" onClick={handleClick} className="hover:cursor-pointer">
+            {/*<button type="button" onClick={handleClick} className="hover:cursor-pointer">
                 <div className="flex items-center justify-center h-32 rounded-sm p-3 bg-gray-200">
                     <p className="text-3xl">{category.name}</p>
                 </div>
-            </button>
+            </button>*/}
+            <div className="card bg-base-200 shadow-md">
+                <div className="card-body">
+                    <h2 className="card-title justify-center text-lg font-bold">{category.name}</h2>
+                    {/*<p className="text-sm text-gray-500">Category ID: {category._id}</p>*/}
+                    <div className="card-actions justify-center mt-4">
+                        <button 
+                            className="btn btn-primary btn-sm"
+                            onClick={handleClick}
+                        >
+                            Edit
+                        </button>
+                        <button
+                            className="btn btn-error btn-sm"
+                            onClick={handleDelete}
+                        >
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
             <dialog id={`update_category_${category._id}_modal`} className="modal">
                 <div className="modal-box text-center">
                     <h3 className="font-bold text-xl">Edit category</h3>
