@@ -32,11 +32,12 @@ export default function ContactForm({ user, apiUrl, sessionToken }) {
 
         setFormData({
             name: user.name,
-            feedback: "",
+            email: user.email,
+            message: "",
         });
 
         /*try {
-            const response = await fetch(`${apiUrl}/contact`, {
+            const response = await fetch(`${apiUrl}/sendEmail`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -78,7 +79,7 @@ export default function ContactForm({ user, apiUrl, sessionToken }) {
                     <FormTextareaRequired 
                         title={"Share your thoughts and suggestions"}
                         name={"feedback"}
-                        value={formData.feedback}
+                        value={formData.message}
                         onChange={(e) => handleChange(e)}
                     />
                     <Button 
