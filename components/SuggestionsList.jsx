@@ -27,7 +27,7 @@ export default function SuggestionsList({ suggestionsArr }) {
                                         <Button 
                                             text={`Upvote ${suggestion.upvotes}`}
                                             btnStyle={"btn-outline btn-sm"}
-                                            onClick={""} // handleUpvote(suggestion._id)
+                                            //onClick={} // handleUpvote(suggestion._id)
                                         />
                                     </div>
                                 </div>
