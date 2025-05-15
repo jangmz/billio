@@ -7,6 +7,7 @@ import { retrieveData } from "@/config/getRequest";
 import AddBillButton from "@/components/buttons/AddBillButton";
 import BillsTable from "@/components/tables/BillsTable";
 import { useState, useEffect } from "react";
+import AlertInfo from "../alerts/AlertInfo";
 
 const billsLimit = 50;
 
@@ -83,15 +84,18 @@ export default function BillsMainContent({ apiUrl, sessionToken, userId }) {
                 </div>
             </div>
             {/* table of 50 recent bills */}
-            <BillsTable 
-                bills={bills} 
-                categories={categories} // for edit form
-                residences={residences} // for edit form
-                apiUrl={apiUrl}
-                sessionToken={sessionToken}
-                onUpdateBill={handleUpdateBill} // passing callback for updating state on update
-                onDeleteBill={handleDeleteBill} // passing callback for updating state on delete
-            />
+            {
+                bills.length !== 0 ?
+                <BillsTable 
+                    bills={bills} 
+                    categories={categories} // for edit form
+                    residences={residences} // for edit form
+                    apiUrl={apiUrl}
+                    sessionToken={sessionToken}
+                    onUpdateBill={handleUpdateBill} // passing callback for updating state on update
+                    onDeleteBill={handleDeleteBill} // passing callback for updating state on delete
+                /> : <AlertInfo information={"No bills yet, create one!"} />
+            }
         </div>
     );
 }

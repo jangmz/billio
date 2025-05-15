@@ -9,6 +9,7 @@ import { retrieveData } from "@/config/getRequest";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import AddResidenceButton from "../buttons/AddResidenceButton";
+import AlertInfo from "../alerts/AlertInfo";
 
 export default function ResidencesMainContent({ apiUrl, sessionToken, userId }) {
     const [residences, setResidences] = useState([]);
@@ -69,7 +70,7 @@ export default function ResidencesMainContent({ apiUrl, sessionToken, userId }) 
             {/*card*/}
             <div className="grid grid-cols-1 gap-4 mb-4 md:grid-cols-2 lg:grid-cols-3">
                 {
-                    residences.length !== 0 &&
+                    residences.length !== 0 ?
                     residences.map((residence) => (
                         <div key={residence._id} className="flex flex-col">
                             <Link href={`/dashboard/residences/${residence._id}`}>
@@ -80,7 +81,7 @@ export default function ResidencesMainContent({ apiUrl, sessionToken, userId }) 
                             </Link>
                             {/*<Image src={residence.imageUrl} alt={`${residence.name} image`} width={96} height={32} />*/}
                         </div>
-                    ))
+                    )) : <AlertInfo information={"No residences yet, create one!"} />
                 }
             </div>
         </div>  

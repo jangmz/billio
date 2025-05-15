@@ -19,7 +19,7 @@ export default function CategoriesList({ categories, apiUrl, sessionToken, onDel
                         />
                     </div>
                 ))
-                : <AlertInfo information="No data yet" />
+                : <AlertInfo information="No categories yet, create one!" />
             }
         </div>
     )
