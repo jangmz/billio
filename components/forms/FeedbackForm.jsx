@@ -12,14 +12,14 @@ export default function ContactForm({ user, apiUrl, sessionToken }) {
     const [message, setMessage] = useState(null);
     const [formData, setFormData] = useState({
         name: user.name,
+        email: user.email,
+        formName: "feedback",
         feedback: "",
     });
 
     // handle change
     function handleChange(e) {
         const { name, value } = e.target;
-        //console.log("Name:",name);
-        //console.log("Value:", value);
         setFormData((prevData) => ({ ...prevData, [name]: value}));
     }
 
@@ -28,21 +28,11 @@ export default function ContactForm({ user, apiUrl, sessionToken }) {
         e.preventDefault();
         setError(null);
         setMessage(null);
-        console.log("Submitted form:", formData);
 
-        setFormData({
-            name: user.name,
-            email: user.email,
-            message: "",
-        });
-
-        /*try {
+        try {
             const response = await fetch(`${apiUrl}/sendEmail`, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Cookies: `authjs.session-token=${sessionToken}`
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formData)
             });
 
@@ -56,7 +46,14 @@ export default function ContactForm({ user, apiUrl, sessionToken }) {
         } catch (error) {
             console.error(error);
             setError(error.message);
-        }*/
+        } finally {
+            setFormData({
+                name: user.name,
+                email: user.email,
+                formName: "feedback",
+                message: "",
+            });
+        }
     }
     
     return (
@@ -78,7 +75,7 @@ export default function ContactForm({ user, apiUrl, sessionToken }) {
                     />
                     <FormTextareaRequired 
                         title={"Share your thoughts and suggestions"}
-                        name={"feedback"}
+                        name={"message"}
                         value={formData.message}
                         onChange={(e) => handleChange(e)}
                     />
