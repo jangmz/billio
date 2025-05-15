@@ -1,4 +1,4 @@
-export default function FormTextareaRequired({ title, name, placeholder, onChange }) {
+export default function FormTextareaRequired({ title, name, value, placeholder, onChange }) {
     return (
         <fieldset className="fieldset">
             <legend className="fieldset-legend">{title}</legend>
@@ -9,6 +9,7 @@ export default function FormTextareaRequired({ title, name, placeholder, onChang
                 placeholder={placeholder}
                 rows={6}
                 onChange={onChange}
+                value={value}
                 required
             ></textarea>
         </fieldset>
