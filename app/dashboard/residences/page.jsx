@@ -1,13 +1,7 @@
 import AlertError from "@/components/alerts/AlertError";
-import ButtonWithIcon from "@/components/buttons/ButtonWithIcon";
-import DashResidenceCard from "@/components/cards/DashResidenceCard";
-import DashTitle from "@/components/DashTitle";
 import ResidencesMainContent from "@/components/mainContent/ResidencesMainContent";
 import { validateSession } from "@/config/validateSession";
 import { cookies } from "next/headers";
-import Image from "next/image";
-import Link from "next/link";
-import { FaPlus } from "react-icons/fa6";
 
 const apiUrl = process.env.API_URL;
 
