@@ -46,7 +46,7 @@ export default async function SupportFeedbackPage() {
             content={<FeedbackForm user={session.user} apiUrl={apiUrl} sessionToken={sessionToken} />}
           />
         </div>
-        <SuggestionsList suggestionsArr={test} />
+        <SuggestionsList suggestionsArr={[]} />
       </div>
     );
   } catch (error) {
