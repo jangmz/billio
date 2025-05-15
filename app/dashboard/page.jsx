@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import DashTitle from "@/components/DashTitle";
 import BigDashExpenses from "@/components/BigDashExpenses";
 import AlertError from "@/components/alerts/AlertError";
+import AlertInfo from "@/components/alerts/AlertInfo";
 import ExpenseDisplayCard from "@/components/cards/ExpenseDisplayCard";
 
 const apiUrl = process.env.API_URL;
@@ -106,11 +107,11 @@ export default async function Dashboard() {
                 <DashTitle title={"Total Expenses"} />
                 <div className="grid grid-cols-2 gap-4 mb-4">
                     <ExpenseDisplayCard 
-                        value={combineCurrentMonthExpenses()}
+                        value={combineCurrentMonthExpenses() || 0}
                         text={"Current month"}
                     />
                     <ExpenseDisplayCard 
-                        value={combinePastMonthExpenses()}
+                        value={combinePastMonthExpenses() || 0}
                         text={"Previous month"}
                     />
                 </div>
@@ -135,6 +136,7 @@ export default async function Dashboard() {
                         </thead>
                         <tbody>
                             {
+                                latestBills.length !== 0 ?
                                 latestBills.map((bill) => (
                                     <tr key={bill._id} className="odd:bg-white even:bg-gray-50 border-b border-gray-200">
                                         <td scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{bill.residence}</td>
@@ -143,7 +145,7 @@ export default async function Dashboard() {
                                         <td className="px-6 py-4">{bill.dueDate || "N/A"}</td>
                                         <td className="px-6 py-4">{bill.status}</td>
                                     </tr>
-                                ))
+                                )) : <AlertInfo information="No data yet." />
                             }
                         </tbody>
                     </table>
