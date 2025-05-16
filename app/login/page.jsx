@@ -31,9 +31,9 @@ export default function LoginPage() {
                     </div>
                 )
             }
-            <div className="border-1 rounded-2xl border-base-300 shadow-2xl p-7">
-                <LogInForm signInAction={loginCredentials} />
-                <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-base-300"/>
+            <div className="border-1 rounded-2xl border-base-300 shadow-2xl p-7 w-100">
+                {/*<LogInForm signInAction={loginCredentials} />
+                <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-base-300"/>*/}
                 <LogInProviders />
             </div>
         </div>
