@@ -1,6 +1,11 @@
-export default function Button({ text, btnStyle, onClick, type }) {
+export default function Button({ text, icon, btnStyle, onClick, type }) {
   return (
-    <button className={`btn ${btnStyle}`} onClick={onClick} type={type}>
+    <button 
+      className={`btn ${btnStyle} flex gap-2 items-center`} 
+      onClick={onClick} 
+      type={type}
+    >
+      {icon}
       {text}
     </button>
   )
