@@ -1,7 +1,3 @@
-import { auth } from "@/auth";
-import AvatarImage from "@/components/AvatarImage";
-import { checkSession } from "@/config/checkSession";
-import Image from "next/image";
 import ProfileMainContent from "@/components/mainContent/ProfileMainContent";
 import { validateSession } from "@/config/validateSession";
 import { cookies } from "next/headers";
