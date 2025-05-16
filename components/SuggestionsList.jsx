@@ -2,15 +2,46 @@
 
 import { useEffect, useState } from "react"
 import Button from "./buttons/Button";
+import { Mosaic } from "react-loading-indicators";
+import AlertError from "./alerts/AlertError";
+import { retrieveData } from "@/config/getRequest";
 
-export default function SuggestionsList({ suggestionsArr }) {
+export default function SuggestionsList({ apiUrl, sessionToken }) {
     const [suggestions, setSuggestions] = useState([]);
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (suggestionsArr) {
-            setSuggestions(suggestionsArr);
+        async function fetchSuggestions() {
+            try {
+                setTimeout(() => {
+                    console.log("Retrieve feedbacks from database");
+                }, 2000);
+                /*
+                const { feedbacks } = await retrieveData(sessionToken, `${apiUrl}/suggestions`);
+                setSuggestions(feedbacks);*/
+            } catch (error) {
+                console.error(error);
+                setError(error.message)
+            } finally {
+                setLoading(false);
+            }
         }
-    }, [suggestionsArr]);
+
+        fetchSuggestions();
+    }, [apiUrl, sessionToken]);
+
+    if (error) {
+        return <AlertError error={error} />;
+    }
+
+    if (loading) {
+        return (    
+            <div className="flex h-100 justify-center items-center">
+                <Mosaic color="#fbc700" size="medium" text="" textColor="" />
+            </div>
+        );
+    }
 
     return (
         <div className="w-full max-w-4xl">

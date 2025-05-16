@@ -9,13 +9,6 @@ import { GrContact } from "react-icons/gr";
 import { VscFeedback } from "react-icons/vsc";
 
 const apiUrl = process.env.API_URL;
-const test = [
-  {
-    name: "test name",
-    feedback: "This is a test feedback",
-    upvotes: 3
-  }
-]
 
 export default async function SupportFeedbackPage() {
   try {
@@ -46,7 +39,7 @@ export default async function SupportFeedbackPage() {
             content={<FeedbackForm user={session.user} apiUrl={apiUrl} sessionToken={sessionToken} />}
           />
         </div>
-        <SuggestionsList suggestionsArr={[]} />
+        <SuggestionsList apiUrl={apiUrl} sessionToken={sessionToken} />
       </div>
     );
   } catch (error) {
