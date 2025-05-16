@@ -29,7 +29,7 @@ export default async function Dashboard() {
 
         if (!residencesResponse.ok) {
             const errData = await residencesResponse.json();
-            throw new Error(`Error: ${errData.error} || "Unspecified error"`);
+            throw new Error(`Error: ${errData.error}` || "Unspecified error");
         }
     
         const { residences } = await residencesResponse.json();
