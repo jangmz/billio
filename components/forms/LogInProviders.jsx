@@ -1,6 +1,6 @@
 import Button from "../buttons/Button";
 
-import { loginGitHub } from "@/_actions/authActions";
+import { loginGitHub, loginGoogle } from "@/_actions/authActions";
 import { FaGithub } from "react-icons/fa";
 import { FaGoogle } from "react-icons/fa";
 
@@ -11,7 +11,7 @@ export default function LogInProviders() {
                 icon={<FaGoogle />}
                 text={"Log in with Google"}
                 btnStyle={"btn-primary"}
-                
+                onClick={loginGoogle}
             />
             <Button 
                 text="Log in with GitHub"
