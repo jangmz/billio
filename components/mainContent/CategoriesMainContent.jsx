@@ -7,10 +7,12 @@ import AddCategoryButton from "../buttons/AddCategoryButton";
 import CategoriesList from "../CategoriesList";
 import { retrieveData } from "@/config/getRequest";
 import { useState, useEffect } from "react";
+import { Mosaic } from "react-loading-indicators";
 
 export default function CategoriesMainContent({ apiUrl, sessionToken, userId }) {
     const [categories, setCategories] = useState([]);
     const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         async function fetchData() {
@@ -21,6 +23,8 @@ export default function CategoriesMainContent({ apiUrl, sessionToken, userId }) 
             } catch (error) {
                 console.error(error);
                 setError(error.message);
+            } finally {
+                setLoading(false);
             }
         }
 
@@ -51,6 +55,14 @@ export default function CategoriesMainContent({ apiUrl, sessionToken, userId }) 
         return <AlertError error={error} />;
     }
     
+    if (loading) {
+        return (    
+            <div className="flex h-100 justify-center items-center">
+                <Mosaic color="#fbc700" size="medium" text="" textColor="" />
+            </div>
+        );
+    }
+
     return (
          <div className="flex flex-col gap-6">
             {/* Title and Top action menu */}

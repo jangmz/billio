@@ -8,6 +8,7 @@ import AddBillButton from "@/components/buttons/AddBillButton";
 import BillsTable from "@/components/tables/BillsTable";
 import { useState, useEffect } from "react";
 import AlertInfo from "../alerts/AlertInfo";
+import { Mosaic } from "react-loading-indicators";
 
 const billsLimit = 50;
 
@@ -16,6 +17,7 @@ export default function BillsMainContent({ apiUrl, sessionToken, userId }) {
     const [categories, setCategories] = useState([]);
     const [residences, setResidences] = useState([]);
     const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         async function fetchData() {
@@ -36,6 +38,8 @@ export default function BillsMainContent({ apiUrl, sessionToken, userId }) {
             } catch (error) {
                 console.error(error);
                 setError(error.message);
+            } finally {
+                setLoading(false);
             }
         }
 
@@ -64,6 +68,14 @@ export default function BillsMainContent({ apiUrl, sessionToken, userId }) {
 
     if (error) {
         return <AlertError error={error} />;
+    }
+
+    if (loading) {
+        return (    
+            <div className="flex h-100 justify-center items-center">
+                <Mosaic color="#fbc700" size="medium" text="" textColor="" />
+            </div>
+        );
     }
 
     return (
