@@ -23,6 +23,10 @@ export async function loginGitHub() {
     await signIn("github", { redirectTo: "/" });
 }
 
+export async function loginGoogle() {
+    await signIn("google", { redirectTo: "/" });
+}
+
 export async function logout() {
     await signOut({ redirectTo: "/" });
 }
