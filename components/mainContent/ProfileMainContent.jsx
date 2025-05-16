@@ -4,6 +4,7 @@ import { logout } from "@/_actions/authActions";
 import AvatarImage from "@/components/AvatarImage";
 import { useState } from "react";
 import AlertError from "../alerts/AlertError";
+import DefaultUser from "../../public/default_user.png";
 
 export default function ProfileMainContent({ userData, apiUrl, sessionToken }) {
     const [error, setError] = useState(null);
@@ -42,7 +43,7 @@ export default function ProfileMainContent({ userData, apiUrl, sessionToken }) {
             <div className="card w-full max-w-md bg-base-100 shadow-md">
                 <div className="card-body items-center text-center">
                     <AvatarImage
-                        src={userData.image || "/default-avatar.png"}
+                        src={userData.image || DefaultUser}
                         width={64}
                         height={64}
                         alt="User Avatar"
