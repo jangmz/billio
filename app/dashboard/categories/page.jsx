@@ -14,10 +14,6 @@ export default async function CategoriesPage() {
         const cookieStore = cookies();
         const sessionToken = (await cookieStore).get("authjs.session-token")?.value;
 
-        if (!sessionToken) {
-            throw new Error("Session token is missing");
-        }
-
         return (
             <CategoriesMainContent 
                 apiUrl={apiUrl}
