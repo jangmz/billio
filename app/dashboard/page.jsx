@@ -130,6 +130,7 @@ export default async function Dashboard() {
                             <thead className="text-xs text-gray-700 uppercase bg-base-50">
                                 <tr>
                                     <th scope="col" className="px-6 py-3">Residence</th>
+                                    <th scope="col" className="px-6 py-3">For Month</th>
                                     <th scope="col" className="px-6 py-3">Category</th>
                                     <th scope="col" className="px-6 py-3">Amount</th>
                                     <th scope="col" className="px-6 py-3">Due date</th>
@@ -141,6 +142,7 @@ export default async function Dashboard() {
                                     latestBills.map((bill) => (
                                         <tr key={bill._id} className="odd:bg-white even:bg-gray-50 border-b border-gray-200">
                                             <td scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{bill.residence}</td>
+                                            <td className="px-6 py-4">{bill.forMonth || "N/A" }</td>
                                             <td className="px-6 py-4">{bill.category}</td>
                                             <td className="px-6 py-4">{bill.amount}€</td>
                                             <td className="px-6 py-4">{bill.dueDate || "N/A"}</td>
