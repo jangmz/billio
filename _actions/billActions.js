@@ -75,7 +75,8 @@ export async function getLatestBills(userId, billsLimit) {
           residence: "$residence.name",
           category: "$category.name",
           amount: 1,
-          status: 1
+          status: 1,
+          forMonth: 1,
       }}
     ]);
     return data;
@@ -414,13 +415,18 @@ export async function getBillByIdAndUser(billId, userId) {
 
 // update bill data by id and userid
 export async function updateBill(billData) {
+  //console.log("Update data:", billData);
   try {
     await connectDB();
+
+    // remove id and userId from the update object
+    const { id, userId, ...fieldsToUpdate } = billData;
     const updatedBill = await Bill.findOneAndUpdate(
       { _id: billData.id, userId: billData.userId },
-      billData,
+      { $set: fieldsToUpdate },
       { new: true }
     );
+    //console.log("updated:", updatedBill);
     return updatedBill;
   } catch (error) {
     return { error: error.message };
