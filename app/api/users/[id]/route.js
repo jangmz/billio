@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { getUserById, updateUserById, deleteUserById } from "@/_actions/userActions";
-import { authenticate } from "@/config/authMiddleware";
 import { validateSession } from "@/config/validateSession";
 
 // GET /api/users/[id] -> retrieve user data
