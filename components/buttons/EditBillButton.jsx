@@ -17,7 +17,7 @@ export default function EditBillButton({ icon, bill, categories, residences, api
         categoryId: categories.find(category => category.name === bill.category)._id, // finds and sets the ID instead of only the name
         amount: bill.amount,
         status: bill.status,
-        forMonth: bill.forMonth,
+        forMonth: bill.forMonth || months[new Date().getMonth() - 1],
      });
 
     function handleOpen() {
