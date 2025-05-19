@@ -17,7 +17,7 @@ export default function ProfileMainContent({ userData, apiUrl, sessionToken }) {
             console.log(`Delete user API: ${apiUrl}/users/${userData.id}`);
 
             // API for deleting account
-            /*const response = await fetch(`${apiUrl}/users/${userData.id}`,{
+            const response = await fetch(`${apiUrl}/users/${userData.id}`,{
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
@@ -28,7 +28,7 @@ export default function ProfileMainContent({ userData, apiUrl, sessionToken }) {
             if (!response.ok) {
                 const { error } = await response.json();
                 throw new Error(error || "Unknown error when deleting data");
-            }*/
+            }
 
             logout();
         } catch (err) {
@@ -51,7 +51,7 @@ export default function ProfileMainContent({ userData, apiUrl, sessionToken }) {
                     />
                     <h2 className="card-title">{userData.name || "Anonymous User"}</h2>
                     <p className="text-sm text-gray-500">{userData.email || "No email provided"}</p>
-                    <p className="text-sm text-gray-500">Joined: {"N/A"}</p>
+                    {/*<p className="text-sm text-gray-500">Joined: {userData.createdAt || "N/A"}</p>*/}
                     {error && <AlertError error={error} />}
                     <div className="card-actions mt-4">
                         <button
