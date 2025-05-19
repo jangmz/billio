@@ -20,6 +20,12 @@ const billSchema = new Schema({
         type: Number,
         required: true,
     },
+    forMonth: {
+        type: String,
+        enum: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+        default: "January",
+        required: true,
+    },
     dueDate: {
         type: Date,
         default: null,
