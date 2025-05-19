@@ -124,31 +124,34 @@ export default async function Dashboard() {
                 {/* 3rd row (last 20 bills displayed in a table format) */}
                 <DashTitle title={"Recent bills"} />
                 <div className="relative overflow-x-auto border-1 border-gray-200 sm:rounded-lg">
-                    <table className="w-full text-sm text-left text-gray-500">
-                        <thead className="text-xs text-gray-700 uppercase bg-base-50">
-                            <tr>
-                                <th scope="col" className="px-6 py-3">Residence</th>
-                                <th scope="col" className="px-6 py-3">Category</th>
-                                <th scope="col" className="px-6 py-3">Amount</th>
-                                <th scope="col" className="px-6 py-3">Due date</th>
-                                <th scope="col" className="px-6 py-3">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                latestBills.length !== 0 ?
-                                latestBills.map((bill) => (
-                                    <tr key={bill._id} className="odd:bg-white even:bg-gray-50 border-b border-gray-200">
-                                        <td scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{bill.residence}</td>
-                                        <td className="px-6 py-4">{bill.category}</td>
-                                        <td className="px-6 py-4">{bill.amount}€</td>
-                                        <td className="px-6 py-4">{bill.dueDate || "N/A"}</td>
-                                        <td className="px-6 py-4">{bill.status}</td>
-                                    </tr>
-                                )) : <AlertInfo information="No data yet." />
-                            }
-                        </tbody>
-                    </table>
+                    {
+                        latestBills.length !== 0 
+                        ? <table className="w-full text-sm text-left text-gray-500">
+                            <thead className="text-xs text-gray-700 uppercase bg-base-50">
+                                <tr>
+                                    <th scope="col" className="px-6 py-3">Residence</th>
+                                    <th scope="col" className="px-6 py-3">Category</th>
+                                    <th scope="col" className="px-6 py-3">Amount</th>
+                                    <th scope="col" className="px-6 py-3">Due date</th>
+                                    <th scope="col" className="px-6 py-3">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    latestBills.map((bill) => (
+                                        <tr key={bill._id} className="odd:bg-white even:bg-gray-50 border-b border-gray-200">
+                                            <td scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{bill.residence}</td>
+                                            <td className="px-6 py-4">{bill.category}</td>
+                                            <td className="px-6 py-4">{bill.amount}€</td>
+                                            <td className="px-6 py-4">{bill.dueDate || "N/A"}</td>
+                                            <td className="px-6 py-4">{bill.status}</td>
+                                        </tr>
+                                    ))
+                                }
+                            </tbody>
+                        </table>
+                        : <AlertInfo information="No data yet." />
+                    }
                 </div>
             </div>
         );
