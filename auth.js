@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import GitHub from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
-import { getUser } from "./_actions/userActions";
+import { getUser, insertUser } from "./_actions/userActions";
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
     providers: [
@@ -28,6 +28,19 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
                     token.id = existingUser.id; // save user ID in token
                 } else {
                     console.error("User not found in the database:", user.email);
+
+                    // TODO: check Stripe webhook if user has paid
+
+                    // create new user account
+                    console.log("Creating new user account...");
+                    const newUser = await insertUser({
+                        name: user.name,
+                        email: user.email,
+                        image: user.image,
+                    });
+
+                    // set token id
+                    token.id = newUser.id;
                 }
             }            
             return token;
