@@ -2,7 +2,7 @@ import { insertUser, getUser } from "@/_actions/userActions";
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 
-// POST /api/auth/register
+// POST /api/auth/register -> for login credentials
 export async function POST(req) {
     try {
         // validate that request has a body
