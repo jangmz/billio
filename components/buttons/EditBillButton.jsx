@@ -7,6 +7,8 @@ import AlertError from "../alerts/AlertError";
 import AlertSuccess from "../alerts/AlertSuccess";
 import Button from "./Button";
 
+const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
 export default function EditBillButton({ icon, bill, categories, residences, apiUrl, sessionToken, onUpdateBill }) {
     const [error, setError] = useState(null);
     const [message, setMessage] = useState(null);
@@ -14,7 +16,8 @@ export default function EditBillButton({ icon, bill, categories, residences, api
         residenceId: residences.find(residence => residence.name === bill.residence)._id, // finds and sets the ID instead of only the name
         categoryId: categories.find(category => category.name === bill.category)._id, // finds and sets the ID instead of only the name
         amount: bill.amount,
-        status: bill.status
+        status: bill.status,
+        forMonth: bill.forMonth,
      });
 
     function handleOpen() {
@@ -93,6 +96,13 @@ export default function EditBillButton({ icon, bill, categories, residences, api
                                 type="number"
                                 name="amount"
                                 value={formData.amount}
+                                onChange={(e) => handleChange(e)}
+                            />
+                            <DropdownSelector
+                                text={"Month of the bill (required)"}
+                                name={"forMonth"}
+                                options={months}
+                                currentValue={formData.forMonth}
                                 onChange={(e) => handleChange(e)}
                             />
                             <DropdownSelector 

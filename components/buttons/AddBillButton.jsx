@@ -8,6 +8,8 @@ import AlertSuccess from "../alerts/AlertSuccess";
 import Button from "./Button";
 import DropdownSelector from "../forms/DropdownSelector";
 
+const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
 export default function AddBillButton({ text, icon, apiUrl, sessionToken, categories, residences, onAddBill }) {
     const [error, setError] = useState(null);
     const [message, setMessage] = useState(null);
@@ -15,6 +17,7 @@ export default function AddBillButton({ text, icon, apiUrl, sessionToken, catego
         categoryId: categories[0]?._id,
         residenceId: residences[0]?._id,
         amount: 0,
+        forMonth: months[new Date().getMonth() - 1], // default is set to previous month
         status: "Unpaid",
         //dueDate: new Date().getDate(),
         //recurring: false, // true/false
@@ -68,6 +71,7 @@ export default function AddBillButton({ text, icon, apiUrl, sessionToken, catego
                 categoryId: bill.categoryId,
                 residenceId: bill.residenceId,
                 amount: 0,
+                forMonth: months[new Date().getMonth() - 1],
                 status: "Unpaid",
                 //dueDate: new Date().getDate(),
                 //recurring: false,
@@ -118,6 +122,13 @@ export default function AddBillButton({ text, icon, apiUrl, sessionToken, catego
                                 type="number"
                                 name="amount"
                                 value={formData.amount}
+                                onChange={(e) => handleChange(e)}
+                            />
+                            <DropdownSelector
+                                text={"Month of the bill (required)"}
+                                name={"forMonth"}
+                                options={months}
+                                currentValue={formData.forMonth}
                                 onChange={(e) => handleChange(e)}
                             />
                             <DropdownSelector 
