@@ -2,7 +2,6 @@
 
 import { logout } from "@/_actions/authActions";
 import { FaSignOutAlt } from "react-icons/fa";
-import Link from "next/link";
 
 export default function SignOutMenuButton() {
   return (
