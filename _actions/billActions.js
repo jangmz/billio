@@ -6,6 +6,18 @@ import Category from "@/models/categoryModel";
 import connectDB from "@/config/connectDB";
 import { connect, Types } from "mongoose";
 
+const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+function getLastNMonths(months, currentMonthIndex, n) {
+  const result = [];
+
+  for (let i = 0; i < n; i++) {
+    let idx = (currentMonthIndex - i + 12) % 12;
+    result.push(months[idx]);
+  }
+  return result;
+}
+
 // insert bill
 export async function insertBill(billData) {
   try {
@@ -155,27 +167,34 @@ export async function allMonthsBills(userId, residenceId) {
 export async function totalExpensesHalfYear(userId, residenceId) {
   try {
     await connectDB();
+
+    const now = new Date();
+    const currentMonthIndex = now.getMonth();
+    const last6Months = getLastNMonths(months, currentMonthIndex - 1, 6);
+
     const pastHalfYear = await Bill.aggregate([
       { 
         $match: {
           userId: new Types.ObjectId(userId),
-          createdAt: {
+          forMonth: { $in: last6Months },
+          /*createdAt: {
               $gte: new Date(new Date().setMonth(new Date().getMonth() - 6))
-          }
+          }*/
         }
       },
       {
           $group: {
               _id: {
                   residenceId: "$residenceId",
-                  year: { $year: "$createdAt" },
-                  month: { $month: "$createdAt" }
+                  forMonth: "$forMonth",
+                  //year: { $year: "$createdAt" },
+                  //month: { $month: "$createdAt" }
               },
               totalExpenses: { $sum: "$amount" }
           }
       },
       {
-          $sort: { "_id.residenceId": 1, "_id.year": 1, "_id.month": 1 }
+          $sort: { "_id.residenceId": 1, "_id.forMonth": 1 /*"_id.year": 1, "_id.month": 1*/ }
       },
       {
           $lookup: {
@@ -192,8 +211,9 @@ export async function totalExpensesHalfYear(userId, residenceId) {
           residence: { $first: "$residence.name" },
           expenses: {
             $push: {
-              year: "$_id.year",
-              month: "$_id.month",
+              forMonth: "$_id.forMonth",
+              //year: "$_id.year",
+              //month: "$_id.month",
               totalExpenses: { $round: ["$totalExpenses", 2] }
             }
           }
