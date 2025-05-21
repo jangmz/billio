@@ -13,6 +13,8 @@ import { retrieveData } from "@/config/getRequest";
 import { useState, useEffect } from "react";
 import ResidenceDataInfo from "../cards/ResidenceDataInfo";
 
+const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
 export default function ResidencesEditMainContent({ apiUrl, sessionToken, userId, residenceId }) {
     const [residence, setResidence] = useState({});
     const [lastMonth, setLastMonth] = useState([]);
@@ -89,7 +91,7 @@ export default function ResidencesEditMainContent({ apiUrl, sessionToken, userId
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-15">
                     {/* current month expenses chart by category */}
                     <div>
-                        <h2 className="text-2xl text-center mb-2">(Current Month)</h2>
+                        <h2 className="text-2xl text-center mb-2">{months[new Date().getMonth() - 1]}</h2>
                         {
                             currentMonth.length > 0 
                             ? <MonthExpenseChart data={currentMonth} />
@@ -98,7 +100,7 @@ export default function ResidencesEditMainContent({ apiUrl, sessionToken, userId
                     </div>
                     {/* last month expenses chart by category */}
                     <div>
-                        <h2 className="text-2xl text-center mb-2">(Previous Month)</h2>
+                        <h2 className="text-2xl text-center mb-2">{months[new Date().getMonth() - 2]}</h2>
                         
                         {
                             lastMonth.length > 0 
@@ -129,15 +131,6 @@ export default function ResidencesEditMainContent({ apiUrl, sessionToken, userId
                                     allMonths.map(monthData =>(
                                         <tr key={monthData.month + monthData.year} className="odd:bg-white even:bg-gray-50 border-b border-gray-200">
                                             <td scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{monthData.month} ({monthData.year})</td>
-                                            {/*
-                                                categories.map(category => (
-                                                    monthData.categories.map(catData => (
-                                                        category.name === catData.category 
-                                                        && 
-                                                        <td key={category._id} className="px-6 py-4">{`${catData.totalAmount} €` || "No data"}</td>
-                                                    ))
-                                                ))
-                                            */}
                                             {
                                                 categories.map(category => {
                                                     const catData = monthData.categories.find(cat => cat.category === category.name);
