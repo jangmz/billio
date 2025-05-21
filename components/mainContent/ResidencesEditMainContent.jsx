@@ -32,6 +32,12 @@ export default function ResidencesEditMainContent({ apiUrl, sessionToken, userId
                 const { categories } = await retrieveData(sessionToken, `${apiUrl}/categories`); // all categories
                 //console.log("data fetched.");
 
+                /*console.log("Residence data:", residence);
+                console.log("Last month bills by category:", lastMonth);
+                console.log("Current month bills data:", currentMonth);
+                console.log("All months bills data:", allMonths);
+                console.log("Categories data:", categories);*/
+
                 setResidence(residence);
                 setLastMonth(lastMonth);
                 setCurrentMonth(currentMonth);
