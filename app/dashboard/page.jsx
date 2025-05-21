@@ -74,7 +74,7 @@ export default async function Dashboard() {
         function combinePastMonthExpenses() {
             let pastMonthExpenses = 0;
 
-            console.log("combining past month expenses:", months[now.getMonth() - 2])
+            //console.log("combining past month expenses:", months[now.getMonth() - 2])
 
             totalExpenses.map(property => {
                 property.expenses.map(expense => { // in each property check in expenses for past month
@@ -84,14 +84,14 @@ export default async function Dashboard() {
                 })
             })
 
-            console.log("Total expenses for last month:", pastMonthExpenses);
+            //console.log("Total expenses for last month:", pastMonthExpenses);
             return pastMonthExpenses;
         }
 
         function combineCurrentMonthExpenses() {
             let currentMonthExpenses = 0;
 
-            console.log("combining current month expenses:",months[now.getMonth() - 1]);
+            //console.log("combining current month expenses:",months[now.getMonth() - 1]);
 
             totalExpenses.map(property => {
                 property.expenses.map(expense => { // in each property check in expenses for past month
@@ -101,7 +101,7 @@ export default async function Dashboard() {
                 })
             })
 
-            console.log("Total expenses for current month:", currentMonthExpenses);
+            //console.log("Total expenses for current month:", currentMonthExpenses);
             return currentMonthExpenses;
         }
 
