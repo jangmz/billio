@@ -1,4 +1,6 @@
 import CardLanding from "../CardLanding"
+import Link from "next/link";
+import Button from "../buttons/Button";
 
 export default function PropertiesSection() {
   return (
@@ -31,6 +33,12 @@ export default function PropertiesSection() {
                     text="With Billio, you can easily track, manage, and optimize your housing expenses, ensuring clarity and peace of mind throughout your financial journey."
                 />
             </div>
+            <Link href="/login" className="mt-6"> {/* link to stripe checkout */}
+                <Button 
+                    text={"SIGN UP NOW"} //{"GET ACCESS"}
+                    btnStyle={"btn-primary btn-lg"}
+                />
+            </Link>
         </div> 
     </section>
   )

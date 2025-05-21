@@ -1,4 +1,6 @@
 import ColoredCard from "../ColoredCard";
+import Link from "next/link";
+import Button from "../buttons/Button";
 
 const cons = [
     "hard to learn and use",
@@ -13,7 +15,7 @@ const pros = [
     "designed for all devices",
     "unlimited custom categories",
     "unlimited residences",
-    "one time payment"
+    "FREE"
 ];
 
 export default function ProblemsSection() {
@@ -39,6 +41,13 @@ export default function ProblemsSection() {
                     color="green"
                 />
             </div>
+            {/* button */}
+            <Link href="/login" className="mt-6"> {/* link to stripe checkout */}
+                <Button 
+                    text={"SIGN UP NOW"} //{"GET ACCESS"}
+                    btnStyle={"btn-primary btn-lg"}
+                />
+            </Link>
         </div>
     </section>
   )

@@ -18,7 +18,7 @@ export default async function Home() {
       <HeroSection />
       <PropertiesSection />
       <ProblemsSection />
-      <PricingSection />
+      {/*<PricingSection />*/}
       <FaqSection />
     </div>
   );

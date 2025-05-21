@@ -10,7 +10,7 @@ export default function HeroSection() {
     <section id="hero" className="relative overflow-hidden">
         <div className="hero bg-base-200 min-h-screen">
             <div className="hero-content text-center">
-                <div className="max-w-4xl">
+                <div className="max-w-4xl flex flex-col items-center">
                     <h1 className="text-7xl font-bold">
                         <span className="underline decoration-amber-400 decoration-7">
                             Effortlessly
@@ -41,8 +41,8 @@ export default function HeroSection() {
                     </div>*/}
                     <Link href="/login"> {/* link to stripe checkout */}
                         <Button 
-                            text={"GET ACCESS"}
-                            btnStyle={"btn-primary"}
+                            text={"SIGN UP"} //{"GET ACCESS"}
+                            btnStyle={"btn-primary btn-lg"}
                         />
                     </Link>
                 </div>
