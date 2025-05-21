@@ -12,6 +12,9 @@ import AddResidenceButton from "../buttons/AddResidenceButton";
 import AlertInfo from "../alerts/AlertInfo";
 import { Mosaic } from "react-loading-indicators";
 
+const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const now = new Date(); // retrieves current month in number: 0 -> Jan, 1 -> Feb (reffers to months array)
+
 export default function ResidencesMainContent({ apiUrl, sessionToken, userId }) {
     const [residences, setResidences] = useState([]);
     const [totalExpenses, setTotalExpenses] = useState([]);
@@ -38,13 +41,21 @@ export default function ResidencesMainContent({ apiUrl, sessionToken, userId }) 
 
     // helper function for extracting total expenses for past month
     function extractTotalExpenses(residence) {
-        const lastMonthExpenses = totalExpenses.find((property) => property.residence === residence.name);
+        let totalExpense = 0;
+        const propertyData = totalExpenses.find((property) => property.residence === residence.name);
+        console.log("last month expenses:", propertyData);
         
-        if (!lastMonthExpenses) {
+        if (!propertyData) {
             return null;
         } else {
-            return lastMonthExpenses.expenses[lastMonthExpenses.expenses.length - 1]?.totalExpenses || 0;
+            propertyData.expenses.map(expense => {
+                if (expense.forMonth === months[now.getMonth() - 1]) {
+                    totalExpense = expense.totalExpenses;
+                }
+            });
         }
+
+        return totalExpense;
     }
 
     // updating state on new inserting
@@ -68,7 +79,7 @@ export default function ResidencesMainContent({ apiUrl, sessionToken, userId }) 
         <div className="flex flex-col gap-6">
             {/* title and top action menu */}
             <div className="flex justify-between">
-                <DashTitle title={"Residences"} />
+                <DashTitle title={`Residences (${months[now.getMonth() - 1]})`} />
                 <div className="">
                     <AddResidenceButton 
                         text={"New residence"}
@@ -88,7 +99,7 @@ export default function ResidencesMainContent({ apiUrl, sessionToken, userId }) 
                             <Link href={`/dashboard/residences/${residence._id}`}>
                                 <DashResidenceCard 
                                     residence={residence} 
-                                    pastMonth={extractTotalExpenses(residence)} 
+                                    totalExpense={extractTotalExpenses(residence)} 
                                 />
                             </Link>
                             {/*<Image src={residence.imageUrl} alt={`${residence.name} image`} width={96} height={32} />*/}

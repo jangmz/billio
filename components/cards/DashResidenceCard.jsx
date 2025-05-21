@@ -1,4 +1,4 @@
-export default function DashResidenceCard({ residence, pastMonth }) {
+export default function DashResidenceCard({ residence, totalExpense }) {
 
   return (
     <div className="card bg-base-200 shadow-md hover:shadow-lg transition-shadow">
@@ -7,7 +7,7 @@ export default function DashResidenceCard({ residence, pastMonth }) {
         <p className="text-sm text-gray-500">{residence.address}</p>
         <div className="mt-4 text-center">
           <p className="text-2xl font-bold">
-            {pastMonth !== null ? `${pastMonth}€` : "No data yet"}
+            {totalExpense !== null ? `${totalExpense}€` : "No data yet"}
           </p>
         </div>
       </div>
