@@ -18,6 +18,7 @@ export default function EditBillButton({ icon, bill, categories, residences, api
         amount: bill.amount,
         status: bill.status,
         forMonth: bill.forMonth || months[new Date().getMonth() - 1],
+        forYear: bill.forYear || new Date().getFullYear(),
      });
 
     function handleOpen() {
@@ -91,27 +92,45 @@ export default function EditBillButton({ icon, bill, categories, residences, api
                                 currentValue={formData.categoryId}
                                 onChange={(e) => handleChange(e)}
                             />
-                            <FormFieldsetRequired 
-                                title="Amount (required)"
-                                type="number"
-                                name="amount"
-                                value={formData.amount}
-                                onChange={(e) => handleChange(e)}
-                            />
-                            <DropdownSelector
-                                text={"Month of the bill (required)"}
-                                name={"forMonth"}
-                                options={months}
-                                currentValue={formData.forMonth}
-                                onChange={(e) => handleChange(e)}
-                            />
-                            <DropdownSelector 
-                                text={"Status (required)"}
-                                name={"status"}
-                                options={["Unpaid", "Paid"]}
-                                currentValue={formData.status}
-                                onChange={(e) => handleChange(e)}
-                            />
+                            <div className="flex gap-2">
+                                <FormFieldsetRequired 
+                                    title="Amount (required)"
+                                    type="number"
+                                    name="amount"
+                                    style={"w-auto"}
+                                    value={formData.amount}
+                                    onChange={(e) => handleChange(e)}
+                                />
+                                <DropdownSelector 
+                                    text={"Status (required)"}
+                                    name={"status"}
+                                    options={["Unpaid", "Paid"]}
+                                    style={"w-auto"}
+                                    currentValue={formData.status}
+                                    onChange={(e) => handleChange(e)}
+                                />
+                            </div>
+                            <div className="flex gap-2">
+                                <DropdownSelector
+                                    text={"Month of the bill (required)"}
+                                    name={"forMonth"}
+                                    options={months}
+                                    style={"w-auto"}
+                                    currentValue={formData.forMonth}
+                                    onChange={(e) => handleChange(e)}
+                                />
+                                <FormFieldsetRequired 
+                                    title="Year of the bill (required)"
+                                    type="number"
+                                    name="forYear"
+                                    style={"w-auto"}
+                                    value={formData.forYear}
+                                    onChange={(e) => handleChange(e)}
+                                />
+                            </div>
+                            
+                            
+                            
                             {/*<FormFieldset 
                                 title="Due date"
                                 type="date"

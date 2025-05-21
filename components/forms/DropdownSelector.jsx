@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-export default function DropdownSelector({ text, name, options, currentValue, onChange }) {
+export default function DropdownSelector({ text, name, options, style, currentValue, onChange }) {
     const [selectedValue, setSelectedValue] = useState(options[0]);
 
     useEffect(() => {
@@ -23,7 +23,7 @@ export default function DropdownSelector({ text, name, options, currentValue, on
             <select 
                 id={name} 
                 name={name} 
-                className="select w-100" 
+                className={`select w-100 ${style}`}
                 value={selectedValue}
                 onChange={changeOption}
             >

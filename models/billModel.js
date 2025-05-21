@@ -26,6 +26,11 @@ const billSchema = new Schema({
         default: "January",
         required: true,
     },
+    forYear: {
+        type: Number,
+        default: new Date().getFullYear(),
+        required: true,
+    },
     dueDate: {
         type: Date,
         default: null,
