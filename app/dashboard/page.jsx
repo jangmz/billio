@@ -7,6 +7,8 @@ import AlertInfo from "@/components/alerts/AlertInfo";
 import ExpenseDisplayCard from "@/components/cards/ExpenseDisplayCard";
 
 const apiUrl = process.env.API_URL;
+const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const now = new Date(); // retrieves current month in number: 0 -> Jan, 1 -> Feb (reffers to months array)
 
 export default async function Dashboard() {
     try {
@@ -69,35 +71,45 @@ export default async function Dashboard() {
 
         const { latestBills } = await recentBillsResponse.json();
 
-        function extractTotalExpenses(residence) {
-            const lastMonthExpenses = totalExpenses.find((property) => property.residence === residence.name);
-            
-            if (!lastMonthExpenses) {
-                return null;
-            } else {
-                return lastMonthExpenses.expenses[lastMonthExpenses.expenses.length - 2].totalExpenses;
-            }
-        }
-
         function combinePastMonthExpenses() {
             let pastMonthExpenses = 0;
-            
-            totalExpenses.map(property => {
-                pastMonthExpenses += property.expenses[property.expenses.length - 2]?.totalExpenses || 0;
-            });
 
-            //console.log("Total expenses for last month:", pastMonthExpenses);
+            console.log("combining past month expenses:", months[now.getMonth() - 2])
+
+            totalExpenses.map(property => {
+                property.expenses.map(expense => { // in each property check in expenses for past month
+                    if (expense.forMonth === months[now.getMonth() - 2]) {
+                        //console.log(`Residence: ${property.residence}, total expenses (${expense.forMonth}): ${expense.totalExpenses}`);
+                        pastMonthExpenses += expense.totalExpenses;
+                        //console.log(`Past Month expenses: ${pastMonthExpenses}`);
+                    }
+                })
+            })
+
+            console.log("Total expenses for last month:", pastMonthExpenses);
             return pastMonthExpenses;
         }
 
         function combineCurrentMonthExpenses() {
             let currentMonthExpenses = 0;
-            
-            totalExpenses.map(property => {
-                currentMonthExpenses += property.expenses[property.expenses.length - 1]?.totalExpenses || 0;
-            });
 
-            //console.log("Total expenses for last month:", currentMonthExpenses);
+            console.log("combining current month expenses:",months[now.getMonth() - 1]);
+
+            totalExpenses.map(property => {
+                property.expenses.map(expense => { // in each property check in expenses for past month
+                    if (expense.forMonth === months[now.getMonth() - 1]) {
+                        //console.log(`Residence: ${property.residence}, total expenses (${expense.forMonth}): ${expense.totalExpenses}`);
+                        currentMonthExpenses += expense.totalExpenses;
+                        //console.log(`Current month expenses: ${currentMonthExpenses}`);
+                    }
+                })
+            })
+            
+            /*totalExpenses.map(property => {
+                currentMonthExpenses += property.expenses[property.expenses.length - 1]?.totalExpenses || 0;
+            });*/
+
+            console.log("Total expenses for current month:", currentMonthExpenses);
             return currentMonthExpenses;
         }
 
@@ -108,11 +120,11 @@ export default async function Dashboard() {
                 <div className="grid grid-cols-2 gap-4 mb-4">
                     <ExpenseDisplayCard 
                         value={combineCurrentMonthExpenses() || 0}
-                        text={"Current month"}
+                        text={months[now.getMonth() - 1]}
                     />
                     <ExpenseDisplayCard 
                         value={combinePastMonthExpenses() || 0}
-                        text={"Previous month"}
+                        text={months[now.getMonth() - 2]}
                     />
                 </div>
                 {/* 2nd row (total amount per category per residence) */}
