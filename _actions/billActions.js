@@ -89,6 +89,7 @@ export async function getLatestBills(userId, billsLimit) {
           amount: 1,
           status: 1,
           forMonth: 1,
+          forYear: 1,
       }}
     ]);
     return data;
