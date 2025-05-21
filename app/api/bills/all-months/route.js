@@ -35,13 +35,6 @@ export async function GET(req) {
         // last months expenses
         const allMonths = await allMonthsBills(userId, residenceId);
 
-        // change month numbers into month names: 2025-04 -> April
-        allMonths.map(monthData => {
-            const monthName = months[parseInt(monthData.month.slice(5)) - 1];
-            monthData.year = monthData.month.slice(0, 4);
-            monthData.month = monthName;
-        });
-
         if (allMonths?.error || !allMonths) {
             throw new Error(allMonths?.error || "Failed to retrieve data.");
         }

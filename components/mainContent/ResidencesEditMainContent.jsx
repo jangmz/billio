@@ -89,7 +89,7 @@ export default function ResidencesEditMainContent({ apiUrl, sessionToken, userId
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-15">
                     {/* current month expenses chart by category */}
                     <div>
-                        <h2 className="text-2xl text-center mb-2">Current Month</h2>
+                        <h2 className="text-2xl text-center mb-2">(Current Month)</h2>
                         {
                             currentMonth.length > 0 
                             ? <MonthExpenseChart data={currentMonth} />
@@ -98,7 +98,7 @@ export default function ResidencesEditMainContent({ apiUrl, sessionToken, userId
                     </div>
                     {/* last month expenses chart by category */}
                     <div>
-                        <h2 className="text-2xl text-center mb-2">Previous Month</h2>
+                        <h2 className="text-2xl text-center mb-2">(Previous Month)</h2>
                         
                         {
                             lastMonth.length > 0 
@@ -129,7 +129,7 @@ export default function ResidencesEditMainContent({ apiUrl, sessionToken, userId
                                     allMonths.map(monthData =>(
                                         <tr key={monthData.month + monthData.year} className="odd:bg-white even:bg-gray-50 border-b border-gray-200">
                                             <td scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{monthData.month} ({monthData.year})</td>
-                                            {
+                                            {/*
                                                 categories.map(category => (
                                                     monthData.categories.map(catData => (
                                                         category.name === catData.category 
@@ -137,6 +137,16 @@ export default function ResidencesEditMainContent({ apiUrl, sessionToken, userId
                                                         <td key={category._id} className="px-6 py-4">{`${catData.totalAmount} €` || "No data"}</td>
                                                     ))
                                                 ))
+                                            */}
+                                            {
+                                                categories.map(category => {
+                                                    const catData = monthData.categories.find(cat => cat.category === category.name);
+                                                    return (
+                                                        <td key={category._id} className="px-6 py-4">
+                                                            {catData ? `${catData.totalAmount} €` : "/"}
+                                                        </td>
+                                                    );
+                                                })
                                             }
                                         </tr>                    
                                     ))

@@ -103,16 +103,14 @@ export async function allMonthsBills(userId, residenceId) {
     await connectDB();
 
     const now = new Date();
-    const startOfCurrentMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+    const currentMonthIndex = now.getMonth();
+    const currentYear = now.getFullYear();
 
     const allMonths = await Bill.aggregate([
       {
         $match: {
           userId: new Types.ObjectId(userId),
           residenceId: new Types.ObjectId(residenceId),
-          createdAt: {
-            $lt: startOfCurrentMonth
-          }
         }
       },
       {
@@ -129,7 +127,8 @@ export async function allMonthsBills(userId, residenceId) {
       {
         $group: {
           _id: {
-            month: { $dateToString: { format: "%Y-%m", date: "$createdAt" } },
+            month: "$forMonth", 
+            year: "$forYear",
             category: "$category.name"
           },
           totalAmount: { $sum: "$amount" },
@@ -137,7 +136,7 @@ export async function allMonthsBills(userId, residenceId) {
       },
       {
         $group: {
-          _id: "$_id.month",
+          _id: { month: "$_id.month", year: "$_id.year" }, 
           categories: {
             $push: {
               category: "$_id.category",
@@ -149,12 +148,29 @@ export async function allMonthsBills(userId, residenceId) {
       {
         $project: {
           _id: 0,
-          month: "$_id",
+          month: "$_id.month",
+          year: "$_id.year",
           categories: 1,
         }
       },
       {
-        $sort: { month: -1 }
+        $addFields: {
+          monthIndex: {
+            $indexOfArray: [
+              [
+                "January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
+              ],
+            "$month"
+            ]
+          }
+        }
+      }, {
+        $sort: { year: -1, monthIndex: -1 }
+      }, {
+        $project: {
+          monthIndex:0
+        }
       }
     ]);
     return allMonths;
@@ -303,20 +319,14 @@ export async function lastMonthExpenses(userId, residenceId) {
 
     const now = new Date();
     const year = months[now.getMonth() - 1] === "December" ? now.getFullYear() - 1 : now.getFullYear();
-    //const startOfCurrentMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-    //const startOfPreviousMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
     
     const lastMonthExpenses = await Bill.aggregate([
       {
         $match: {
           userId: new Types.ObjectId(userId),
           residenceId: new Types.ObjectId(residenceId),
-          forMonth: months[now.getMonth() - 1],
+          forMonth: months[now.getMonth() - 2],
           forYear: year,
-          /*createdAt: {
-            $gte: startOfPreviousMonth,
-            $lt: startOfCurrentMonth,
-          },*/
         },
       },  
       {
@@ -360,18 +370,15 @@ export async function currentMonthBills(userId, residenceId) {
     await connectDB();
 
     const now = new Date();
-    const startOfCurrentMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-    const startOfNextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+    const year = months[now.getMonth() - 1] === "December" ? now.getFullYear() - 1 : now.getFullYear();
 
     const currentMonthExpenses = await Bill.aggregate([
       {
         $match: {
           userId: new Types.ObjectId(userId),
           residenceId: new Types.ObjectId(residenceId),
-          createdAt: {
-            $gte: startOfCurrentMonth,
-            $lt: startOfNextMonth
-          }
+          forMonth: months[now.getMonth() - 1],
+          forYear: year,
         }
       },
       {
@@ -409,17 +416,6 @@ export async function currentMonthBills(userId, residenceId) {
   }
 }
 
-/*// get all bills by userId and categoryId
-export async function getBillsByUserAndCategory(userId, categoryId) {
-  try {
-    await connectDB();
-    const bills = await Bill.find({ userId, categoryId });
-    return bills;
-  } catch (error) {
-    return { error: error.message };
-  }
-}*/
-
 // get bill data by id and userid
 export async function getBillByIdAndUser(billId, userId) {
   try {
@@ -433,7 +429,6 @@ export async function getBillByIdAndUser(billId, userId) {
 
 // update bill data by id and userid
 export async function updateBill(billData) {
-  //console.log("Update data:", billData);
   try {
     await connectDB();
 
@@ -444,7 +439,7 @@ export async function updateBill(billData) {
       { $set: fieldsToUpdate },
       { new: true }
     );
-    //console.log("updated:", updatedBill);
+    
     return updatedBill;
   } catch (error) {
     return { error: error.message };
