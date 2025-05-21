@@ -177,9 +177,6 @@ export async function totalExpensesHalfYear(userId, residenceId) {
         $match: {
           userId: new Types.ObjectId(userId),
           forMonth: { $in: last6Months },
-          /*createdAt: {
-              $gte: new Date(new Date().setMonth(new Date().getMonth() - 6))
-          }*/
         }
       },
       {
@@ -187,14 +184,13 @@ export async function totalExpensesHalfYear(userId, residenceId) {
               _id: {
                   residenceId: "$residenceId",
                   forMonth: "$forMonth",
-                  //year: { $year: "$createdAt" },
-                  //month: { $month: "$createdAt" }
+                  forYear: "$forYear",
               },
               totalExpenses: { $sum: "$amount" }
           }
       },
       {
-          $sort: { "_id.residenceId": 1, "_id.forMonth": 1 /*"_id.year": 1, "_id.month": 1*/ }
+          $sort: { "_id.residenceId": 1, "_id.forYear": 1, "_id.forMonth": 1 }
       },
       {
           $lookup: {
@@ -212,19 +208,18 @@ export async function totalExpensesHalfYear(userId, residenceId) {
           expenses: {
             $push: {
               forMonth: "$_id.forMonth",
-              //year: "$_id.year",
-              //month: "$_id.month",
+              forYear: "$_id.forYear",
               totalExpenses: { $round: ["$totalExpenses", 2] }
             }
           }
         }
       },
       {
-          $project: {
-              _id: 0,
-              residence: 1,
-              expenses: 1
-          }
+        $project: {
+            _id: 0,
+            residence: 1,
+            expenses: 1
+        }
       }
     ]);
     return pastHalfYear;
@@ -307,18 +302,21 @@ export async function lastMonthExpenses(userId, residenceId) {
     await connectDB();
 
     const now = new Date();
-    const startOfCurrentMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-    const startOfPreviousMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+    const year = months[now.getMonth() - 1] === "December" ? now.getFullYear() - 1 : now.getFullYear();
+    //const startOfCurrentMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    //const startOfPreviousMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
     
     const lastMonthExpenses = await Bill.aggregate([
       {
         $match: {
           userId: new Types.ObjectId(userId),
           residenceId: new Types.ObjectId(residenceId),
-          createdAt: {
+          forMonth: months[now.getMonth() - 1],
+          forYear: year,
+          /*createdAt: {
             $gte: startOfPreviousMonth,
             $lt: startOfCurrentMonth,
-          },
+          },*/
         },
       },  
       {
