@@ -79,9 +79,7 @@ export default async function Dashboard() {
             totalExpenses.map(property => {
                 property.expenses.map(expense => { // in each property check in expenses for past month
                     if (expense.forMonth === months[now.getMonth() - 2]) {
-                        //console.log(`Residence: ${property.residence}, total expenses (${expense.forMonth}): ${expense.totalExpenses}`);
                         pastMonthExpenses += expense.totalExpenses;
-                        //console.log(`Past Month expenses: ${pastMonthExpenses}`);
                     }
                 })
             })
@@ -98,16 +96,10 @@ export default async function Dashboard() {
             totalExpenses.map(property => {
                 property.expenses.map(expense => { // in each property check in expenses for past month
                     if (expense.forMonth === months[now.getMonth() - 1]) {
-                        //console.log(`Residence: ${property.residence}, total expenses (${expense.forMonth}): ${expense.totalExpenses}`);
                         currentMonthExpenses += expense.totalExpenses;
-                        //console.log(`Current month expenses: ${currentMonthExpenses}`);
                     }
                 })
             })
-            
-            /*totalExpenses.map(property => {
-                currentMonthExpenses += property.expenses[property.expenses.length - 1]?.totalExpenses || 0;
-            });*/
 
             console.log("Total expenses for current month:", currentMonthExpenses);
             return currentMonthExpenses;
