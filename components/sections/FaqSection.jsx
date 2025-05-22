@@ -6,12 +6,12 @@ export default function FaqSection() {
         <div className="flex flex-col justify-center items-center bg-neutral-200 min-h-screen">
             {/* title */}
             <div className="max-w-5xl flex justify-center text-center gap-15">
-                <h1 className="w-2/3 text-6xl font-bold py-8">
+                <h1 className="text-5xl font-bold py-8 lg:w-2/3 lg:text-6xl">
                     FAQs
                 </h1>
             </div>
             {/* questions */}
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-3 px-3">
                 <FaqAccordion 
                     title="What is Billio?"
                     text="Billio is a web application that helps you track, manage, and analyze your household bills and expenses in one place."

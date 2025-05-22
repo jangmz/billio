@@ -11,7 +11,7 @@ export default function HeroSection() {
         <div className="hero bg-base-200 min-h-screen">
             <div className="hero-content text-center">
                 <div className="max-w-4xl flex flex-col items-center">
-                    <h1 className="text-7xl font-bold">
+                    <h1 className="text-6xl font-bold lg:text-7xl">
                         <span className="underline decoration-amber-400 decoration-7">
                             Effortlessly
                         </span> Manage Your Housing Expenses With Billio
