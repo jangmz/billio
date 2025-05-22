@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import Logo from "@/public/logo.png";
@@ -8,8 +10,10 @@ import { HiDocumentReport } from "react-icons/hi";
 import { IoSettingsSharp } from "react-icons/io5";
 import { FaUser } from "react-icons/fa";
 import SignOutMenuButton from "../buttons/SignOutMenuButton";
+import { useState } from "react";
 
 export default function SideMenu() {
+    const [open, setOpen] = useState(false);
   return (
     <div>
         {/* menu button */}
@@ -18,7 +22,8 @@ export default function SideMenu() {
             data-drawer-target="logo-sidebar" 
             data-drawer-toggle="logo-sidebar" 
             aria-controls="logo-sidebar"
-            className="inline-flex items-center p-2 mt-2 ms-3 text-sm text-black-100 rounded-lg sm:hidden hover: bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-700"    
+            onClick={() => setOpen(true)}
+            className="inline-flex items-center p-2 mt-2 ms-3 text-sm text-black-100 rounded-lg md:hidden hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-700"    
         >
             <span className="sr-only">Open sidebar</span>
             <svg className="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -29,18 +34,29 @@ export default function SideMenu() {
         <aside
             id="logo-sidebar"
             aria-label="Sidebar"
-            className="fixed shadow-lg top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
+            className={`fixed shadow-lg top-0 left-0 z-40 w-64 h-screen transition-transform ${open ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
         >
             <div className="h-full px-3 py-4 overflow-y-auto bg-base-100 flex flex-col justify-between">
-                {/* logo with app name */}
                 <div>
+                    {/* logo with app name and close button */}
                     <div className="flex gap-3 justify-center items-center mb-5">
+                        {/* close button for mobile */}
+                        <button
+                            className="md:hidden absolute top-2 right-2 p-2 rounded hover:bg-yellow-400"
+                            onClick={() => setOpen(false)}
+                            aria-label="Close sidebar"
+                        >
+                            <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
                         {/* logo image */}
                         <Image src={Logo} width={44} alt="App logo"/>
                         <span className="self-center text-yellow-600 font-extrabold text-4xl whitespace-nowrap">
                             Billio
                         </span>
                     </div>
+                    {/* upper menu items */}
                     <ul className="space-y-2 font-medium">
                         <li>
                             {/* icon + title */}
@@ -75,6 +91,7 @@ export default function SideMenu() {
                         </li>
                     </ul>
                 </div>
+                {/* lower menu items */}
                 <ul className="space-y-2 font-medium">
                     <li>
                         <Link href="/dashboard/profile" className="flex item-center rounded-lg p-2 hover:bg-yellow-400 group">

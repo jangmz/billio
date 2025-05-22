@@ -9,7 +9,7 @@ const poppins = Poppins({
 });
 
 export const metadata = {
-  title: "Dashboard | Billio"
+  title: "Billio"
 };
 
 export default async function DashboardLayout({ children }) {
@@ -23,7 +23,7 @@ export default async function DashboardLayout({ children }) {
         }
       </header>
       <div>
-          <div className="p-4 sm:ml-64">
+          <div className="p-4 md:ml-64">
               <div className="p-2">
                   {children}
               </div>
