@@ -1,12 +1,12 @@
-import { Poppins } from "next/font/google";
+//import { Poppins } from "next/font/google";
 import "@/app/globals.css";
 import { auth } from "@/auth";
 import SideMenu from "@/components/menus/SideMenu";
 
-const poppins = Poppins({
+/*const poppins = Poppins({
   weight: ["400", "700"],
   subset: ["latin"],
-});
+});*/
 
 export const metadata = {
   title: "Billio"
