@@ -1,16 +1,15 @@
 import { NextResponse } from "next/server";
-import { authenticate } from "@/config/authMiddleware";
+import { validateSession } from "@/config/validateSession";
 import { getReport } from "@/_actions/residenceActions";
 
 // GET /api/reports?timeframe=[mothly/quarterly/yearly] -> return all bills sorted by residence -> sorted bills by category
 export async function GET(req) {
-    const user = await authenticate(req);
-    
-    if (user instanceof NextResponse) return user; // if the returned value is NextResponse, return that authentication error
-    
+    // validate session
+    const session = await validateSession();
+
     try {
         // retrieve timeframe
-        const userId = user.id;
+        const userId = session.user.id;
         const { searchParams } = new URL(req.url)
         const timeFrame = searchParams.get("timeframe"); // monthly, quarterly, yearly
 
