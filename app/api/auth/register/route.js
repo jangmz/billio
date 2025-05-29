@@ -1,9 +1,19 @@
 import { insertUser, getUser } from "@/_actions/userActions";
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
+import { checkRateLimit } from "@/config/checkRateLimit";
 
 // POST /api/auth/register -> for login credentials
 export async function POST(req) {
+    // rate limit check
+    const rate = await checkRateLimit(req);
+    if (!rate.allowed) {
+        return NextResponse.json(
+            { error: "Too many requests" },
+            { status: 429 }
+        );
+    }
+
     try {
         // validate that request has a body
         if (!req.body) {

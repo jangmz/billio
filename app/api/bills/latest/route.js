@@ -1,10 +1,20 @@
 import { NextResponse } from "next/server";
 import { getLatestBills } from "@/_actions/billActions";
 import { validateSession } from "@/config/validateSession";
+import { checkRateLimit } from "@/config/checkRateLimit";
 
 // /api/bills/latest -> 10 last bills from this user
 // /api/bills/latest?limit=50 -> last 50 bills from this user
 export async function GET(req) {
+    // rate limit check
+    const rate = await checkRateLimit(req);
+    if (!rate.allowed) {
+        return NextResponse.json(
+            { error: "Too many requests" },
+            { status: 429 }
+        );
+    }
+
     try {
         // validate session
         const session = await validateSession();

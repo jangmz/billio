@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { deleteBill, getBillByIdAndUser, updateBill } from "@/_actions/billActions";
 import { validateSession } from "@/config/validateSession";
+import { checkRateLimit } from "@/config/checkRateLimit";
 
 /*
 ===== BILL MODEL =====
@@ -19,6 +20,15 @@ import { validateSession } from "@/config/validateSession";
 
 // GET /api/bills/[id] -> retrieve single bill data
 export async function GET(req, { params }) {
+    // rate limit check
+    const rate = await checkRateLimit(req);
+    if (!rate.allowed) {
+        return NextResponse.json(
+            { error: "Too many requests" },
+            { status: 429 }
+        );
+    }
+
     // validate session
     const session = await validateSession();
 
@@ -43,6 +53,15 @@ export async function GET(req, { params }) {
 
 // PUT /api/bills/[id] -> update single bill data
 export async function PUT(req, { params }) {
+    // rate limit check
+    const rate = await checkRateLimit(req);
+    if (!rate.allowed) {
+        return NextResponse.json(
+            { error: "Too many requests" },
+            { status: 429 }
+        );
+    }
+
     // validate session
     const session = await validateSession();
 
@@ -68,6 +87,15 @@ export async function PUT(req, { params }) {
 
 // DELETE /api/bills/[id] -> delete single bill
 export async function DELETE(req, { params }) {
+    // rate limit check
+    const rate = await checkRateLimit(req);
+    if (!rate.allowed) {
+        return NextResponse.json(
+            { error: "Too many requests" },
+            { status: 429 }
+        );
+    }
+
     // validate session
     const session = await validateSession();
 

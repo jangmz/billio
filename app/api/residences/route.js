@@ -1,9 +1,19 @@
 import { NextResponse } from "next/server";
 import { insertResidence, getResidences, getResidenceByName } from "@/_actions/residenceActions";
 import { validateSession } from "@/config/validateSession";
+import { checkRateLimit } from "@/config/checkRateLimit";
 
 // POST /api/residences -> create new residence
 export async function POST(req) {
+    // rate limit check
+    const rate = await checkRateLimit(req);
+    if (!rate.allowed) {
+        return NextResponse.json(
+            { error: "Too many requests" },
+            { status: 429 }
+        );
+    }
+
     try {
         // validate session
         const session = await validateSession();
@@ -40,7 +50,16 @@ export async function POST(req) {
 
 // GET /api/residences?u -> list of residences for particular user
 export async function GET(req) {
-try {
+    // rate limit check
+    const rate = await checkRateLimit(req);
+    if (!rate.allowed) {
+        return NextResponse.json(
+            { error: "Too many requests" },
+            { status: 429 }
+        );
+    }
+
+    try {
         // validate session
         const session = await validateSession();
         //console.log("API session:", session); // session data OK

@@ -1,9 +1,19 @@
 import { NextResponse } from "next/server";
 import { getCategory, updateCategory, deleteCategory } from "@/_actions/categoryActions";
 import { validateSession } from "@/config/validateSession";
+import { checkRateLimit } from "@/config/checkRateLimit";
 
 // GET /api/categories/[id] -> retrieve category data by userId
 export async function GET(req, { params }) {
+    // rate limit check
+    const rate = await checkRateLimit(req);
+    if (!rate.allowed) {
+        return NextResponse.json(
+            { error: "Too many requests" },
+            { status: 429 }
+        );
+    }
+
     // validate session
     const session = await validateSession();
 
@@ -28,6 +38,15 @@ export async function GET(req, { params }) {
 
 // PUT /api/categories/[id] -> update category data
 export async function PUT(req, { params }) {
+    // rate limit check
+    const rate = await checkRateLimit(req);
+    if (!rate.allowed) {
+        return NextResponse.json(
+            { error: "Too many requests" },
+            { status: 429 }
+        );
+    }
+
     // validate session
     const session = await validateSession();
 
@@ -53,6 +72,15 @@ export async function PUT(req, { params }) {
 
 // DELETE /api/categories/[id] -> delete category
 export async function DELETE(req, { params }) {
+    // rate limit check
+    const rate = await checkRateLimit(req);
+    if (!rate.allowed) {
+        return NextResponse.json(
+            { error: "Too many requests" },
+            { status: 429 }
+        );
+    }
+
     // validate session
     const session = await validateSession();
 

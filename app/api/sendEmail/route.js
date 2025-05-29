@@ -1,7 +1,17 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
+import { checkRateLimit } from "@/config/checkRateLimit";
 
 export async function POST(req) {
+    // rate limit check
+    const rate = await checkRateLimit(req);
+    if (!rate.allowed) {
+        return NextResponse.json(
+            { error: "Too many requests" },
+            { status: 429 }
+        );
+    }
+
     const { name, email, formName, message } = await req.json();
 
     console.log("created transporter");

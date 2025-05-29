@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getUserBills, insertBill } from "@/_actions/billActions";
 import { validateSession } from "@/config/validateSession";
+import { checkRateLimit } from "@/config/checkRateLimit";
 
 /*
 ===== BILL MODEL =====
@@ -19,6 +20,15 @@ import { validateSession } from "@/config/validateSession";
 
 // POST /api/bills -> create new bill
 export async function POST(req) {
+    // rate limit check
+    const rate = await checkRateLimit(req);
+    if (!rate.allowed) {
+        return NextResponse.json(
+            { error: "Too many requests" },
+            { status: 429 }
+        );
+    }
+
     try {
         // validate session
         const session = await validateSession();
@@ -47,6 +57,15 @@ export async function POST(req) {
 
 // GET /api/bills -> returns all bills by user ID
 export async function GET(req) {
+    // rate limit check
+    const rate = await checkRateLimit(req);
+    if (!rate.allowed) {
+        return NextResponse.json(
+            { error: "Too many requests" },
+            { status: 429 }
+        );
+    }
+
     try {
         // validate session
         const session = await validateSession();

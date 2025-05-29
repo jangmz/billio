@@ -1,9 +1,19 @@
 import { NextResponse } from "next/server";
 import { deleteResidenceById, getResidenceData, updateResidenceData } from "@/_actions/residenceActions";
 import { validateSession } from "@/config/validateSession";
+import { checkRateLimit } from "@/config/checkRateLimit";
 
 // GET /api/residences/[residenceId] -> data for residence
 export async function GET(req, { params }) {
+    // rate limit check
+    const rate = await checkRateLimit(req);
+    if (!rate.allowed) {
+        return NextResponse.json(
+            { error: "Too many requests" },
+            { status: 429 }
+        );
+    }
+
     try {
         // validate session
         const session = await validateSession();
@@ -29,6 +39,15 @@ export async function GET(req, { params }) {
 
 // PUT /api/residences/[residenceId] -> update residance data
 export async function PUT(req, { params }) {
+    // rate limit check
+    const rate = await checkRateLimit(req);
+    if (!rate.allowed) {
+        return NextResponse.json(
+            { error: "Too many requests" },
+            { status: 429 }
+        );
+    }
+
     try {
         // validate session
         const session = await validateSession();
@@ -55,6 +74,15 @@ export async function PUT(req, { params }) {
 
 // DELETE /api/residences/[residenceId] -> delete a residence
 export async function DELETE(req, { params }) {
+    // rate limit check
+    const rate = await checkRateLimit(req);
+    if (!rate.allowed) {
+        return NextResponse.json(
+            { error: "Too many requests" },
+            { status: 429 }
+        );
+    }
+
     try {
         // validate session
         const session = await validateSession();

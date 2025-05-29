@@ -1,9 +1,19 @@
 import { NextResponse } from "next/server";
 import { insertCategory, getCategories, getCategoryByName } from "@/_actions/categoryActions";
 import { validateSession } from "@/config/validateSession";
+import { checkRateLimit } from "@/config/checkRateLimit";
 
 // POST /api/categories -> insert new category
 export async function POST(req) {
+    // rate limit check
+    const rate = await checkRateLimit(req);
+    if (!rate.allowed) {
+        return NextResponse.json(
+            { error: "Too many requests" },
+            { status: 429 }
+        );
+    }
+
     try {       
         // validate session
         const session = await validateSession();
@@ -37,6 +47,15 @@ export async function POST(req) {
 
 // GET /api/categories -> list all user categories
 export async function GET(req) {
+    // rate limit check
+    const rate = await checkRateLimit(req);
+    if (!rate.allowed) {
+        return NextResponse.json(
+            { error: "Too many requests" },
+            { status: 429 }
+        );
+    }
+
     try {
         // validate session
         const session = await validateSession();

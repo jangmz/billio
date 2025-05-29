@@ -1,9 +1,19 @@
 import { NextResponse } from "next/server";
 import { getUserById, updateUserById, deleteUserById } from "@/_actions/userActions";
 import { validateSession } from "@/config/validateSession";
+import { checkRateLimit } from "@/config/checkRateLimit";
 
 // GET /api/users/[id] -> retrieve user data
 export async function GET(req, { params }) {
+    // rate limit check
+    const rate = await checkRateLimit(req);
+    if (!rate.allowed) {
+        return NextResponse.json(
+            { error: "Too many requests" },
+            { status: 429 }
+        );
+    }
+
     // validate session
     const session = await validateSession();
 
@@ -35,6 +45,15 @@ export async function GET(req, { params }) {
 
 // PUT /api/users/[id] -> update user data
 export async function PUT(req, { params }) {
+    // rate limit check
+    const rate = await checkRateLimit(req);
+    if (!rate.allowed) {
+        return NextResponse.json(
+            { error: "Too many requests" },
+            { status: 429 }
+        );
+    }
+
     // validate session
     const session = await validateSession();
 

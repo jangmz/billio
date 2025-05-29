@@ -1,9 +1,19 @@
 import { NextResponse } from "next/server";
 import { totalExpensesHalfYear } from "@/_actions/billActions";
 import { validateSession } from "@/config/validateSession";
+import { checkRateLimit } from "@/config/checkRateLimit";
 
 // /api/bills/past-6-months -> total expenses by months for past 6 months
 export async function GET(req) {
+    // rate limit check
+    const rate = await checkRateLimit(req);
+    if (!rate.allowed) {
+        return NextResponse.json(
+            { error: "Too many requests" },
+            { status: 429 }
+        );
+    }
+
     try {
         // validate session
         const session = await validateSession();
