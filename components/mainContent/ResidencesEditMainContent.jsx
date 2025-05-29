@@ -12,6 +12,7 @@ import MonthExpenseChart from "../charts/MonthExpenseChart";
 import { retrieveData } from "@/config/getRequest";
 import { useState, useEffect } from "react";
 import ResidenceDataInfo from "../cards/ResidenceDataInfo";
+import { Mosaic } from "react-loading-indicators";
 
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
@@ -22,6 +23,7 @@ export default function ResidencesEditMainContent({ apiUrl, sessionToken, userId
     const [currentMonth, setCurrentMonth] = useState([]);
     const [categories, setCategories] = useState([]);
     const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         async function fetchData() {
@@ -48,6 +50,8 @@ export default function ResidencesEditMainContent({ apiUrl, sessionToken, userId
             } catch (error) {
                 console.error(error);
                 setError(error.message);
+            } finally {
+                setLoading(false);
             }
         }
 
@@ -61,6 +65,14 @@ export default function ResidencesEditMainContent({ apiUrl, sessionToken, userId
 
     if (error) {
         return <AlertError error={error} />;
+    }
+
+    if (loading) {
+        return (    
+            <div className="flex h-100 justify-center items-center">
+                <Mosaic color="#fbc700" size="medium" text="" textColor="" />
+            </div>
+        );
     }
 
     return (

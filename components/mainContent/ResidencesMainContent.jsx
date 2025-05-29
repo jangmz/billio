@@ -43,7 +43,7 @@ export default function ResidencesMainContent({ apiUrl, sessionToken, userId }) 
     function extractTotalExpenses(residence) {
         let totalExpense = 0;
         const propertyData = totalExpenses.find((property) => property.residence === residence.name);
-        console.log("last month expenses:", propertyData);
+        //console.log("last month expenses:", propertyData);
         
         if (!propertyData) {
             return null;
