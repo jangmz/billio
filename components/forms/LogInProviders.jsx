@@ -13,12 +13,12 @@ export default function LogInProviders() {
                 btnStyle={"btn-primary"}
                 onClick={loginGoogle}
             />
-            <Button 
+            {/*<Button 
                 text="Log in with GitHub"
                 icon={<FaGithub />}
                 btnStyle={"btn-primary"}
                 onClick={loginGitHub}
-            />
+            />*/}
         </div>
     );
 }
