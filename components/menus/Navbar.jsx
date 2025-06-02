@@ -33,9 +33,9 @@ export default function Navbar() {
         </div>
         <div className="flex-none">
             <ul className="flex items-center menu menu-horizontal px-1">
-                <li>
+                {/*<li>
                     <Link href={"#pricing"}>Pricing</Link>
-                </li>
+                </li>*/}
                 <li>
                     <Link href={"#faq"}>FAQ</Link>
                 </li>
