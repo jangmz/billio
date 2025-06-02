@@ -24,7 +24,7 @@ export default async function Dashboard() {
             method: "GET",
             headers: { 
                 "Content-Type": "application/json",
-                Cookie: `authjs.session-token=${sessionToken}`
+                Cookie: `__Secure-authjs.session-token=${sessionToken}`
             },
             cache: "no-store"
         });
@@ -41,7 +41,7 @@ export default async function Dashboard() {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                Cookie: `authjs.session-token=${sessionToken}`
+                Cookie: `__Secure-authjs.session-token=${sessionToken}`
             },
             cache: "no-store"
         });
@@ -59,7 +59,7 @@ export default async function Dashboard() {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                Cookie: `authjs.session-token=${sessionToken}`
+                Cookie: `__Secure-authjs.session-token=${sessionToken}`
             },
             cache: "no-store"
         });
