@@ -12,7 +12,7 @@ export default function DeleteBillButton({ icon, billId, apiUrl, sessionToken, o
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
-                    Cookies: `authjs.session-token=${sessionToken}`
+                    Cookie: `authjs.session-token=${sessionToken}`
                 }
             });
 

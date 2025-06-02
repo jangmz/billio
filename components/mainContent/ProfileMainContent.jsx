@@ -21,7 +21,7 @@ export default function ProfileMainContent({ userData, apiUrl, sessionToken }) {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
-                    Cookies: `authjs.session-token=${sessionToken}`
+                    Cookie: `authjs.session-token=${sessionToken}`
                 }
             });
 

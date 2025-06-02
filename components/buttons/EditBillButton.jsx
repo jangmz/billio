@@ -44,7 +44,7 @@ export default function EditBillButton({ icon, bill, categories, residences, api
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
-                    Cookies: `authjs.session-token=${sessionToken}`
+                    Cookie: `authjs.session-token=${sessionToken}`
                 },
                 body: JSON.stringify(formData)
             });
