@@ -17,7 +17,7 @@ export default async function Dashboard() {
 
         // retrieve cookies
         const cookieStore = cookies();
-        const sessionToken = (await cookieStore).get("authjs.session-token")?.value;
+        const sessionToken = (await cookieStore).get("__Secure-authjs.session-token")?.value;
 
         // 1) retrieve user residences 
         const residencesResponse = await fetch(`${apiUrl}/residences?u=${session.user.id}`, {

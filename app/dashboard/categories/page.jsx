@@ -12,7 +12,7 @@ export default async function CategoriesPage() {
 
         // retrieve cookies
         const cookieStore = cookies();
-        const sessionToken = (await cookieStore).get("authjs.session-token")?.value;
+        const sessionToken = (await cookieStore).get("__Secure-authjs.session-token")?.value;
 
         return (
             <CategoriesMainContent 

@@ -12,7 +12,7 @@ export default async function BillsPage() {
 
         // retrieve cookies
         const cookieStore = cookies();
-        const sessionToken = (await cookieStore).get("authjs.session-token")?.value;
+        const sessionToken = (await cookieStore).get("__Secure-authjs.session-token")?.value;
         
         if (!sessionToken) {
             throw new Error("Session token is missing");

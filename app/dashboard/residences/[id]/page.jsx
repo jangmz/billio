@@ -13,7 +13,7 @@ export default async function ResidenceOverviewPage({ params }) {
 
         // retrieve cookies
         const cookieStore = cookies();
-        const sessionToken = (await cookieStore).get("authjs.session-token")?.value;
+        const sessionToken = (await cookieStore).get("__Secure-authjs.session-token")?.value;
 
         // residence ID
         const residenceId = params.id;
