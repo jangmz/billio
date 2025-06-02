@@ -25,11 +25,11 @@ export default async function middleware(req) {
 
     if (isProtected && !hasSession) {
         if (pathname.startsWith("/api")) {
-            return new NextResponse.json(
-                { error: "Unauthorized" },
-                { 
+            return new NextResponse(
+                JSON.stringify({ error: "Unauthorized" }),
+                {
                     status: 401,
-                    headers: { "Content-Type": "application/json" } 
+                    headers: { "Content-Type": "application/json" }
                 }
             );
         }
