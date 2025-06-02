@@ -15,7 +15,7 @@ const protectedRoutes = [
 
 export default async function middleware(req) {
     //const session = await auth(); 
-    const hasSession = req.cookies.get("authjs.session-token");
+    const hasSession = req.cookies.get("__Secure-authjs.session-token");
     const { pathname } = req.nextUrl; // current pathname
 
     // check if current route is protected
