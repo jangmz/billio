@@ -9,7 +9,7 @@ export default function FormFieldset({type, name, title, placeholder, value, sty
                 id={name} 
                 value={value} 
                 placeholder={placeholder} 
-                className={`input w-100 ${style}`} 
+                className={`input w-full ${style}`} 
             />
         </fieldset>
     ) 

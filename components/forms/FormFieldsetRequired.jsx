@@ -9,7 +9,7 @@ export default function FormFieldsetRequired({type, name, title, placeholder, va
                 id={name} 
                 value={value} 
                 placeholder={placeholder} 
-                className={`input w-100 ${style}`}
+                className={`input w-full ${style}`}
                 required
             />
         </fieldset>

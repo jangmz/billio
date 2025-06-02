@@ -77,7 +77,7 @@ export default function ResidencesEditMainContent({ apiUrl, sessionToken, userId
 
     return (
         <div className="flex flex-col items-center gap-6">
-            <div className="flex self-end gap-5">
+            <div className="flex flex-wrap self-end gap-5">
                 <EditResidenceButton  
                     residenceData={residence}
                     apiUrl={apiUrl}
