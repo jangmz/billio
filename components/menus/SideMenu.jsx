@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import Logo from "@/public/logo.png";
+import Logo from "@/public/logo_piggy.png";
 import { MdSpaceDashboard, MdCategory, MdContactSupport } from "react-icons/md";
 import { BsFillHousesFill } from "react-icons/bs";
 import { RiBillFill } from "react-icons/ri";
