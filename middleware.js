@@ -24,6 +24,15 @@ export default async function middleware(req) {
     );
 
     if (isProtected && !hasSession) {
+        if (pathname.startsWith("/api")) {
+            return new NextResponse.json(
+                { error: "Unauthorized" },
+                { 
+                    status: 401,
+                    headers: { "Content-Type": "application/json" } 
+                }
+            );
+        }
         console.log("Redirect to /login due to missing session");
         return NextResponse.redirect(new URL("/login", req.url));
     }
