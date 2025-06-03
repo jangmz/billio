@@ -3,6 +3,7 @@ import "./globals.css";
 import Navbar from "@/components/menus/Navbar";
 import Footer from "@/components/sections/Footer";
 import { auth } from "@/auth";
+import Analytics from "@/config/analytics";
 
 /*const poppins = Poppins({
   weight: ["400", "700"],
@@ -20,6 +21,9 @@ export default async function RootLayout({ children }) {
 
   return (
     <html lang="en" className="h-full">
+      <head>
+        <Analytics />
+      </head>
       <body className="flex flex-col min-h-screen">
         <header className="sticky top-0 z-50">
           {/*
