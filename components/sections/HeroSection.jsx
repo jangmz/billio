@@ -1,9 +1,9 @@
 import React from "react";
 import Button from "../buttons/Button";
 import Link from "next/link";
-import HeroImage from "@/public/hero1.jpg";
-import ProConIcontext from "../ProConIcontext";
-import Image from "next/image";
+//import HeroImage from "@/public/hero1.jpg";
+//import ProConIcontext from "../ProConIcontext";
+//import Image from "next/image";
 
 export default function HeroSection() {
   return (
